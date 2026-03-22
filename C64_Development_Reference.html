@@ -595,6 +595,26 @@ nav#TOC { display: none !important; }
         .mmap-regs th { color: #7dd3fc; text-align: left; padding: 3px 6px; border-bottom: 1px solid #333; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .mmap-regs td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #aaa; vertical-align: top; }
         .mmap-regs td:first-child { font-family: monospace; color: #7dd3fc; white-space: nowrap; }
+
+/* ── C64 BOARD REVISION GUIDE ── */
+.board-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; margin:1rem 0; }
+.board-card { background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; overflow:hidden; }
+.board-card-header { padding:0.9rem 1rem 0.6rem; border-bottom:1px solid var(--border-color); display:flex; align-items:flex-start; gap:0.6rem; }
+.board-icon { font-size:1.4rem; flex-shrink:0; }
+.board-title { font-size:0.92rem; font-weight:600; color:var(--text-primary); }
+.board-sub { font-size:0.75rem; color:var(--text-secondary); margin-top:1px; }
+.board-body { padding:0.8rem 1rem; }
+.board-row { display:flex; justify-content:space-between; align-items:baseline; padding:2px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.82rem; }
+.board-row:last-child { border-bottom:none; }
+.board-label { color:var(--text-secondary); }
+.board-val { color:var(--text-primary); font-family:monospace; font-size:0.8rem; text-align:right; max-width:55%; }
+.board-tag { display:inline-block; font-size:0.7rem; padding:1px 6px; border-radius:3px; margin:0 1px; }
+.board-tag-blue { background:rgba(64,64,224,0.25); color:#7dd3fc; }
+.board-tag-green { background:rgba(80,250,123,0.15); color:#4caf50; }
+.board-tag-amber { background:rgba(255,184,108,0.2); color:#ffb86c; }
+.board-tag-red { background:rgba(255,85,85,0.2); color:#ff5555; }
+.board-fault { margin-top:0.6rem; padding:0.5rem 0.7rem; background:rgba(255,184,108,0.08); border-left:3px solid var(--warning); border-radius:0 4px 4px 0; font-size:0.78rem; color:var(--text-secondary); }
+.board-fault strong { color:var(--warning); }
 </style>
 </head>
 <body>
@@ -9398,6 +9418,193 @@ class="sourceCode asm"><code class="sourceCode fasm"><span id="cb23-1"><a href="
 
 </div>
 <div class="c64-section" id="c64-tab-hardware">
+
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0" id="c64-board-revisions">
+    <h3 style="color:var(--c64-light-blue);margin-bottom:0.3rem">🖥 Commodore 8-bit Board Revision Guide</h3>
+    <p style="color:var(--text-secondary);font-size:0.87rem;margin-bottom:1.2rem">Every major Commodore 8-bit variant — board numbers, chip differences, known faults, and what makes each one unique. Remove the base screws to find the board number stamped on the PCB.</p>
+
+    <h4 style="color:var(--accent);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem">── Commodore 64 — Breadbin (1982–1987)</h4>
+    <div class="board-grid" style="margin-bottom:1.5rem">
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">326298 — Rev 1 (Earliest)</div><div class="board-sub">Mid 1982 — prototype-era production</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">326298</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">6581 R1 / R2</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">6567 (NTSC) / 6569 (PAL)</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">6526 (non-A)</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">8× 4164</span></div>
+                <div class="board-row"><span class="board-label">PLA</span><span class="board-val">906114 (Signetics)</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> Very rare. PLA runs extremely hot — prime failure. 5V rail stressed. Only a handful of differences from 250407 but board traces differ.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">250407 — Rev 2/3</div><div class="board-sub">1982–1983 — first mass production</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">250407</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">6581 R2 / R3</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">6569R1–R3 (PAL)</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">6526A</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">8× 4164 (150 ns)</span></div>
+                <div class="board-row"><span class="board-label">PLA</span><span class="board-val">906114 — bipolar NMOS</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> PLA failure most common fault (runs hot, fails warm). VIC-II 6569R1 has a known bug with certain raster timings. Power supply recap strongly advised.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">250425 — Rev 4 <span class="board-tag board-tag-blue">Most common</span></div><div class="board-sub">1983–1986 — primary breadbin board</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">250425</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">6581 R3 / R4</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">6569R3–R5 (PAL)</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">6526A</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">8× 4164</span></div>
+                <div class="board-row"><span class="board-label">PLA</span><span class="board-val">906114 (CSG)</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> PLA still the #1 failure — replace with neatPLA proactively. Stable otherwise. Best-documented breadbin board for repair. The 6581 R4 SID is preferred by many musicians.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">250466 — Rev 5</div><div class="board-sub">1986 — transitional, rare</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">250466</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">6581 R4AR / 8580 R5</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">6569R5 (PAL)</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">6526A</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">8× 4164</span></div>
+                <div class="board-row"><span class="board-label">Notes</span><span class="board-val">Transitional to C64C era</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> Mixed SID variants — may have either 6581 or 8580 depending on production batch. PLA still the weak point.</div>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="color:var(--accent);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem">── Commodore 64C — New Case (1986–1994)</h4>
+    <div class="board-grid" style="margin-bottom:1.5rem">
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">250469 <span class="board-tag board-tag-blue">Most common C64C</span></div><div class="board-sub">1986–1992 — standard C64C board</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">250469</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">8580 R5 (9V, clean filter)</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">8565R2 (PAL) / 8562 (NTSC)</span></div>
+                <div class="board-row"><span class="board-label">CPU</span><span class="board-val">8500 (CMOS 6510)</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">8521 (CMOS 6526)</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">2× 4464 (4-bit wide)</span></div>
+                <div class="board-row"><span class="board-label">PLA</span><span class="board-val">82S100 or CSG PLA</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> 8580 SID has weaker analogue filters than 6581 — some music sounds different. 8521 CIA has a known TOD clock bug. PLA still ages. CMOS chips slightly easier to source.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">📋</div>
+                <div><div class="board-title">252311 — Short Board <span class="board-tag board-tag-amber">Rare</span></div><div class="board-sub">1990–1994 — cost-reduced final version</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Board #</span><span class="board-val">252311</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">8580 R5</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">8565R2 (PAL)</span></div>
+                <div class="board-row"><span class="board-label">CPU</span><span class="board-val">8500</span></div>
+                <div class="board-row"><span class="board-label">Size</span><span class="board-val">Smaller PCB — fewer chips</span></div>
+                <div class="board-row"><span class="board-label">PLA</span><span class="board-val">Integrated CSG gate array</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> Less upgradeable than full boards — fewer through-holes and socketed chips. PLA integrated into a larger custom chip, making replacement harder. But these tend to be very stable if working.</div>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="color:var(--accent);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem">── Commodore SX-64 — Portable (1984–1986)</h4>
+    <div class="board-grid" style="margin-bottom:1.5rem">
+        <div class="board-card" style="grid-column:span 2">
+            <div class="board-card-header">
+                <div class="board-icon">🧳</div>
+                <div><div class="board-title">SX-64 Executive Computer <span class="board-tag board-tag-green">Collectable</span></div><div class="board-sub">1984 — world's first colour portable computer</div></div>
+            </div>
+            <div class="board-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 1rem">
+                    <div>
+                        <div class="board-row"><span class="board-label">Case</span><span class="board-val">Integrated carry case, handle</span></div>
+                        <div class="board-row"><span class="board-label">Display</span><span class="board-val">5" colour CRT (built-in)</span></div>
+                        <div class="board-row"><span class="board-label">Drive</span><span class="board-val">1× 1541-compatible 5.25" internal</span></div>
+                        <div class="board-row"><span class="board-label">SID</span><span class="board-val">6581 R2 / R3</span></div>
+                        <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">6569 PAL / 6567 NTSC</span></div>
+                    </div>
+                    <div>
+                        <div class="board-row"><span class="board-label">Board</span><span class="board-val">Modified 250407 / 250425</span></div>
+                        <div class="board-row"><span class="board-label">Power</span><span class="board-val">Internal PSU — runs hot</span></div>
+                        <div class="board-row"><span class="board-label">Video out</span><span class="board-val">External monitor connector fitted</span></div>
+                        <div class="board-row"><span class="board-label">DX-64</span><span class="board-val">Dual-drive variant (extremely rare)</span></div>
+                    </div>
+                </div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> Internal PSU runs extremely hot — recap essential. The 5V rail sags under load, causing intermittent failures. CRT degaussing coil can fail. 5.25" drive belt perishes — replace with modern belt. The internal supply is the #1 failure point; many owners replace it with an external C64 PSU wired in.</div>
+            </div>
+        </div>
+    </div>
+
+    <h4 style="color:var(--accent);font-size:0.82rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem">── Commodore 128 Family (1985–1989)</h4>
+    <div class="board-grid">
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">🖥</div>
+                <div><div class="board-title">C128 — Flat <span class="board-tag board-tag-blue">Most common 128</span></div><div class="board-sub">1985 — standard C128 with separate numpad</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">CPU</span><span class="board-val">8502 (C64 mode) + Z80A (CP/M)</span></div>
+                <div class="board-row"><span class="board-label">RAM</span><span class="board-val">128 KB (2× 64 KB banks)</span></div>
+                <div class="board-row"><span class="board-label">SID</span><span class="board-val">8580 (×1, stereo socket optional)</span></div>
+                <div class="board-row"><span class="board-label">VIC-II</span><span class="board-val">8564 (PAL) / 8566 (NTSC)</span></div>
+                <div class="board-row"><span class="board-label">VDC</span><span class="board-val">8563 — 80-col RGB output</span></div>
+                <div class="board-row"><span class="board-label">CIA</span><span class="board-val">8521 × 2</span></div>
+                <div class="board-row"><span class="board-label">MMU</span><span class="board-val">8722 — Memory Management Unit</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> VDC 8563 chip fails — no 80-column output (hard to source). MMU 8722 ages. The Z80 and 8502 share the same bus — the MMU arbitrates. C64 mode is not 100% cycle-exact (some demos fail). BASIC 7.0 is actually useful — this is a capable machine in its own right.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">🖥</div>
+                <div><div class="board-title">C128D — Desktop with Drive <span class="board-tag board-tag-green">Best 128</span></div><div class="board-sub">1986 — detached keyboard, internal 1571</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Drive</span><span class="board-val">Internal 1571 (3.5" MFM + 1541 compat)</span></div>
+                <div class="board-row"><span class="board-label">PSU</span><span class="board-val">Internal switching PSU</span></div>
+                <div class="board-row"><span class="board-label">Keyboard</span><span class="board-val">Detached — cable connected</span></div>
+                <div class="board-row"><span class="board-label">Fan</span><span class="board-val">Yes — internal cooling</span></div>
+                <div class="board-row"><span class="board-label">Chips</span><span class="board-val">Same as C128 flat</span></div>
+                <div class="board-row"><span class="board-label">VDC RAM</span><span class="board-val">16 KB (2× 4464) — full 80-col</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> 1571 drive belt perishes (replace immediately). Internal PSU fan fails silently — causes thermal shutdown. The 1571 is excellent — double-sided, supports CP/M and 1541 single-sided formats. European (PAL) version has metal case; US version plastic.</div>
+            </div>
+        </div>
+        <div class="board-card">
+            <div class="board-card-header">
+                <div class="board-icon">🖥</div>
+                <div><div class="board-title">C128DCR — Cost Reduced <span class="board-tag board-tag-amber">Rarer</span></div><div class="board-sub">1987–1989 — final 128 revision</div></div>
+            </div>
+            <div class="board-body">
+                <div class="board-row"><span class="board-label">Case</span><span class="board-val">Metal (all versions)</span></div>
+                <div class="board-row"><span class="board-label">Board</span><span class="board-val">Smaller PCB vs C128D</span></div>
+                <div class="board-row"><span class="board-label">Drive</span><span class="board-val">Internal 1571CR (cost-reduced)</span></div>
+                <div class="board-row"><span class="board-label">VDC</span><span class="board-val">8563 R9 (updated revision)</span></div>
+                <div class="board-row"><span class="board-label">Chips</span><span class="board-val">More integration, fewer discrete</span></div>
+                <div class="board-row"><span class="board-label">SID stereo</span><span class="board-val">Second SID socket at $DE00</span></div>
+                <div class="board-fault"><strong>⚠ Known issues:</strong> The 1571CR drive mechanism differs from standard 1571 — spares are harder to find. The cost-reduction removed some diagnostic features. Second SID socket is a bonus for music. VDC 8563 R9 is slightly more stable than earlier R0 revisions.</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:1.2rem;padding:0.8rem 1rem;background:rgba(64,64,224,0.08);border-left:3px solid var(--c64-blue);border-radius:0 6px 6px 0;font-size:0.83rem;color:var(--text-secondary)">
+        <strong style="color:var(--c64-light-blue)">📍 How to identify your board:</strong> Remove the 4–6 base screws and lift the bottom. The board number is stamped or printed on the PCB near the power connector or in the centre of the board. On the C128 family, the board number is near the cartridge port area.
+    </div>
+</div>
+
 <h2 id="emulators">Emulators</h2>
 <h3 id="primary-desktop-emulators">Primary Desktop Emulators</h3>
 <table style="width:100%;">
