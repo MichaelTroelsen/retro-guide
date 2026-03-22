@@ -170,66 +170,57 @@
   .pill-664  { background: rgba(26,56,192,0.25);  border-color: #6080ff;             color: #a0b8ff; }
   .pill-6128 { background: rgba(255,100,0,0.15);  border-color: var(--cpc-orange);   color: var(--cpc-orange); }
 
-  /* ── LAYOUT ── */
-  .layout {
-    display: grid;
-    grid-template-columns: 270px 1fr;
-    max-width: 1400px;
-    margin: 0 auto;
-    min-height: calc(100vh - 73px);
+  /* ── TAB NAVIGATION ── */
+  .cpc-nav-tabs {
+    background: var(--kbd-chassis);
+    border-top: 1px solid var(--basic-blue-d);
+    padding: 0 20px;
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .cpc-nav-tabs::-webkit-scrollbar { display: none; }
 
-  /* ── SIDEBAR — keyboard chassis with yellow+blue accents ── */
-  nav {
-    background: linear-gradient(180deg, var(--kbd-chassis) 0%, #1c1a18 100%);
-    border-right: 2px solid var(--basic-blue-d);
-    padding: 24px 0;
-    position: sticky;
-    top: 73px;
-    height: calc(100vh - 73px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--basic-yellow) var(--kbd-chassis);
-  }
-
-  nav::-webkit-scrollbar { width: 4px; }
-  nav::-webkit-scrollbar-track { background: var(--kbd-chassis); }
-  nav::-webkit-scrollbar-thumb { background: var(--basic-blue); border-radius: 2px; }
-
-  .nav-section-title {
+  .cpc-tab {
+    padding: 11px 18px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(255,224,0,0.5);
+    cursor: pointer;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.22em;
-    color: var(--basic-yellow);
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 10px 20px 4px;
-    margin-top: 8px;
-    opacity: 0.9;
-  }
-
-  nav a {
-    display: block;
-    padding: 5px 20px 5px 24px;
-    font-size: 0.78rem;
-    color: var(--kbd-key-mid);
-    text-decoration: none;
+    white-space: nowrap;
     transition: all 0.15s;
-    border-left: 2px solid transparent;
-    line-height: 1.4;
   }
-
-  nav a:hover {
+  .cpc-tab:hover {
     color: var(--basic-yellow);
+    background: rgba(26,56,192,0.2);
+    border-bottom-color: rgba(255,224,0,0.3);
+  }
+  .cpc-tab.active {
+    color: var(--basic-yellow);
+    border-bottom-color: var(--basic-yellow);
     background: rgba(26,56,192,0.25);
-    border-left-color: var(--basic-yellow);
-    text-shadow: 0 0 8px rgba(255,224,0,0.4);
+    text-shadow: 0 0 10px rgba(255,224,0,0.5);
   }
 
   /* ── MAIN CONTENT ── */
+  .layout { display: block; }
+
   main {
     padding: 40px 48px 80px;
     max-width: 1100px;
+    margin: 0 auto;
   }
+
+  /* ── TAB SECTIONS ── */
+  .cpc-section { display: none; }
+  .cpc-section.active { display: block; }
 
   /* ── HERO — CPC BASIC blue screen ── */
   .hero {
@@ -939,13 +930,41 @@
   ::-webkit-scrollbar-thumb { background: var(--cpc-orange); border-radius: 3px; }
 
   @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
-    nav { display: none; }
+    .layout { display: block; }
+    .cpc-nav-tabs { padding: 0 4px; }
+    .cpc-tab { padding: 8px 10px; font-size: 0.65rem; letter-spacing: 0.03em; }
+    main { padding: 20px 16px 60px; }
     main { padding: 24px 20px 60px; }
     .model-cards { grid-template-columns: 1fr; }
     .quick-grid { grid-template-columns: 1fr; }
   }
 
+  /* ── SEARCH BAR ── */
+  .cpc-search-bar {
+    background: #2a2826;
+    border-bottom: 2px solid #1a38c0;
+    padding: 7px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .cpc-search-wrap { position: relative; flex: 1; max-width: 460px; }
+  #cpcSearch {
+    width: 100%; background: rgba(26,56,192,0.18);
+    border: 1px solid #1a38c0; border-radius: 4px;
+    padding: 6px 10px 6px 26px; color: #ffe000;
+    font-family: 'Share Tech Mono', monospace; font-size: 13px;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box;
+  }
+  #cpcSearch:focus { border-color: #e07000; box-shadow: 0 0 8px rgba(224,112,0,0.3); }
+  #cpcSearch::placeholder { color: rgba(255,224,0,0.3); }
+  .cpc-search-arrow {
+    position: absolute; left: 9px; top: 50%;
+    transform: translateY(-50%);
+    color: #2448d8; font-size: 11px; pointer-events: none;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .cpc-search-hint { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(255,224,0,0.35); white-space: nowrap; }
+  .cpc-hl { background: rgba(224,112,0,0.45); border-radius: 2px; padding: 0 1px; }
+  /* ── COPY BUTTONS ── */
   .cpc-code-wrap { position: relative; margin: 10px 0; }
   .cpc-copy-btn {
     position: absolute; top: 6px; right: 6px;
@@ -977,62 +996,32 @@
       <div class="pill pill-6128">CPC 6128</div>
     </div>
   </div>
-</header>
-
-<!-- ═══════════════════════════════ LAYOUT ═══════════════════════════════ -->
-<div class="layout">
-
-<!-- ── SIDEBAR NAV ── -->
-<nav>
-  <div class="nav-section-title">Overview</div>
-  <a href="#history">History &amp; Timeline</a>
-  <a href="#models">Model Comparison</a>
-  <a href="#hardware">Hardware Specifications</a>
-
-  <div class="nav-section-title">CPU</div>
-  <a href="#z80">Z80A CPU</a>
-  <a href="#memory">Memory Map</a>
-  <a href="#banking">CPC 6128 Banking</a>
-
-  <div class="nav-section-title">Video</div>
-  <a href="#gatearray">Gate Array 40010</a>
-  <a href="#modes">Screen Modes</a>
-  <a href="#crtc">CRTC 6845</a>
-  <a href="#colours">Colour Palette</a>
-  <a href="#raster">Raster Tricks</a>
-
-  <div class="nav-section-title">Sound</div>
-  <a href="#ay">AY-3-8912</a>
-  <a href="#soundtech">Sound Techniques</a>
-
-  <div class="nav-section-title">I/O &amp; Hardware</div>
-  <a href="#iomap">I/O Port Map</a>
-  <a href="#ppi">PPI 8255</a>
-  <a href="#interrupts">Interrupts</a>
-  <a href="#keyboard">Keyboard Matrix</a>
-  <a href="#joystick">Joystick</a>
-  <a href="#tape">Tape (CPC 464)</a>
-  <a href="#disk">Disk (664/6128)</a>
-  <a href="#expansion">Expansion Port</a>
-
-  <div class="nav-section-title">Software</div>
-  <a href="#basic">Locomotive BASIC</a>
-  <a href="#firmware">Firmware Calls</a>
-  <a href="#z80asm">Z80 Assembly</a>
-  <a href="#opcodes">Z80 Opcodes</a>
-  <a href="#amsdos">AMSDOS</a>
-
-  <div class="nav-section-title">Development</div>
-  <a href="#tools">Cross-Dev Tools</a>
-  <a href="#emulators">Emulators</a>
-  <a href="#resources">Resources</a>
-  <a href="#resources" style="padding-left:32px;font-size:0.72rem;">↳ PCBWay Community</a>
-  <a href="#resources" style="padding-left:32px;font-size:0.72rem;">↳ Tindie Marketplace</a>
-  <a href="#quickref">Quick Reference</a>
+<!-- ── TAB NAV ── -->
+<nav class="cpc-nav-tabs">
+  <button class="cpc-tab  active" onclick="cpcShow('overview',this)">Overview</button>
+  <button class="cpc-tab" onclick="cpcShow('hardware',this)">Hardware</button>
+  <button class="cpc-tab" onclick="cpcShow('video',this)">Video</button>
+  <button class="cpc-tab" onclick="cpcShow('sound',this)">Sound</button>
+  <button class="cpc-tab" onclick="cpcShow('io',this)">I/O</button>
+  <button class="cpc-tab" onclick="cpcShow('basic',this)">BASIC</button>
+  <button class="cpc-tab" onclick="cpcShow('assembly',this)">Assembly</button>
+  <button class="cpc-tab" onclick="cpcShow('dev',this)">Development</button>
+  <button class="cpc-tab" onclick="cpcShow('resources',this)">Resources</button>
 </nav>
 
-<!-- ── MAIN ── -->
+<!-- Search Bar -->
+<div class="cpc-search-bar">
+  <div class="cpc-search-wrap">
+    <span class="cpc-search-arrow">►</span>
+    <input type="text" id="cpcSearch" placeholder="SEARCH GUIDE… (press / to focus)">
+  </div>
+  <span class="cpc-search-hint">/ TO FOCUS · ESC TO CLEAR</span>
+</div>
+</header>
+
+<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
 <main>
+
 
 <!-- ═══ HERO ═══ -->
 <div class="hero">
@@ -1064,6 +1053,7 @@
   <span class="k-sp">SHIFT</span><span class="k-sp">RETURN</span><span class="k-sp">COPY</span>
   <span class="k-sp">↑</span><span class="k-sp">↓</span><span class="k-sp">←</span><span class="k-sp">→</span>
 </div>
+<div class="cpc-section active" id="tab-overview">
 <section id="history">
   <div class="section-header"><span class="section-num">01</span><h2>Overview &amp; History</h2></div>
 
@@ -1118,10 +1108,12 @@
 
   <div class="info-box note"><strong>Compatibility</strong>All three models are fully software-compatible. CPC 6128 extra 64KB requires explicit bank switching to access — standard 64KB software runs identically across all models. CRTC type varies between units and can affect timing-sensitive demos.</div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 3: HARDWARE
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-hardware">
 <section id="hardware">
   <div class="section-header"><span class="section-num">03</span><h2>Hardware Specifications</h2></div>
 
@@ -1264,10 +1256,12 @@
 
   <div class="info-box tip"><strong>CP/M Plus Usage</strong>CP/M Plus (3.0) on the CPC 6128 uses the extra 64KB extensively for TPA (Transient Program Area), extended BDOS buffers, and RSX modules, giving significantly more working space than CP/M 2.2.</div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 7: GATE ARRAY
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-video">
 <section id="gatearray">
   <div class="section-header"><span class="section-num">07</span><h2>Gate Array 40010</h2></div>
 
@@ -1449,10 +1443,12 @@ INK 1, 6         <span class="comment">: REM pen 1 = hardware colour 6 (cyan)</s
 INK 0, 16        <span class="comment">: REM pen 0 = hardware colour 16 (black)</span>
 BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange)</span></pre></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 11: SOUND
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-sound">
 <section id="ay">
   <div class="section-header"><span class="section-num">11</span><h2>Sound — AY-3-8912</h2></div>
 
@@ -1525,10 +1521,12 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
     <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
     <span class="instr">RET</span></pre></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 12: I/O PORT MAP
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-io">
 <section id="iomap">
   <div class="section-header"><span class="section-num">12</span><h2>I/O Port Map</h2></div>
 
@@ -1680,10 +1678,12 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
     <span class="instr">CPL</span>             <span class="comment">; Invert (1 = pressed)</span>
     <span class="instr">RET</span></pre></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 16: LOCOMOTIVE BASIC
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-basic">
 <section id="basic">
   <div class="section-header"><span class="section-num">16</span><h2>Locomotive BASIC Reference</h2></div>
 
@@ -1814,6 +1814,7 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
 <!-- ═══════════════════════════════════════════
      SECTION 18: Z80 ASSEMBLY
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-assembly">
 <section id="z80asm">
   <div class="section-header"><span class="section-num">18</span><h2>Z80 Assembly — Common Patterns</h2></div>
 
@@ -1928,6 +1929,7 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     </tbody>
   </table></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 20: AMSDOS
@@ -1974,10 +1976,12 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     </tbody>
   </table></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 21: TOOLS
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-dev">
 <section id="tools">
   <div class="section-header"><span class="section-num">21</span><h2>Cross-Development Tools</h2></div>
 
@@ -2041,10 +2045,12 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     </tbody>
   </table></div>
 </section>
+</div>
 
 <!-- ═══════════════════════════════════════════
      SECTION 23: RESOURCES
 ════════════════════════════════════════════ -->
+<div class="cpc-section" id="tab-resources">
 <section id="resources">
   <div class="section-header"><span class="section-num">23</span><h2>Online Resources &amp; Communities</h2></div>
 
@@ -2189,6 +2195,7 @@ CALL &amp;4000</pre>
     </div>
   </div>
 </section>
+</div>
 
 </main>
 </div>
@@ -2199,6 +2206,28 @@ CALL &amp;4000</pre>
   · Z80A · AY-3-8912 · Gate Array 40010 · Locomotive BASIC · AMSDOS
   · Sources: CPCWiki · Locomotive BASIC Manual · Amstrad Firmware Guide
 </footer>
+
+<script>
+function cpcShow(id, btn) {
+    document.querySelectorAll('.cpc-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.cpc-tab').forEach(function(b) { b.classList.remove('active'); });
+    var sec = document.getElementById('tab-' + id);
+    if (sec) sec.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT') return;
+    var tabs = ['overview','hardware','video','sound','io','basic','assembly','dev','resources'];
+    var btns = document.querySelectorAll('.cpc-tab');
+    if (e.key >= '1' && e.key <= '9') {
+        var idx = parseInt(e.key) - 1;
+        if (idx < tabs.length) cpcShow(tabs[idx], btns[idx]);
+    }
+    if (e.key === '/') { e.preventDefault(); var s = document.getElementById('cpcSearch'); if(s) s.focus(); }
+});
+</script>
 
 <script>
 function cpcCopy(btn) {
@@ -2217,6 +2246,59 @@ function cpcCopy(btn) {
         setTimeout(function() { btn.innerText = '⎘ Copy'; }, 1800);
     });
 }
+
+(function() {
+    var inp = document.getElementById('cpcSearch');
+    if (!inp) return;
+    var timer;
+    function clearHL() {
+        document.querySelectorAll('.cpc-hl').forEach(function(el) {
+            el.parentNode.replaceChild(document.createTextNode(el.textContent), el);
+        });
+    }
+    function doSearch(q) {
+        clearHL();
+        if (!q || q.length < 2) return;
+        var re = new RegExp(q.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+        var root = document.querySelector('.cpc-section.active') || document.body;
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var nodes = []; var n;
+        while ((n = walker.nextNode())) {
+            if (!n.textContent.toLowerCase().includes(q.toLowerCase())) continue;
+            var tag = n.parentNode && n.parentNode.tagName;
+            if (['SCRIPT','STYLE','INPUT','BUTTON'].indexOf(tag) > -1) continue;
+            nodes.push(n);
+        }
+        var first = null;
+        nodes.forEach(function(node) {
+            var frag = document.createDocumentFragment();
+            var parts = node.textContent.split(re);
+            var hits = node.textContent.match(re) || [];
+            parts.forEach(function(p, i) {
+                frag.appendChild(document.createTextNode(p));
+                if (i < hits.length) {
+                    var sp = document.createElement('span');
+                    sp.className = 'cpc-hl'; sp.textContent = hits[i];
+                    if (!first) first = sp;
+                    frag.appendChild(sp);
+                }
+            });
+            node.parentNode.replaceChild(frag, node);
+        });
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    inp.addEventListener('input', function() {
+        clearTimeout(timer);
+        timer = setTimeout(function() { doSearch(inp.value.trim()); }, 300);
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT') {
+            if (e.key === 'Escape') { clearHL(); inp.value = ''; inp.blur(); }
+            return;
+        }
+        if (e.key === '/') { e.preventDefault(); inp.focus(); }
+    });
+})();
 </script>
 </body>
 </html>
