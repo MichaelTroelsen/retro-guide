@@ -14285,3 +14285,41 @@ REM          &amp;888 = medium gray
         <p style="margin-top: 1rem; opacity: 0.8;">Created by the retro computing community • Last updated February 2026</p>
     </div>
 
+<script>
+function copyCode(btn) {
+    var block = btn.closest('.code-block');
+    var pre = block ? block.querySelector('pre') : null;
+    var text = pre ? pre.innerText : '';
+    if (!text && block) {
+        text = Array.from(block.childNodes)
+            .filter(function(n) { return n !== btn; })
+            .map(function(n) { return n.textContent || ''; })
+            .join('').trim();
+    }
+    navigator.clipboard.writeText(text).then(function() {
+        var orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.style.backgroundColor = '#2e7d32';
+        btn.style.color = '#fff';
+        setTimeout(function() {
+            btn.textContent = orig;
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+        }, 1800);
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1800);
+    });
+}
+</script>
+</body>
+</html>
