@@ -545,6 +545,56 @@ main { margin-left: 0 !important; padding: 20px 30px 60px !important; max-width:
 nav#TOC { display: none !important; }
 #tocToggle { display: none !important; }
 #searchInput { display: none !important; }
+
+/* ── C64 CHIP CARDS ── */
+.c64-chip-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:0.7rem; margin:1rem 0 1.5rem; }
+.c64-chip-card { background:var(--bg-card); border:1px solid var(--border-color); border-radius:8px; padding:1rem; cursor:pointer; transition:all 0.2s; position:relative; }
+.c64-chip-card:hover { border-color:var(--c64-blue); transform:translateY(-2px); box-shadow:0 4px 20px rgba(64,64,224,0.25); }
+.c64-chip-ref { font-family:monospace; font-size:0.78rem; color:var(--c64-light-blue); margin-bottom:0.2rem; }
+.c64-chip-name { font-size:0.88rem; font-weight:600; color:var(--text-primary); margin-bottom:0.3rem; }
+.c64-chip-role { font-size:0.77rem; color:var(--text-secondary); line-height:1.4; }
+.c64-chip-dot { position:absolute; top:0.65rem; right:0.65rem; width:8px; height:8px; border-radius:50%; }
+/* ── C64 CHIP MODAL ── */
+.c64-chip-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+.c64-chip-overlay.open { display:flex; }
+.c64-chip-modal { background:var(--bg-card); border:1px solid var(--c64-blue); border-radius:12px; max-width:580px; width:100%; max-height:85vh; overflow-y:auto; padding:1.5rem; position:relative; }
+.c64-chip-modal-close { position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:#888; font-size:1.4rem; cursor:pointer; line-height:1; }
+.c64-chip-modal-close:hover { color:#fff; }
+.c64-chip-modal-ref { font-family:monospace; font-size:0.8rem; color:var(--c64-light-blue); margin-bottom:0.3rem; }
+.c64-chip-modal-title { font-size:1.1rem; font-weight:600; color:var(--text-primary); margin-bottom:1rem; }
+.c64-chip-modal-body { font-size:0.87rem; color:var(--text-secondary); line-height:1.7; }
+.c64-chip-modal-body h3 { color:var(--text-primary); font-size:0.9rem; margin:1rem 0 0.4rem; }
+.c64-chip-modal-body ul { padding-left:1.2rem; }
+.c64-chip-modal-body li { margin-bottom:0.2rem; }
+.c64-chip-modal-body .warn { color:var(--warning); }
+.c64-chip-modal-body .good { color:var(--accent); }
+
+        /* ── SHARED MEMORY MAP STYLES ── */
+        .memmap-wrap { font-family: monospace; font-size: 0.82rem; margin: 1rem 0; }
+        .memmap-row {
+            display: grid; grid-template-columns: 120px 1fr 100px;
+            padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: background 0.15s; align-items: center;
+        }
+        .memmap-row:hover { filter: brightness(1.3); }
+        .memmap-row.selected { outline: 2px solid rgba(255,255,255,0.5); outline-offset:-2px; }
+        .memmap-addr { color: #7dd3fc; font-size: 0.78rem; }
+        .memmap-label { font-size: 0.82rem; }
+        .memmap-size { font-size: 0.72rem; text-align: right; opacity: 0.7; }
+        /* ── SHARED MEMORY MAP POPUP ── */
+        .mmap-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
+        .mmap-overlay.open { display: flex; }
+        .mmap-popup { background: #1a1a2e; border: 1px solid #4040e0; border-radius: 10px; max-width: 520px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 1.4rem; position: relative; }
+        .mmap-close { position: absolute; top: 0.9rem; right: 0.9rem; background: transparent; border: none; color: #888; font-size: 1.3rem; cursor: pointer; }
+        .mmap-close:hover { color: #fff; }
+        .mmap-addr-badge { font-family: monospace; font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 0.4rem; }
+        .mmap-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.8rem; }
+        .mmap-desc { font-size: 0.87rem; color: #bbb; line-height: 1.7; margin-bottom: 0.8rem; }
+        .mmap-regs { font-size: 0.82rem; }
+        .mmap-regs table { width: 100%; border-collapse: collapse; }
+        .mmap-regs th { color: #7dd3fc; text-align: left; padding: 3px 6px; border-bottom: 1px solid #333; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .mmap-regs td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #aaa; vertical-align: top; }
+        .mmap-regs td:first-child { font-family: monospace; color: #7dd3fc; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -552,6 +602,7 @@ nav#TOC { display: none !important; }
     <div>
       <h1>🎮 C64 Development &amp; SID Music Reference</h1>
     </div>
+        <button id="themeToggle" onclick="toggleTheme()" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:inherit;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap;flex-shrink:0">☀️ Light</button>
     <nav class="c64-nav-tabs">
     <button class="c64-tab active" onclick="c64Show('start',this)">🚀 Start Here</button>
     <button class="c64-tab" onclick="c64Show('devtools',this)">🔧 Dev Tools</button>
@@ -2625,6 +2676,112 @@ of December 2024):</p>
 <p><strong>Note</strong>: Versions update frequently. Check project
 websites for latest releases.</p>
 <hr />
+
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0">
+    <h3 style="color:var(--c64-light-blue);margin-bottom:0.5rem">🤔 Which C64 Do You Have?</h3>
+    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1rem">Answer 3 questions to identify your board revision and what it means for repairs and upgrades.</p>
+    <div id="c64WizBody">
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem" id="c64WizProg">Step 1 of 3</div>
+        <div style="font-weight:600;color:var(--text-primary);margin-bottom:0.8rem" id="c64WizQ"></div>
+        <div id="c64WizOpts" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+    </div>
+    <div id="c64WizResult" style="display:none;background:rgba(64,64,224,0.12);border:2px solid var(--c64-blue);border-radius:8px;padding:1rem">
+        <h4 style="color:var(--c64-light-blue);margin-bottom:0.5rem" id="c64WizModel"></h4>
+        <div id="c64WizInfo" style="font-size:0.87rem;color:var(--text-secondary);line-height:1.7"></div>
+        <button onclick="c64WizReset()" style="margin-top:0.8rem;background:transparent;border:1px solid var(--c64-blue);color:var(--c64-light-blue);padding:4px 14px;border-radius:6px;cursor:pointer;font-size:0.8rem">← Start again</button>
+    </div>
+</div>
+<style>
+.c64-wiz-btn { background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-primary);padding:0.6rem 1rem;border-radius:6px;cursor:pointer;text-align:left;font-size:0.87rem;transition:all 0.15s;width:100%; }
+.c64-wiz-btn:hover { border-color:var(--c64-blue);background:rgba(64,64,224,0.1); }
+</style>
+<script>
+var C64_TREE = [
+    {q:'What shape/style is the case?', prog:'Step 1 of 3', opts:[
+        {label:'Wide "breadbox" shape — beige, rounded edges', next:1},
+        {label:'Slimmer flat case — C64C style, lighter beige', next:2},
+        {label:'Small/portable with built-in drive — SX-64', next:'sx64'},
+        {label:'Larger with separate numpad — C128', next:'c128'}
+    ]},
+    {q:'Look at the board number inside (remove base screws). What does it say?', prog:'Step 2 of 3', opts:[
+        {label:'250407 or 326298 (early)', next:'breadbin_early'},
+        {label:'250425 (most common breadbin)', next:'breadbin_250425'},
+        {label:'250466 or no visible number', next:'breadbin_250466'},
+        {label:'Not sure / other', next:'breadbin_250425'}
+    ]},
+    {q:'What does the label on the bottom say?', prog:'Step 2 of 3', opts:[
+        {label:'250469 — most common C64C board', next:'c64c_250469'},
+        {label:'250469 Rev B / 252311', next:'c64c_short'},
+        {label:'Not sure', next:'c64c_250469'}
+    ]}
+];
+var C64_RESULTS = {
+    breadbin_early:{model:`C64 Breadbin — Early Board (326298/250407)`,
+        info:`<strong>SID:</strong> MOS 6581 · <strong>VIC-II:</strong> 6567 (NTSC) or 6569 (PAL)<br><strong>RAM:</strong> 8× 4164 DRAM chips · <strong>CPU:</strong> MOS 6510<br><strong>Notes:</strong> Earliest boards. 5V rail more stressed. Good candidate for PSU replacement first. SID 6581 has the "warmer" sound preferred by many.<br><strong>SID replacement:</strong> ARMSID, SIDKick Pico, or FPGASID all work.`},
+    breadbin_250425:{model:`C64 Breadbin — 250425 Board`,
+        info:`<strong>SID:</strong> MOS 6581 · <strong>VIC-II:</strong> 6569 (PAL) or 6567 (NTSC)<br><strong>RAM:</strong> 8× 4164 DRAM chips<br><strong>Notes:</strong> Most common breadbin. Well-documented repairs. PLA (906114) is the most frequent failure — replace with neatPLA (£8) or SuperPLA.<br><strong>PLA replacement:</strong> neatPLA (github.com/1c3d1v3r/neatPLA) is the recommended modern fix.`},
+    breadbin_250466:{model:`C64 Breadbin — Later Board (250466)`,
+        info:`<strong>SID:</strong> MOS 6581 · <strong>VIC-II:</strong> 6569 (PAL)<br><strong>RAM:</strong> 8× 4164 DRAM chips<br><strong>Notes:</strong> Transitional board. Shares most characteristics with 250425. PLA still the prime failure point.`},
+    c64c_250469:{model:`C64C — Board 250469`,
+        info:`<strong>SID:</strong> MOS 8580 (9V, cleaner sound, weaker filter) · <strong>VIC-II:</strong> 8565 (PAL) or 8562 (NTSC)<br><strong>RAM:</strong> 2× 4464 (consolidation) · <strong>CPU:</strong> MOS 8500<br><strong>Notes:</strong> Most common C64C board. Uses newer chips — 8580 SID has weaker analogue filters vs 6581. PLA is now 82S100 or CSG 906114.<br><strong>SID replacement:</strong> SIDKick Pico works well. Set to 8580 mode for accuracy.`},
+    c64c_short:{model:`C64C — Short Board (252311)`,
+        info:`<strong>SID:</strong> MOS 8580 · <strong>VIC-II:</strong> 8565 (PAL)<br><strong>Notes:</strong> Smallest and cheapest C64 board. All logic integrated into fewer chips. Less upgradeable but still very capable. PLA is a CSG gate array.`},
+    sx64:{model:`Commodore SX-64 (Portable)`,
+        info:`<strong>Built-in drive:</strong> 1541 compatible, single 5.25" · <strong>Display:</strong> 5" colour CRT built-in<br><strong>Board:</strong> Modified C64 with integrated 1541 controller · <strong>SID:</strong> 6581<br><strong>Notes:</strong> The world's first colour portable computer. PSU failure is common — the internal supply runs hot. Video output also available for external monitor.`},
+    c128:{model:`Commodore C128`,
+        info:`<strong>Modes:</strong> C64 (100% compatible), C128 native (Z80 + 8502), CP/M (via Z80)<br><strong>RAM:</strong> 128 KB (64 KB C64 bank + 64 KB C128 bank)<br><strong>SID:</strong> 8580 (one chip, or two for stereo in some configs)<br><strong>VDC:</strong> 80-column chip — drives separate RGB monitor<br><strong>Notes:</strong> Not just a C64 — C128 BASIC 7.0 is powerful. The Z80 at 4 MHz runs CP/M 3 properly.`}
+};
+var c64WizState = 0;
+function c64WizRender() {
+    var n = C64_TREE[c64WizState];
+    document.getElementById("c64WizProg").textContent = n.prog;
+    document.getElementById("c64WizQ").textContent = n.q;
+    var o = document.getElementById("c64WizOpts"); o.innerHTML = "";
+    n.opts.forEach(function(opt) {
+        var b = document.createElement("button"); b.className = "c64-wiz-btn";
+        b.textContent = opt.label;
+        b.onclick = function() {
+            if (typeof opt.next === "string") {
+                document.getElementById("c64WizBody").style.display = "none";
+                var r = C64_RESULTS[opt.next];
+                document.getElementById("c64WizModel").textContent = "✅ " + r.model;
+                document.getElementById("c64WizInfo").innerHTML = r.info;
+                document.getElementById("c64WizResult").style.display = "block";
+            } else { c64WizState = opt.next; c64WizRender(); }
+        };
+        o.appendChild(b);
+    });
+}
+function c64WizReset() {
+    c64WizState = 0;
+    document.getElementById("c64WizBody").style.display = "block";
+    document.getElementById("c64WizResult").style.display = "none";
+    c64WizRender();
+}
+document.addEventListener("DOMContentLoaded", c64WizRender);
+</script>
+
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0" id="c64-memmap">
+    <h3 style="color:var(--c64-light-blue);margin-bottom:0.5rem">🗺 C64 Interactive Memory Map</h3>
+    <p style="color:var(--text-secondary);font-size:0.87rem;margin-bottom:1rem">Default layout with LORAM=HIRAM=CHAREN=1 (BASIC + KERNAL + I/O visible). Click any region for details and key addresses.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;font-size:0.75rem">
+        <span style="background:rgba(59,130,246,0.3);padding:2px 8px;border-radius:3px">RAM</span>
+        <span style="background:rgba(234,179,8,0.3);padding:2px 8px;border-radius:3px">ROM</span>
+        <span style="background:rgba(239,68,68,0.3);padding:2px 8px;border-radius:3px">I/O</span>
+        <span style="background:rgba(34,197,94,0.3);padding:2px 8px;border-radius:3px">Special</span>
+    </div>
+    <div class="memmap-wrap" id="c64Mmap"></div>
+</div>
+<div class="mmap-overlay" id="c64MmapModal" onclick="if(event.target===this)c64MmapClose()">
+    <div class="mmap-popup">
+        <button class="mmap-close" onclick="c64MmapClose()">✕</button>
+        <div class="mmap-addr-badge" id="c64MmapBadge"></div>
+        <div class="mmap-title" id="c64MmapTitle"></div>
+        <div class="mmap-desc" id="c64MmapDesc"></div>
+        <div class="mmap-regs" id="c64MmapRegs"></div>
+    </div>
+</div>
+
 <h2 id="getting-started-flowchart">70. Getting Started Flowchart</h2>
 <p>Use this decision tree to choose your development path.</p>
 <h3 id="what-do-you-want-to-create">What Do You Want to Create?</h3>
@@ -10119,6 +10276,21 @@ Projects</h3>
 </table>
 <hr />
 <h2 id="hardware-shops-retailers">Hardware Shops &amp; Retailers</h2>
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">
+    <div style="border:1px solid var(--border-color);border-radius:8px;padding:1.2rem;background:rgba(64,64,224,0.08)">
+        <h4 style="color:var(--c64-light-blue);margin:0 0 0.5rem">🖨️ PCBWay Community Projects</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.8rem">Open project-sharing hub for C64 PCB designs — replacement motherboards, cartridge PCBs, SID adapters, and expansion boards. All orderable directly from PCBWay fabrication.</p>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.6rem">Search: "Commodore 64" · "C64" · "SID" · "6502"</div>
+        <a href="https://www.pcbway.com/project/shareproject/?tag=commodore" target="_blank" style="color:var(--link-color);font-size:0.85rem">pcbway.com/project → Commodore tag →</a>
+    </div>
+    <div style="border:1px solid var(--border-color);border-radius:8px;padding:1.2rem;background:rgba(80,250,123,0.05)">
+        <h4 style="color:var(--accent);margin:0 0 0.5rem">🛒 Tindie — Indie Hardware Marketplace</h4>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0.8rem">Independent makers selling C64 kits, chip replacements, and accessories. Find neatPLA, KungFuSID, SIDKick Pico, SD2IEC variants, and more from small-batch producers worldwide.</p>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.6rem">Search: "Commodore 64" · "C64" · "SID" · "6502" · "neatPLA"</div>
+        <a href="https://www.tindie.com/search/?q=commodore+64" target="_blank" style="color:var(--link-color);font-size:0.85rem">tindie.com → search "commodore 64" →</a>
+    </div>
+</div>
+
 <p>A curated list of reputable shops selling new Commodore 64 hardware,
 expansions, replacement parts, and accessories.</p>
 <h3 id="european-shops">European Shops</h3>
@@ -11141,6 +11313,97 @@ $D500, $DE00) in settings</li>
 access</li>
 </ol>
 <hr />
+
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0">
+    <h3 style="color:var(--c64-light-blue);margin-bottom:0.5rem">⚡ C64 Chip Quick-Reference</h3>
+    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1rem">Every main IC. <span style="color:#4caf50">●</span> = still manufactured &nbsp; <span style="color:#ffb86c">●</span> = NOS only &nbsp; <span style="color:#ff5555">●</span> = modern replacement recommended</p>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:0.82rem">
+        <thead><tr style="background:linear-gradient(135deg,var(--c64-dark-blue),var(--c64-blue));color:white">
+            <th style="padding:0.5rem;text-align:left">Chip</th>
+            <th style="padding:0.5rem;text-align:left">Function</th>
+            <th style="padding:0.5rem;text-align:left">Board</th>
+            <th style="padding:0.5rem;text-align:left">Modern Replacement</th>
+        </tr></thead>
+        <tbody>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">6510 / 8500</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">CPU · 1 MHz</td><td style="padding:0.4rem 0.5rem;color:#707090">All</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> J-CPU64 (1nt3r.net)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">6569 / 8565 VIC-II</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Video, sprites, DMA</td><td style="padding:0.4rem 0.5rem;color:#707090">PAL</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> VIC-II Kawari (FPGA)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">6567 / 8562 VIC-II</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Video, sprites, DMA</td><td style="padding:0.4rem 0.5rem;color:#707090">NTSC</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> VIC-II Kawari (FPGA)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">6581 SID</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Sound · 12V · warm filter</td><td style="padding:0.4rem 0.5rem;color:#707090">Breadbin</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> SIDKick Pico / ARMSID / KungFuSID</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">8580 SID</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Sound · 9V · clean filter</td><td style="padding:0.4rem 0.5rem;color:#707090">C64C</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> SIDKick Pico / FPGASID / PDsid</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">6526 CIA ×2</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Keyboard, joystick, serial, timers</td><td style="padding:0.4rem 0.5rem;color:#707090">All</td><td style="padding:0.4rem 0.5rem"><span style="color:#4caf50">●</span> J-CIA64 (1nt3r.net)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">906114 PLA</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">Memory banking, chip select</td><td style="padding:0.4rem 0.5rem;color:#707090">All</td><td style="padding:0.4rem 0.5rem"><span style="color:#ff5555">●</span> neatPLA (CPLD) — top failure</td></tr>
+            <tr style="border-bottom:1px solid var(--border-color)"><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">4164 / 4464 RAM</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">64 KB DRAM</td><td style="padding:0.4rem 0.5rem;color:#707090">All</td><td style="padding:0.4rem 0.5rem"><span style="color:#ffb86c">●</span> NOS 4164 · or MCL65 FPGA</td></tr>
+            <tr><td style="padding:0.4rem 0.5rem;font-family:monospace;color:#7dd3fc">2114 Colour RAM</td><td style="padding:0.4rem 0.5rem;color:#a0a0c0">1 KB colour memory</td><td style="padding:0.4rem 0.5rem;color:#707090">All</td><td style="padding:0.4rem 0.5rem"><span style="color:#ffb86c">●</span> HM6514 / 2114L compatible</td></tr>
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:1.5rem;margin:1.5rem 0" id="c64-chips">
+    <h3 style="color:var(--c64-light-blue);margin-bottom:0.5rem">🔌 C64 Main Chips — Click for Details</h3>
+    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1rem">The eight ICs that define the C64. Click any chip for registers, failure symptoms, and modern replacements.</p>
+    <div class="c64-chip-grid">
+        <div class="c64-chip-card" onclick="c64OpenChip('cpu')">
+            <div class="c64-chip-dot" style="background:#7dd3fc"></div>
+            <div class="c64-chip-ref">U7 / U3</div>
+            <div class="c64-chip-name">6510 / 8500 CPU</div>
+            <div class="c64-chip-role">Main processor · 1 MHz · built-in I/O port</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('vic')">
+            <div class="c64-chip-dot" style="background:#a78bfa"></div>
+            <div class="c64-chip-ref">U19</div>
+            <div class="c64-chip-name">VIC-II</div>
+            <div class="c64-chip-role">Video · sprites · DMA · $D000–$D3FF</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('sid')">
+            <div class="c64-chip-dot" style="background:#34d399"></div>
+            <div class="c64-chip-ref">U18</div>
+            <div class="c64-chip-name">SID 6581 / 8580</div>
+            <div class="c64-chip-role">3-voice synth · $D400–$D7FF</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('cia1')">
+            <div class="c64-chip-dot" style="background:#facc15"></div>
+            <div class="c64-chip-ref">U1</div>
+            <div class="c64-chip-name">CIA 1 (6526)</div>
+            <div class="c64-chip-role">Keyboard · joystick · $DC00–$DCFF</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('cia2')">
+            <div class="c64-chip-dot" style="background:#fdba74"></div>
+            <div class="c64-chip-ref">U2</div>
+            <div class="c64-chip-name">CIA 2 (6526)</div>
+            <div class="c64-chip-role">Serial IEC · User Port · $DD00–$DDFF</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('pla')">
+            <div class="c64-chip-dot" style="background:#f87171"></div>
+            <div class="c64-chip-ref">U17</div>
+            <div class="c64-chip-name">PLA 906114</div>
+            <div class="c64-chip-role">Memory banking · chip select logic</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('ram')">
+            <div class="c64-chip-dot" style="background:#fb923c"></div>
+            <div class="c64-chip-ref">U9–U16</div>
+            <div class="c64-chip-name">4164 / 4464 DRAM</div>
+            <div class="c64-chip-role">64 KB main RAM · 8 chips</div>
+        </div>
+        <div class="c64-chip-card" onclick="c64OpenChip('colram')">
+            <div class="c64-chip-dot" style="background:#86efac"></div>
+            <div class="c64-chip-ref">U6</div>
+            <div class="c64-chip-name">2114 Colour RAM</div>
+            <div class="c64-chip-role">1 KB · 4-bit · $D800–$DBFF</div>
+        </div>
+    </div>
+</div>
+
+<div class="c64-chip-overlay" id="c64ChipModal" onclick="if(event.target===this)c64CloseChip()">
+    <div class="c64-chip-modal">
+        <button class="c64-chip-modal-close" onclick="c64CloseChip()">✕</button>
+        <div class="c64-chip-modal-ref" id="c64ChipRef"></div>
+        <div class="c64-chip-modal-title" id="c64ChipTitle"></div>
+        <div class="c64-chip-modal-body" id="c64ChipBody"></div>
+    </div>
+</div>
+
 <h2 id="chip-replacements-modern-alternatives">43. Chip Replacements
 (Modern Alternatives)</h2>
 <p>As original Commodore chips become scarce and expensive, the
@@ -32385,5 +32648,259 @@ function c64Show(id, btn) {
     });
 })();
 </script>
+
+<script>
+function toggleTheme() {
+    var isLight = document.body.classList.toggle('light-mode');
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    
+}
+</script>
+
+<script>
+var C64_CHIP_DATA = {
+  cpu: {
+    ref:'U7 (breadbin) / U3 (C64C) — DIP-40',
+    title:'MOS 6510 / 8500 — Main CPU',
+    body:`<p>The 6510 is MOS Technology's enhanced 6502 — it adds a built-in 6-bit I/O port at addresses $0000 (direction) and $0001 (data). This port controls the memory banking (switching BASIC/KERNAL ROM in and out) and the cassette motor. The 8500 is the CMOS die-shrink version used in C64C boards.</p>
+<h3>Built-in I/O port ($0000/$0001)</h3><ul>
+<li>Bit 0 — LORAM: 0 = RAM at $A000–$BFFF, 1 = BASIC ROM</li>
+<li>Bit 1 — HIRAM: 0 = RAM at $E000–$FFFF, 1 = KERNAL ROM</li>
+<li>Bit 2 — CHAREN: 0 = Charset ROM at $D000, 1 = I/O at $D000</li>
+<li>Bit 3 — Cassette write</li>
+<li>Bit 4 — Cassette sense (read)</li>
+<li>Bit 5 — Cassette motor</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Completely dead machine, random crashes, or memory banking not working (BASIC or KERNAL not accessible).</p>
+<h3>Modern replacement</h3>
+<p class="good">J-CPU64 from 1nt3r.net — a modern FPGA-based replacement. Also available as NOS 6510 on eBay. The 8500 is more scarce but 6510 adapters exist.</p>`
+  },
+  vic: {
+    ref:'U19 — DIP-40 (6569/6567) or DIP-40 (8565/8562)',
+    title:'VIC-II — Video Interface Chip II',
+    body:`<p>The VIC-II is the C64's graphics chip, responsible for generating video output, managing 8 hardware sprites, triggering raster interrupts, and performing DMA for screen/sprite data. During the DMA cycles (called "bad lines") it pauses the CPU — this is fundamental to C64 timing and demo effects.</p>
+<h3>Key registers (at $D000–$D3FF)</h3><ul>
+<li>$D000–$D00F — Sprite X/Y positions (2 bytes each)</li>
+<li>$D011 — Vertical scroll, screen height, blanking, bitmap mode</li>
+<li>$D012 — Raster compare register (trigger IRQ at this raster line)</li>
+<li>$D016 — Horizontal scroll, 38/40 column mode, multicolour</li>
+<li>$D018 — Screen memory and charset/bitmap address in VIC bank</li>
+<li>$D019 — Interrupt status register</li>
+<li>$D01A — Interrupt enable register</li>
+<li>$D020 — Border colour (0–15)</li>
+<li>$D021 — Background colour 0</li>
+<li>$D027–$D02E — Sprite colours</li></ul>
+<h3>Chip variants</h3><ul>
+<li>6569 — PAL (50 Hz, 312 lines, most European C64s)</li>
+<li>6567 — NTSC (60 Hz, 262 lines, North American)</li>
+<li>8565 / 8562 — CMOS versions of above (C64C)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No video output, black screen, missing or corrupted sprites, wrong colours, no border.</p>
+<h3>Modern replacement</h3>
+<p class="good">VIC-II Kawari — FPGA replacement supporting all four chip variants. Full register compatibility plus optional enhancements. Available from breadbox64.com.</p>`
+  },
+  sid: {
+    ref:'U18 — DIP-28',
+    title:'SID — Sound Interface Device (6581 / 8580)',
+    body:`<p>The SID is one of the most iconic chips in computing history. Designed by Bob Yannes at MOS Technology, it provides three independent synthesiser voices, each with its own oscillator, ADSR envelope generator, and programmable waveforms. The 6581 and 8580 differ in operating voltage and filter characteristics — both are prized for different reasons.</p>
+<h3>Voice registers (per voice, 3 voices at $D400/$D407/$D40E)</h3><ul>
+<li>+$00/+$01 — Frequency (lo/hi, 16-bit)</li>
+<li>+$02/+$03 — Pulse width (lo/hi, 12-bit)</li>
+<li>+$04 — Control: gate, sync, ring, test, waveform select</li>
+<li>+$05 — Attack/Decay (4 bits each)</li>
+<li>+$06 — Sustain/Release (4 bits each)</li></ul>
+<h3>Global registers</h3><ul>
+<li>$D415/$D416 — Filter cutoff frequency (11-bit)</li>
+<li>$D417 — Filter resonance and voice routing</li>
+<li>$D418 — Master volume (4-bit), voice 3 filter, output modes</li>
+<li>$D41B — Voice 3 oscillator readback</li>
+<li>$D41C — Voice 3 envelope readback</li></ul>
+<h3>6581 vs 8580</h3><ul>
+<li>6581 — 12V supply, warmer/noisier filters, preferred for older SID music</li>
+<li>8580 — 9V supply, cleaner/weaker filters, used in all C64C boards</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No sound, one or more voices silent, distorted sound, no filter effect.</p>
+<h3>Modern replacement</h3>
+<p class="good">SIDKick Pico (Raspberry Pi Pico-based, both 6581 and 8580 modes). Also: ARMSID, KungFuSID, FPGASID, PDsid. All are drop-in replacements with DIP-28 footprint.</p>`
+  },
+  cia1: {
+    ref:'U1 — DIP-40',
+    title:'CIA 1 (6526) — Keyboard & Joystick',
+    body:`<p>CIA 1 (Complex Interface Adapter) is mapped to $DC00–$DCFF and handles the keyboard matrix scan, both joystick ports, and the time-of-day clock. The keyboard is a 8×8 matrix — CIA 1 drives one dimension and reads the other.</p>
+<h3>Key registers</h3><ul>
+<li>$DC00 — Port A: joystick 2 / keyboard column drive</li>
+<li>$DC01 — Port B: joystick 1 / keyboard row read</li>
+<li>$DC02 — Data direction A (DDRA)</li>
+<li>$DC03 — Data direction B (DDRB)</li>
+<li>$DC04/$DC05 — Timer A (lo/hi)</li>
+<li>$DC06/$DC07 — Timer B (lo/hi)</li>
+<li>$DC08–$DC0B — Time of day clock (10ths, sec, min, hour)</li>
+<li>$DC0D — Interrupt control/status</li></ul>
+<h3>Reading a key</h3>
+<p>Write a column bit to $DC00 (drive one column low), then read $DC01 for any row that goes low = key pressed.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Keyboard not working or stuck keys, joystick port not responding. Also random system crashes (CIA generates interrupts). A faulty CIA 1 is a common C64 fault.</p>
+<h3>Modern replacement</h3>
+<p class="good">J-CIA64 (FPGA drop-in). Also NOS 6526A from eBay. The W65C22S is not a substitute — the 6526 is a unique MOS design.</p>`
+  },
+  cia2: {
+    ref:'U2 — DIP-40',
+    title:'CIA 2 (6526) — Serial Bus & User Port',
+    body:`<p>CIA 2 at $DD00–$DDFF controls the IEC serial bus (connecting 1541 drives, printers), the User Port, and crucially — the VIC-II bank register. Bits 0–1 of Port A select which 16 KB bank the VIC-II sees for screen memory and sprites (banks 0–3).</p>
+<h3>Key registers</h3><ul>
+<li>$DD00 — Port A: VIC bank (bits 0-1 inverted), serial bus</li>
+<li>$DD01 — Port B: User Port I/O byte</li>
+<li>$DD04/$DD05 — Timer A (lo/hi)</li>
+<li>$DD0D — Interrupt control/status (NMI source)</li></ul>
+<h3>VIC bank selection (bits 1-0 of $DD00, inverted)</h3><ul>
+<li>%11 → VIC Bank 0 ($0000–$3FFF) — default</li>
+<li>%10 → VIC Bank 1 ($4000–$7FFF)</li>
+<li>%01 → VIC Bank 2 ($8000–$BFFF)</li>
+<li>%00 → VIC Bank 3 ($C000–$FFFF)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No disk drive communication (1541 not found), User Port I/O fails, NMI not working (RESTORE key does nothing).</p>
+<h3>Modern replacement</h3>
+<p class="good">J-CIA64 (FPGA). NOS 6526A from eBay. Same part number as CIA 1.</p>`
+  },
+  pla: {
+    ref:'U17 — DIP-28',
+    title:'PLA 906114 — Programmable Logic Array (Memory Banking)',
+    body:`<p>The PLA (Programmable Logic Array) is the most common single point of failure on the C64. It decodes the CPU address bus and bank control lines to generate chip-select signals for all the major chips: BASIC ROM, KERNAL ROM, charset ROM, VIC-II, SID, CIA 1, CIA 2, colour RAM, and I/O expansion.</p>
+<h3>Why it fails</h3>
+<p>The 906114 is an NMOS bipolar PLA that runs hot. After 40 years the internal bond wires corrode, the fusible links degrade, and the output driver transistors fail. It often fails intermittently — working when cold, failing when warm.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Random crashes shortly after power-on (chip warms up and fails). Blank screen or corrupted startup. Wrong memory layout (BASIC not appearing). Any chip-select related weirdness. The PLA is suspect #1 for a C64 that works cold but fails warm.</p>
+<h3>Modern replacement</h3>
+<p class="good">neatPLA by 1c3d1v3r (CPLD, ~£8) is the community standard fix. Also: SuperPLA, PLAnkton, F-PLA. All are drop-in DIP-28 replacements that run cool and are immune to the age-related failures of the original. <strong>Highly recommended even as a preventive upgrade.</strong></p>`
+  },
+  ram: {
+    ref:'U9–U16 — DIP-16 (×8)',
+    title:'4164 / 4464 DRAM — 64 KB Main RAM',
+    body:`<p>Eight DRAM chips make up the 64 KB of main RAM. Each chip provides one bit of the 8-bit data bus across 64 KB. All eight must work for correct operation. Breadbin boards use 4164 (64K×1 bit); C64C boards use a pair of 4464 (64K×4 bit) chips instead.</p>
+<h3>Identifying faulty chips</h3>
+<p>A RAM fault typically shows as a character or pattern repeated across the screen at startup, or specific colours always wrong. The bit position indicates which chip is faulty:</p>
+<ul>
+<li>Screen code corruption → specific character bits wrong → maps to U9–U16</li>
+<li>Use a diagnostic cartridge (Dead Test Cartridge) for precise identification</li></ul>
+<h3>Test programs</h3>
+<p>The Dead Test Cartridge (free ROM image) bypasses all RAM and tests it via the cartridge port — works even when the C64 won't boot normally.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Checkerboard or garbage screen on boot, ? or out of memory errors, crashes in programs that use a lot of memory.</p>
+<h3>Replacement</h3>
+<p class="warn">4164 is no longer manufactured. Source NOS from eBay. Buy in batches — if one fails others are likely to follow. For C64C boards, 4464 chips are slightly more available. Both run at 150–200 ns.</p>`
+  },
+  colram: {
+    ref:'U6 — DIP-18',
+    title:'2114 Colour RAM — 1 KB (4-bit)',
+    body:`<p>The colour RAM stores the foreground colour for each character position on screen (40×25 = 1000 bytes, using only the lower 4 bits). It is dual-ported: the CPU accesses it via $D800–$DBFF, and the VIC-II reads it directly during display to apply per-character colour. Unlike main RAM, colour RAM is always at $D800 regardless of banking.</p>
+<h3>Key facts</h3><ul>
+<li>Only 4 bits used per location (upper nibble floating — reads as 1s or random)</li>
+<li>Retains data during soft reset (allows colour screens to persist)</li>
+<li>VIC-II reads colour RAM directly without CPU involvement</li>
+<li>Address at $D800–$DBFF (1 KB, maps to 1000 character positions)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">All characters display in wrong colour, or colour is random/noisy. Screen content (characters) may be correct but colours are wrong.</p>
+<h3>Replacement</h3>
+<p class="good">HM6514 (Hitachi) or any 2114L-compatible SRAM. Still available as NOS from electronics suppliers. ~£3.</p>`
+  }
+};
+function c64OpenChip(id) {
+  var d = C64_CHIP_DATA[id];
+  if (!d) return;
+  document.getElementById('c64ChipRef').textContent = d.ref;
+  document.getElementById('c64ChipTitle').textContent = d.title;
+  document.getElementById('c64ChipBody').innerHTML = d.body;
+  document.getElementById('c64ChipModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function c64CloseChip() {
+  document.getElementById('c64ChipModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { c64CloseChip(); }
+});
+</script>
+
+<script>
+var C64_MMAP = [
+  {id:'zp', addr:'$0000–$00FF', label:'Zero Page + CPU I/O port', size:'256 B', bg:'rgba(34,197,94,0.3)', color:'#86efac',
+   title:'$0000–$00FF: Zero Page & CPU I/O Port',
+   desc:'$0000 is the 6510 Data Direction Register, $0001 is the I/O port that controls memory banking (LORAM, HIRAM, CHAREN bits), cassette motor, and cassette sense. $0002–$00FF is the 6502 zero page — accessible with 2-byte instructions for speed. BASIC and KERNAL store their most-used pointers here.',
+   regs:[['$0000','DDR: direction for I/O port bits (1=output)'],['$0001','I/O: bit0=LORAM, bit1=HIRAM, bit2=CHAREN, bit3=cass.write, bit4=cass.sense, bit5=cass.motor'],['$0002–$00FF','Zero page workspace'],['$00FB–$00FE','Available to user programs'],['$00FF','Floating point accumulator #5']]},
+  {id:'stack', addr:'$0100–$01FF', label:'6502/6510 Stack', size:'256 B', bg:'rgba(59,130,246,0.2)', color:'#93c5fd',
+   title:'$0100–$01FF: Hardware Stack',
+   desc:'Fixed hardware stack for the 6510 CPU. Grows downward from $01FF. Every JSR, interrupt, and PHA/PHP uses this. On the C64, deep interrupt nesting with disk access can overflow the stack — a common source of mysterious crashes in large programs.',
+   regs:[['$0100','Stack base (overflow = crash)'],['$01FF','Stack top (SP initialised here)']]},
+  {id:'kernal_work', addr:'$0200–$03FF', label:'KERNAL & BASIC workspace', size:'512 B', bg:'rgba(59,130,246,0.18)', color:'#bfdbfe',
+   title:'$0200–$03FF: KERNAL & BASIC Workspace',
+   desc:'The operating system and BASIC interpreter use this area for I/O buffers, KERNAL variables, and the BASIC line input buffer ($0200 = keyboard buffer, $033C–$03FB = BASIC input line buffer). The CHRGET routine (the BASIC token scanner) lives at $0073 in zero page but its self-modifying code points into page 2.',
+   regs:[['$0200','Keyboard buffer (10 chars)'],['$028D','Shift/Commodore/Control key flags'],['$033C–$03FB','BASIC direct mode input buffer'],['$03FC–$03FF','Unused (safe for machine code)']]},
+  {id:'screen', addr:'$0400–$07FF', label:'Default Screen RAM', size:'1 KB', bg:'rgba(59,130,246,0.35)', color:'#60a5fa',
+   title:'$0400–$07FF: Default Screen RAM (40×25)',
+   desc:'The VIC-II reads this 1 KB area to produce the character display. Each byte is a screen code (not PETSCII) for one character. 40×25 = 1000 bytes used, last 24 bytes unused. Writing directly to screen RAM is the fastest way to update the display. VIC-II bank 0 is default; the screen base within the bank is set by $D018 bits 4–7.',
+   regs:[['$0400','Row 0, Col 0 (top-left)'],['$0400 + row*40 + col','Character at (col, row)'],['$07C7','Last visible position (row 24, col 39)'],['$D018','VIC-II memory setup (screen + charset base)']]},
+  {id:'basic_area', addr:'$0800–$9FFF', label:'BASIC Program Area (38 KB)', size:'38 KB', bg:'rgba(59,130,246,0.45)', color:'#3b82f6',
+   title:'$0800–$9FFF: BASIC Program Area',
+   desc:'BASIC programs load starting at $0801 (the 2-byte load address in the .PRG file points here). Variables grow upward from the end of program; strings grow downward from MEMSIZ ($9FFF by default). Machine code is typically placed at the top of this area or at fixed addresses. The "start of BASIC" pointer is at $2B/$2C.',
+   regs:[['$0801','BASIC program start (standard load address)'],['$0800','Reserved (BASIC uses $0800 for cursor tracking)'],['$2B/$2C','TXTTAB — start of BASIC program pointer'],['$2D/$2E','VARTAB — start of variables pointer'],['$2F/$30','ARYTAB — start of arrays pointer'],['$9FFF','MEMSIZ — default top of BASIC memory']]},
+  {id:'basic_rom', addr:'$A000–$BFFF', label:'BASIC ROM (switchable)', size:'8 KB', bg:'rgba(234,179,8,0.35)', color:'#fde047',
+   title:'$A000–$BFFF: BASIC ROM / RAM',
+   desc:'BASIC ROM (CBM BASIC V2) is visible here by default (LORAM=1). Setting LORAM=0 reveals 8 KB of RAM underneath, used by advanced programs that need the full 64 KB address space. BASIC keywords and floating-point routines live here. The BASIC ROM entry points are documented in the Programmer\'s Reference Guide.',
+   regs:[['$A000','BASIC ROM start'],['$A000–$BFFF','CBM BASIC V2 interpreter'],['$0001 bit0','LORAM: 0=RAM here, 1=BASIC ROM here']]},
+  {id:'upper_ram', addr:'$C000–$CFFF', label:'Free RAM (4 KB)', size:'4 KB', bg:'rgba(59,130,246,0.35)', color:'#60a5fa',
+   title:'$C000–$CFFF: Free RAM (Always RAM)',
+   desc:'This 4 KB area is always RAM regardless of banking — perfect for machine code programs, especially interrupt handlers that run while BASIC or KERNAL ROMs are switched in. Many common machine code locations use $C000 as a clean starting point.',
+   regs:[['$C000–$CFFF','Always RAM, bank-independent'],['Common use','ML programs, IRQ handlers, music players']]},
+  {id:'io', addr:'$D000–$DFFF', label:'I/O / Charset ROM', size:'4 KB', bg:'rgba(239,68,68,0.5)', color:'#f87171',
+   title:'$D000–$DFFF: I/O Registers & Charset ROM',
+   desc:'With CHAREN=1 (default), the hardware chip registers are visible here. With CHAREN=0, the character set ROM appears instead (used by the VIC-II in VIC bank 0/2 to render characters). This is the most register-dense area of the C64.',
+   regs:[['$D000–$D02E','VIC-II sprite coords, control, raster, color'],['$D011','VIC-II control 1: scroll Y, height, blanking, bitmap, extended'],['$D012','Raster line compare (trigger IRQ at this line)'],['$D016','VIC-II control 2: scroll X, 38/40 cols, multicolor'],['$D018','VIC-II memory setup: screen page + charset/bitmap base'],['$D019','VIC-II interrupt status register'],['$D01A','VIC-II interrupt enable register'],['$D020','Border colour (0–15)'],['$D021','Background colour 0'],['$D400–$D418','SID registers (3 voices + filter + volume)'],['$D41B','SID voice 3 oscillator output (read)'],['$D41C','SID voice 3 envelope output (read)'],['$D800–$DBFF','Colour RAM — 1 KB, 4 bits per char (always here)'],['$DC00','CIA 1 Port A — joystick 2 / keyboard cols'],['$DC01','CIA 1 Port B — joystick 1 / keyboard rows'],['$DC0D','CIA 1 interrupt control/status'],['$DD00','CIA 2 Port A — VIC bank bits + IEC bus'],['$DD0D','CIA 2 interrupt control (→ NMI)']]},
+  {id:'kernal_rom', addr:'$E000–$FFFF', label:'KERNAL ROM (switchable)', size:'8 KB', bg:'rgba(234,179,8,0.4)', color:'#fbbf24',
+   title:'$E000–$FFFF: KERNAL ROM',
+   desc:'The KERNAL provides all OS services: RS-232, IEC serial bus (1541 drives), screen I/O, tape, and the jump table. HIRAM=0 reveals 8 KB RAM underneath. The jump table at $FF81–$FFF5 is the stable API — always call KERNAL through this table, never directly into ROM, as addresses change between KERNAL versions.',
+   regs:[['$E000','KERNAL ROM start'],['$EA31','Default IRQ handler (scan keyboard, update clock)'],['$FF81','CINT — initialise VIC and screen editor'],['$FFB1','TALK — command device to TALK on IEC bus'],['$FFB4','LISTEN — command device to LISTEN'],['$FFBA','SECOND — send secondary address after LISTEN'],['$FFC0','OPEN — open logical file'],['$FFC3','CLOSE — close logical file'],['$FFC6','CHKIN — define input channel'],['$FFC9','CHKOUT — define output channel'],['$FFCF','CHRIN — input char from channel'],['$FFD2','CHROUT — output char to channel'],['$FFD5','LOAD — load file from device'],['$FFD8','SAVE — save file to device'],['$FFE1','STOP — test STOP key'],['$FFE4','GETIN — get char from keyboard buffer'],['$FFFA/$FFFB','NMI vector'],['$FFFC/$FFFD','Reset vector'],['$FFFE/$FFFF','IRQ/BRK vector']]}
+];
+function c64MmapRender() {
+  var c = document.getElementById('c64Mmap');
+  if (!c) return;
+  C64_MMAP.forEach(function(r) {
+    var row = document.createElement('div');
+    row.className = 'memmap-row';
+    row.style.background = r.bg;
+    row.onclick = function() { c64MmapOpen(r.id); };
+    row.innerHTML = '<span class="memmap-addr" style="color:' + r.color + '">' + r.addr + '</span>' +
+      '<span class="memmap-label" style="color:' + r.color + '">' + r.label + '</span>' +
+      '<span class="memmap-size">' + r.size + '</span>';
+    c.appendChild(row);
+  });
+}
+function c64MmapOpen(id) {
+  var r = C64_MMAP.find(function(x){return x.id===id;});
+  if (!r) return;
+  document.getElementById('c64MmapBadge').textContent = r.addr;
+  document.getElementById('c64MmapBadge').style.background = r.bg;
+  document.getElementById('c64MmapBadge').style.color = r.color;
+  document.getElementById('c64MmapTitle').textContent = r.title;
+  document.getElementById('c64MmapDesc').textContent = r.desc;
+  var html = '';
+  if (r.regs && r.regs.length) {
+    html = '<table><tr><th>Address</th><th>Description</th></tr>';
+    r.regs.forEach(function(reg) { html += '<tr><td>' + reg[0] + '</td><td>' + reg[1] + '</td></tr>'; });
+    html += '</table>';
+  }
+  document.getElementById('c64MmapRegs').innerHTML = html;
+  document.getElementById('c64MmapModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function c64MmapClose() {
+  document.getElementById('c64MmapModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', c64MmapRender);
+document.addEventListener('keydown', function(e) { if(e.key==='Escape') c64MmapClose(); });
+</script>
+
 </body>
 </html>
