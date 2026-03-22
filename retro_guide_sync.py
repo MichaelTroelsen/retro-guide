@@ -32,14 +32,14 @@ except ImportError:
 
 # ── CONFIGURE THESE ─────────────────────────────────────────────────────────
 
-WATCH_DIR = r"C:\Users\mit\Downloads\retro-guides"   # folder with your 5 guide files
+WATCH_DIR = r"C:\Users\mit\claude\retro-guide"   # folder with your 5 guide files
 
 TRACKED_FILES = [
     "commodore-pet-reference.html",
     "bbc-micro-reference.html",
     "amstrad_cpc_reference.html",
-    "commodore-64-reference.html",       # adjust if different name
-    "macintosh-se30-reference.html",     # adjust if different name
+    "C64_Development_Reference.html",
+    "mac-se30-reference.html",
 ]
 
 DEBOUNCE_SECONDS = 3   # wait this long after last save before committing
@@ -47,13 +47,11 @@ DEBOUNCE_SECONDS = 3   # wait this long after last save before committing
 # ── END CONFIG ───────────────────────────────────────────────────────────────
 
 GUIDE_NAMES = {
-    "commodore-pet-reference.html":    "Commodore PET",
-    "bbc-micro-reference.html":        "BBC Micro",
-    "amstrad_cpc_reference.html":      "Amstrad CPC",
-    "commodore-64-reference.html":     "Commodore 64",
-    "macintosh-se30-reference.html":   "Macintosh SE/30",
-    "C64_Development_SID_Music_Resources.md": "Commodore 64 (MD)",
-    "C64_Development_Reference.html":  "Commodore 64 HTML",
+    "commodore-pet-reference.html":  "Commodore PET",
+    "bbc-micro-reference.html":      "BBC Micro",
+    "amstrad_cpc_reference.html":    "Amstrad CPC",
+    "C64_Development_Reference.html": "Commodore 64",
+    "mac-se30-reference.html":       "Macintosh SE/30",
 }
 
 
@@ -126,7 +124,7 @@ def commit_files(filenames):
 
     ok = run(["git", "push"], cwd=cwd)
     if ok:
-        print(f"\n  ✓ [{timestamp()}] Pushed: {msg}")
+        print(f"\n  OK [{timestamp()}] Pushed: {msg}")
         for f in filenames:
             print(f"    → {raw_url(f)}")
         print()
