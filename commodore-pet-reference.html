@@ -4406,6 +4406,33 @@ RUN</div>
         </div>
     </div>
 
+        <hr class="section-sep">
+
+    <!-- PCB & MAKER PLATFORMS -->
+    <h3 style="color:var(--accent);font-size:1rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem;">🔧 PCB &amp; Maker Platforms</h3>
+    <p style="color:var(--text-dim);font-size:0.87rem;margin-bottom:1.2rem">Community-made PCB designs and indie hardware makers supplement the dedicated shops — useful for finding boards that sell out quickly elsewhere, or for ordering custom fabrications directly.</p>
+
+    <div class="resource-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));margin-bottom:1.5rem">
+        <a href="https://www.pcbway.com/project/shareproject/?tag=commodore" target="_blank" rel="noopener" class="resource-card">
+            <div class="resource-card-top">
+                <div class="resource-icon" style="background:rgba(0,120,200,0.25)">🖨️</div>
+                <h4>PCBWay Community Projects</h4>
+            </div>
+            <p>Open project-sharing hub for PCB designs, schematics, and gerber files. Search <em>Commodore</em>, <em>PET</em>, or <em>6502</em> to find community-made replacement boards, RAM expansions, and modern I/O upgrades — all orderable directly from PCBWay fabrication.</p>
+            <div style="margin-top:8px;font-size:0.72rem;color:var(--text-dim)">► Search: "Commodore PET" · "6502" · "IEEE-488" · "CBM"</div>
+            <span class="resource-tag tag-blue">pcbway.com/project</span>
+        </a>
+        <a href="https://www.tindie.com/search/?q=commodore+pet" target="_blank" rel="noopener" class="resource-card">
+            <div class="resource-card-top">
+                <div class="resource-icon" style="background:rgba(220,100,0,0.25)">🛒</div>
+                <h4>Tindie — Indie Hardware Marketplace</h4>
+            </div>
+            <p>Beyond Tynemouth's own store, independent makers sell PET-compatible hardware here — RAM expansions, IEEE-488 adapters, SD card interfaces, FPGA cores, and modern PSU boards. Search broadly for CBM-compatible kits not listed elsewhere.</p>
+            <div style="margin-top:8px;font-size:0.72rem;color:var(--text-dim)">► Search: "Commodore PET" · "6502" · "IEEE-488" · "CBM"</div>
+            <span class="resource-tag tag-amber">tindie.com</span>
+        </a>
+    </div>
+
     <hr class="section-sep">
 
     <!-- BLOGS -->
@@ -4750,6 +4777,23 @@ RUN</div>
             </table>
         </div>
     </div>
+
+    <hr class="section-sep">
+
+    <!-- VERSION HISTORY -->
+    <h3 style="color:var(--accent);font-size:1rem;text-transform:uppercase;letter-spacing:1px;margin:1rem 0;">📋 Version History</h3>
+    <div class="full-card">
+        <div class="model-table-wrap">
+            <table class="model-table">
+                <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="badge badge-green">v2.1</span></td><td style="color:var(--text-dim);white-space:nowrap">March 2026</td><td style="color:var(--text-dim)">Tab navigation + search bar added. PCBWay &amp; Tindie community section added. All code blocks now have copy buttons.</td></tr>
+                    <tr><td><span class="badge">v2.0</span></td><td style="color:var(--text-dim);white-space:nowrap">March 2026</td><td style="color:var(--text-dim)">Major structural update: 15-tab navigation system, interactive model wizard, PETSCII grid, clickable chip cards with modals, interactive memory map, VICE setup walkthrough, BASIC version comparison, board revision guide, one-row chip quick-reference grid, theme toggle, and copy buttons on all code blocks.</td></tr>
+                    <tr><td><span class="badge">v1.0</span></td><td style="color:var(--text-dim);white-space:nowrap">2025</td><td style="color:var(--text-dim)">Initial guide: hardware specs, memory map, BASIC reference, assembly guide, peripheral docs, PETSCII reference, emulator walkthrough, and shops &amp; blogs section.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </section>
 
 </main>
@@ -4900,7 +4944,7 @@ function doSearch(val) {
     searchSelected = -1;
 }
 function highlight(text, q) {
-    return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'), '<mark style="background:rgba(127,255,0,0.3);color:inherit;border-radius:2px">$1</mark>');
+    return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|\[\]\\]/g,'\\$&')+')','gi'), '<mark style="background:rgba(127,255,0,0.3);color:inherit;border-radius:2px">$1</mark>');
 }
 function selectResult(sectionId) {
     document.getElementById('searchResults').classList.remove('visible');
