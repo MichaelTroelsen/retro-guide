@@ -975,6 +975,58 @@
     z-index: 2; line-height: 1.4;
   }
   .cpc-copy-btn:hover { background: #2448d8; }
+
+  /* ── CPC CHIP CARDS ── */
+  .cpc-chip-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:0.6rem; margin:1rem 0 1.5rem; }
+  .cpc-chip-card { background:rgba(26,56,192,0.15); border:1px solid var(--basic-blue-l); border-radius:6px; padding:0.9rem; cursor:pointer; transition:all 0.2s; position:relative; }
+  .cpc-chip-card:hover { background:rgba(26,56,192,0.3); border-color:var(--basic-yellow); transform:translateY(-2px); }
+  .cpc-chip-id { font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--basic-yellow); margin-bottom:0.2rem; }
+  .cpc-chip-name { font-size:0.88rem; font-weight:700; color:#eee; margin-bottom:0.25rem; }
+  .cpc-chip-role { font-size:0.77rem; color:var(--cpc-dimwhite); line-height:1.35; }
+  /* ── CPC CHIP MODAL ── */
+  .cpc-chip-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+  .cpc-chip-overlay.open { display:flex; }
+  .cpc-chip-modal { background:#1a1a28; border:2px solid var(--basic-blue-l); border-radius:8px; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; padding:1.5rem; position:relative; }
+  .cpc-chip-modal-close { position:absolute; top:1rem; right:1rem; background:transparent; border:1px solid #444; color:#aaa; font-size:1.2rem; cursor:pointer; padding:0 6px; border-radius:3px; }
+  .cpc-chip-modal-close:hover { color:var(--basic-yellow); border-color:var(--basic-yellow); }
+  .cpc-chip-modal-id { font-family:'Share Tech Mono',monospace; font-size:0.8rem; color:var(--basic-yellow); margin-bottom:0.3rem; }
+  .cpc-chip-modal-title { font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:1rem; }
+  .cpc-chip-modal-body { font-size:0.87rem; color:var(--cpc-dimwhite); line-height:1.7; }
+  .cpc-chip-modal-body h3 { color:var(--basic-yellow); font-size:0.88rem; margin:1rem 0 0.4rem; text-transform:uppercase; letter-spacing:0.05em; }
+  .cpc-chip-modal-body ul { padding-left:1.2rem; }
+  .cpc-chip-modal-body li { margin-bottom:0.2rem; }
+  .cpc-chip-modal-body .warn { color:#ffb86c; }
+  .cpc-chip-modal-body .good { color:#7fff7f; }
+  .cpc-chip-modal-body code { background:rgba(26,56,192,0.3); padding:1px 5px; border-radius:3px; font-family:'Share Tech Mono',monospace; font-size:0.85em; }
+
+
+  /* ── SHARED MEMORY MAP STYLES ── */
+  .memmap-wrap { font-family: monospace; font-size: 0.82rem; margin: 1rem 0; }
+  .memmap-row {
+      display: grid; grid-template-columns: 120px 1fr 100px;
+      padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer; transition: background 0.15s; align-items: center;
+  }
+  .memmap-row:hover { filter: brightness(1.3); }
+  .memmap-row.selected { outline: 2px solid rgba(255,255,255,0.5); outline-offset:-2px; }
+  .memmap-addr { color: #7dd3fc; font-size: 0.78rem; }
+  .memmap-label { font-size: 0.82rem; }
+  .memmap-size { font-size: 0.72rem; text-align: right; opacity: 0.7; }
+  /* ── SHARED MEMORY MAP POPUP ── */
+  .mmap-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
+  .mmap-overlay.open { display: flex; }
+  .mmap-popup { background: #1a1a2e; border: 1px solid #4040e0; border-radius: 10px; max-width: 520px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 1.4rem; position: relative; }
+  .mmap-close { position: absolute; top: 0.9rem; right: 0.9rem; background: transparent; border: none; color: #888; font-size: 1.3rem; cursor: pointer; }
+  .mmap-close:hover { color: #fff; }
+  .mmap-addr-badge { font-family: monospace; font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 0.4rem; }
+  .mmap-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.8rem; }
+  .mmap-desc { font-size: 0.87rem; color: #bbb; line-height: 1.7; margin-bottom: 0.8rem; }
+  .mmap-regs { font-size: 0.82rem; }
+  .mmap-regs table { width: 100%; border-collapse: collapse; }
+  .mmap-regs th { color: #7dd3fc; text-align: left; padding: 3px 6px; border-bottom: 1px solid #333; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mmap-regs td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #aaa; vertical-align: top; }
+  .mmap-regs td:first-child { font-family: monospace; color: #7dd3fc; white-space: nowrap; }
+
 </style>
 </head>
 <body>
@@ -1071,6 +1123,98 @@
      SECTION 2: MODEL COMPARISON
 ════════════════════════════════════════════ -->
 <section id="models">
+
+  <div class="full-card" style="margin-bottom:1.5rem">
+    <h3>🤔 Which Amstrad CPC Do You Have?</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">Answer 2 questions to identify your model and understand its capabilities.</p>
+    <div id="cpcWizBody">
+      <div style="font-size:0.75rem;color:var(--cpc-dimgrey);margin-bottom:0.5rem" id="cpcWizProg">Step 1 of 2</div>
+      <div style="font-weight:600;color:var(--basic-yellow);margin-bottom:0.8rem" id="cpcWizQ"></div>
+      <div id="cpcWizOpts" style="display:flex;flex-direction:column;gap:0.4rem"></div>
+    </div>
+    <div id="cpcWizResult" style="display:none;background:rgba(26,56,192,0.15);border:2px solid var(--basic-blue-l);border-radius:6px;padding:1rem;margin-top:0.5rem">
+      <h4 style="color:var(--basic-yellow);margin-bottom:0.5rem" id="cpcWizModel"></h4>
+      <div id="cpcWizInfo" style="font-size:0.87rem;color:var(--cpc-dimwhite);line-height:1.7"></div>
+      <button onclick="cpcWizReset()" style="margin-top:0.8rem;background:transparent;border:1px solid var(--basic-blue-l);color:var(--basic-blue-l);padding:4px 12px;border-radius:4px;cursor:pointer;font-size:0.8rem;font-family:inherit">← Start again</button>
+    </div>
+  </div>
+<style>
+.cpc-wiz-btn { background:rgba(26,56,192,0.2);border:1px solid var(--basic-blue-l);color:var(--cpc-dimwhite);padding:0.55rem 1rem;border-radius:4px;cursor:pointer;text-align:left;font-size:0.86rem;transition:all 0.15s;width:100%;font-family:inherit; }
+.cpc-wiz-btn:hover { background:rgba(26,56,192,0.4);color:var(--basic-yellow); }
+</style>
+<script>
+var CPC_TREE = [
+  {q:'Does your CPC have a built-in disk drive?', prog:'Step 1 of 2', opts:[
+    {label:'No — cassette tape only (datacorder under keyboard)', next:1},
+    {label:'Yes — 3" disk drive on the right side', next:2}
+  ]},
+  {q:'How much RAM does it show on startup?', prog:'Step 2 of 2', opts:[
+    {label:'64K Bytes RAM — and OS 1.0 / BASIC 1.0', next:'cpc464_64'},
+    {label:'Not sure', next:'cpc464_64'}
+  ]},
+  {q:'Is there a second drive bay or numeric keypad?', prog:'Step 2 of 2', opts:[
+    {label:'128K Bytes on startup — single 3" drive, no numpad', next:'cpc6128'},
+    {label:'64K Bytes — single 3" drive (rare model)', next:'cpc664'},
+    {label:'Not sure', next:'cpc6128'}
+  ]}
+];
+var CPC_RESULTS = {
+  cpc464_64: {
+    model: 'Amstrad CPC 464',
+    info: `<strong>RAM:</strong> 64 KB · <strong>Released:</strong> 1984 · <strong>Storage:</strong> Built-in cassette (datacorder)<br>
+<strong>BASIC:</strong> Locomotive BASIC 1.0 · <strong>OS:</strong> AMSDOS not included (tape only)<br>
+<strong>Gate Array:</strong> 40007 or 40008 (early) / 40010 (later revision)<br>
+<strong>CRTC types:</strong> Mostly Type 1 (HD6845S) — affects some demo compatibility<br>
+<strong>Notes:</strong> The most common CPC. To use disk software you need an external DDI-1 disk drive, or a Gotek USB floppy emulator connected via the 34-pin FDC port.<br>
+<strong>Common faults:</strong> Keyboard membrane (readily available), power supply capacitors, Gate Array failure.`
+  },
+  cpc664: {
+    model: 'Amstrad CPC 664',
+    info: `<strong>RAM:</strong> 64 KB · <strong>Released:</strong> 1985 · <strong>Storage:</strong> Built-in 3" disk drive<br>
+<strong>BASIC:</strong> Locomotive BASIC 1.0 · <strong>OS:</strong> AMSDOS included<br>
+<strong>Notes:</strong> Very rare — only sold for a few months before the CPC 6128 replaced it. Hardware is essentially a CPC 464 with a disk interface built in. The 3" disks (CF2) are now scarce — use a Gotek HxC floppy emulator instead.<br>
+<strong>Collector value:</strong> Higher than 464/6128 due to rarity.`
+  },
+  cpc6128: {
+    model: 'Amstrad CPC 6128',
+    info: `<strong>RAM:</strong> 128 KB · <strong>Released:</strong> 1985 · <strong>Storage:</strong> Built-in 3" disk drive<br>
+<strong>BASIC:</strong> Locomotive BASIC 1.1 · <strong>OS:</strong> AMSDOS + CP/M 2.2 and 3.0 included<br>
+<strong>Gate Array:</strong> 40010 · <strong>CRTC types:</strong> Mostly Type 0 (HD6845) or Type 1<br>
+<strong>Banking:</strong> Extra 64 KB accessed via Gate Array banking — used by CP/M and some games<br>
+<strong>CP/M:</strong> Boots directly from disk. Runs CP/M 2.2 (464K allocation) and CP/M Plus (3.0, uses 128 KB RAM)<br>
+<strong>Notes:</strong> The most capable standard CPC. Preferred for development work and CP/M software. Gotek replaces the 3" drive easily.`
+  }
+};
+var cpcWizState = 0;
+function cpcWizRender() {
+  var n = CPC_TREE[cpcWizState];
+  document.getElementById('cpcWizProg').textContent = n.prog;
+  document.getElementById('cpcWizQ').textContent = n.q;
+  var o = document.getElementById('cpcWizOpts'); o.innerHTML = '';
+  n.opts.forEach(function(opt) {
+    var b = document.createElement('button'); b.className = 'cpc-wiz-btn';
+    b.textContent = opt.label;
+    b.onclick = function() {
+      if (typeof opt.next === 'string') {
+        document.getElementById('cpcWizBody').style.display = 'none';
+        var r = CPC_RESULTS[opt.next];
+        document.getElementById('cpcWizModel').textContent = '✅ ' + r.model;
+        document.getElementById('cpcWizInfo').innerHTML = r.info;
+        document.getElementById('cpcWizResult').style.display = 'block';
+      } else { cpcWizState = opt.next; cpcWizRender(); }
+    };
+    o.appendChild(b);
+  });
+}
+function cpcWizReset() {
+  cpcWizState = 0;
+  document.getElementById('cpcWizBody').style.display = 'block';
+  document.getElementById('cpcWizResult').style.display = 'none';
+  cpcWizRender();
+}
+document.addEventListener('DOMContentLoaded', cpcWizRender);
+</script>
+
   <div class="section-header"><span class="section-num">02</span><h2>Model Comparison</h2></div>
 
   <div class="model-cards">
@@ -1115,6 +1259,166 @@
 ════════════════════════════════════════════ -->
 <div class="cpc-section" id="tab-hardware">
 <section id="hardware">
+
+  <!-- ═ CPC CHIP MODAL CARDS ═ -->
+  <div class="full-card" style="margin-bottom:1.5rem" id="cpc-chips">
+    <h3>🔌 CPC Main Chips — Click for Details</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">Every important IC on the CPC mainboard. Click any chip for register maps, failure symptoms, and repair options.</p>
+    <div class="cpc-chip-grid">
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ga')">
+        <div class="cpc-chip-id">Gate Array 40010</div>
+        <div class="cpc-chip-name">Gate Array</div>
+        <div class="cpc-chip-role">Video · Z80 timing · banking · clock</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('z80')">
+        <div class="cpc-chip-id">Z80A — DIP-40</div>
+        <div class="cpc-chip-name">Z80A CPU</div>
+        <div class="cpc-chip-role">4 MHz main processor · 176 instructions</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('crtc')">
+        <div class="cpc-chip-id">MC6845 — DIP-40</div>
+        <div class="cpc-chip-name">CRTC 6845</div>
+        <div class="cpc-chip-role">CRT timing · scan line gen · $BC00</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ay')">
+        <div class="cpc-chip-id">AY-3-8912 — DIP-28</div>
+        <div class="cpc-chip-name">AY Sound</div>
+        <div class="cpc-chip-role">3-channel PSG · noise · envelopes</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ppi')">
+        <div class="cpc-chip-id">8255 PPI — DIP-40</div>
+        <div class="cpc-chip-name">8255 PPI</div>
+        <div class="cpc-chip-role">Keyboard · tape · joystick · sound</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ram')">
+        <div class="cpc-chip-id">4164 / 4564 × 8</div>
+        <div class="cpc-chip-name">DRAM</div>
+        <div class="cpc-chip-role">64 KB (464) or 128 KB (6128) RAM</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('rom')">
+        <div class="cpc-chip-id">ROM — DIP-28</div>
+        <div class="cpc-chip-name">Locomotive BASIC</div>
+        <div class="cpc-chip-role">32 KB lower ROM · BASIC + BIOS</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('fdc')">
+        <div class="cpc-chip-id">765A — DIP-40</div>
+        <div class="cpc-chip-name">FDC 765A</div>
+        <div class="cpc-chip-role">Floppy disk controller · 664 · 6128</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cpc-chip-overlay" id="cpcChipModal" onclick="if(event.target===this)cpcCloseChip()">
+    <div class="cpc-chip-modal">
+      <button class="cpc-chip-modal-close" onclick="cpcCloseChip()">✕</button>
+      <div class="cpc-chip-modal-id" id="cpcChipId"></div>
+      <div class="cpc-chip-modal-title" id="cpcChipTitle"></div>
+      <div class="cpc-chip-modal-body" id="cpcChipBody"></div>
+    </div>
+  </div>
+
+
+  
+  <!-- ═ CPC CHIP MODAL CARDS ═ -->
+  <div class="full-card" style="margin-bottom:1.5rem" id="cpc-chips">
+    <h3>🔌 CPC Main Chips — Click for Details</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">Every important IC on the CPC mainboard. Click any chip for register maps, failure symptoms, and repair options.</p>
+    <div class="cpc-chip-grid">
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ga')">
+        <div class="cpc-chip-id">Gate Array 40010</div>
+        <div class="cpc-chip-name">Gate Array</div>
+        <div class="cpc-chip-role">Video · Z80 timing · banking · clock</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('z80')">
+        <div class="cpc-chip-id">Z80A — DIP-40</div>
+        <div class="cpc-chip-name">Z80A CPU</div>
+        <div class="cpc-chip-role">4 MHz main processor · 176 instructions</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('crtc')">
+        <div class="cpc-chip-id">MC6845 — DIP-40</div>
+        <div class="cpc-chip-name">CRTC 6845</div>
+        <div class="cpc-chip-role">CRT timing · scan line gen · $BC00</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ay')">
+        <div class="cpc-chip-id">AY-3-8912 — DIP-28</div>
+        <div class="cpc-chip-name">AY Sound</div>
+        <div class="cpc-chip-role">3-channel PSG · noise · envelopes</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ppi')">
+        <div class="cpc-chip-id">8255 PPI — DIP-40</div>
+        <div class="cpc-chip-name">8255 PPI</div>
+        <div class="cpc-chip-role">Keyboard · tape · joystick · sound</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('ram')">
+        <div class="cpc-chip-id">4164 / 4564 × 8</div>
+        <div class="cpc-chip-name">DRAM</div>
+        <div class="cpc-chip-role">64 KB (464) or 128 KB (6128) RAM</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('rom')">
+        <div class="cpc-chip-id">ROM — DIP-28</div>
+        <div class="cpc-chip-name">Locomotive BASIC</div>
+        <div class="cpc-chip-role">32 KB lower ROM · BASIC + BIOS</div>
+      </div>
+      <div class="cpc-chip-card" onclick="cpcOpenChip('fdc')">
+        <div class="cpc-chip-id">765A — DIP-40</div>
+        <div class="cpc-chip-name">FDC 765A</div>
+        <div class="cpc-chip-role">Floppy disk controller · 664 · 6128</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cpc-chip-overlay" id="cpcChipModal" onclick="if(event.target===this)cpcCloseChip()">
+    <div class="cpc-chip-modal">
+      <button class="cpc-chip-modal-close" onclick="cpcCloseChip()">✕</button>
+      <div class="cpc-chip-modal-id" id="cpcChipId"></div>
+      <div class="cpc-chip-modal-title" id="cpcChipTitle"></div>
+      <div class="cpc-chip-modal-body" id="cpcChipBody"></div>
+    </div>
+  </div>
+
+  <!-- ═ CHIP QUICK-REFERENCE ═ -->
+  <div class="full-card" style="margin-bottom:1.5rem">
+    <h3>⚡ CPC Chip Quick-Reference &amp; Repairs</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">Main ICs on the CPC mainboard. Click any row for failure symptoms.</p>
+    <div class="table-wrap" style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>Chip</th><th>Function</th><th>Models</th><th>Modern Replacement</th>
+      </tr></thead>
+      <tbody>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('ga')"><td><code>Gate Array 40010</code></td><td>Video · timing · Z80 interface</td><td>All</td><td style="color:#4caf50">CPLD replica (community)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('crtc')"><td><code>MC6845 CRTC</code></td><td>Video timing generation</td><td>All</td><td style="color:#ffb86c">HD6845 / UM6845R (NOS)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('ay')"><td><code>AY-3-8912</code></td><td>3-channel PSG sound</td><td>All</td><td style="color:#4caf50">YM2149F (pin-compatible)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('ppi')"><td><code>8255 PPI</code></td><td>Keyboard · tape · I/O</td><td>All</td><td style="color:#4caf50">NEC D8255 / μPD8255 (still made)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('z80')"><td><code>Z80A CPU</code></td><td>4 MHz main processor</td><td>All</td><td style="color:#4caf50">Z84C0008 CMOS (Zilog / still made)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('ram464')"><td><code>4164 DRAM ×8</code></td><td>64 KB main RAM (CPC 464)</td><td>464</td><td style="color:#ffb86c">NOS 4164 (eBay)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('ram6128')"><td><code>4564 DRAM ×8</code></td><td>512 KB RAM (CPC 6128)</td><td>6128</td><td style="color:#ffb86c">NOS 4564 / 41256 (eBay)</td></tr>
+        <tr style="cursor:pointer" onclick="cpcChipDetail('rom')"><td><code>ROM (27C256)</code></td><td>Locomotive BASIC + AMSDOS</td><td>All</td><td style="color:#4caf50">27C256 EPROM (programmable)</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div id="cpcChipDetail" style="display:none;margin-top:1rem;padding:0.8rem;background:rgba(26,56,192,0.15);border-left:3px solid var(--basic-blue-l);border-radius:0 4px 4px 0;font-size:0.85rem;color:var(--cpc-dimwhite)"></div>
+  </div>
+<script>
+var CPC_CHIP_INFO = {
+    ga:{n:'Gate Array 40010',s:'Completely dead machine, no video sync, or wrong colours. The GA handles almost everything — often the first suspect.',f:'CPLD replicas exist on GitHub (search "CPC Gate Array CPLD"). Requires SMD soldering. NOS chips occasionally on eBay.'},
+    crtc:{n:'MC6845 CRTC',s:'No video output, wrong sync, or all-white/black screen. Different CRTC types (0,1,2,3,4) behave differently — some demos require specific types.',f:'Type 0 (HD6845) and Type 1 (UM6845R) are most compatible. Source from eBay or retro chip suppliers.'},
+    ay:{n:'AY-3-8912',s:'No sound output, or only some channels silent.',f:'YM2149F is 100% pin-compatible and still manufactured. Available from Mouser/DigiKey for ~£3. The standard repair.'},
+    ppi:{n:'8255 PPI',s:'Dead keyboard (no keys register), tape motor won\'t run, or screen border colour stuck.',f:'The 8255/NEC D8255 is still manufactured. Any 8255A-compatible chip works. ~£3 from electronics suppliers.'},
+    z80:{n:'Z80A CPU',s:'Completely dead or random crashes immediately on boot.',f:'Zilog Z84C0008 CMOS Z80 is still manufactured, fully compatible. ~£4. CMOS version draws less power and runs cooler.'},
+    ram464:{n:'4164 DRAM',s:'Memory errors on startup (character garbage, BASIC reports wrong amount), or crashes in programs.',f:'Source NOS 4164 from eBay. Test with diagnostic ROM first to confirm which chip(s) are faulty before replacing all 8.'},
+    ram6128:{n:'4564 / 41256 DRAM',s:'Memory parity errors, only 64 KB recognised instead of 128 KB, crashes in programs using upper memory.',f:'41256 DRAMs (256K×1) are equivalent and slightly easier to source. eBay or specialist retro suppliers.'},
+    rom:{n:'Locomotive BASIC ROM',s:'Garbage on screen at startup, or specific keywords fail — indicates ROM bit-rot.',f:'A 27C256 EPROM programmed with the Locomotive BASIC ROM image is a direct replacement. Free ROM images available at cpcwiki.eu.'}
+};
+function cpcChipDetail(id) {
+    var d = document.getElementById("cpcChipDetail");
+    var i = CPC_CHIP_INFO[id];
+    if (!i) return;
+    d.innerHTML = "<strong style='color:var(--basic-yellow)'>" + i.n + "</strong><br><span style='color:var(--cpc-orange)'>⚠ Symptoms:</span> " + i.s + "<br><span style='color:#7fff7f'>✓ Fix:</span> " + i.f;
+    d.style.display = "block";
+}
+</script>
+
   <div class="section-header"><span class="section-num">03</span><h2>Hardware Specifications</h2></div>
 
   <h3>Core Chips</h3>
@@ -2021,6 +2325,41 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
      SECTION 22: EMULATORS
 ════════════════════════════════════════════ -->
 <section id="emulators">
+
+  <!-- ═ EMULATOR SETUP WALKTHROUGH ═ -->
+  <div class="full-card" style="margin-bottom:1.5rem">
+    <h3>🚀 Getting Started with WinAPE (Recommended — Windows)</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">WinAPE is the most accurate and feature-complete CPC emulator. Includes a built-in assembler and debugger.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><div class="step-body">
+        <h4>Download &amp; Install</h4>
+        <p>Get the latest version from <a href="https://www.winape.net/downloads.jsp" target="_blank" style="color:var(--cpc-orange)">winape.net/downloads.jsp</a>. Extract the zip to any folder — no installer needed. Run <code>WinAPE.exe</code>.</p>
+      </div></div>
+      <div class="step"><div class="step-num"></div><div class="step-body">
+        <h4>Choose Your Model</h4>
+        <p>Go to <strong>Hardware → CPC Type</strong>. Select <strong>CPC 464</strong> for tape software, <strong>CPC 6128</strong> for disk software and maximum RAM. The 664 is rare — skip unless specifically needed.</p>
+      </div></div>
+      <div class="step"><div class="step-num"></div><div class="step-body">
+        <h4>Load a Tape (.CDT / .CSW)</h4>
+        <p>Go to <strong>Tape → Insert Tape</strong> → select your <code>.cdt</code> file. At the BASIC prompt type <code style="background:rgba(26,56,192,0.3);padding:2px 6px;border-radius:3px;color:var(--basic-yellow)">RUN""</code> and press Enter. The tape will auto-play.</p>
+      </div></div>
+      <div class="step"><div class="step-num"></div><div class="step-body">
+        <h4>Load a Disk Image (.DSK)</h4>
+        <p>Go to <strong>Drive A: → Insert Disk Image</strong> → select your <code>.dsk</code> file. At the BASIC prompt type <code style="background:rgba(26,56,192,0.3);padding:2px 6px;border-radius:3px;color:var(--basic-yellow)">CAT</code> to list contents, then <code style="background:rgba(26,56,192,0.3);padding:2px 6px;border-radius:3px;color:var(--basic-yellow)">RUN"FILENAME"</code> to run a program.</p>
+      </div></div>
+      <div class="step"><div class="step-num"></div><div class="step-body">
+        <h4>Use the Built-in Assembler</h4>
+        <p>Press <strong>F8</strong> to open the assembler/debugger. You can write Z80 assembly directly, set breakpoints, and inspect registers. Essential for demoscene or game development work.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="full-card" style="margin-bottom:1.5rem">
+    <h3>🌐 No-Install Option: CPC-EMU (Browser)</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem">Perfect for quickly testing software. Open <a href="https://cpcemu.arnoldemu.com/" target="_blank" style="color:var(--cpc-orange)">cpcemu.arnoldemu.com</a> in any browser. Drag and drop a <code>.dsk</code> or <code>.cdt</code> file onto the screen to load it instantly.</p>
+  </div>
+
+
   <div class="section-header"><span class="section-num">22</span><h2>Emulators</h2></div>
 
   <div class="table-wrap"><table>
@@ -2220,6 +2559,30 @@ CALL &amp;4000</pre>
     </tbody>
   </table></div>
 </section>
+
+  <!-- ═ INTERACTIVE MEMORY MAP ═ -->
+  <div class="full-card" style="margin-bottom:1.5rem" id="cpc-memmap">
+    <h3>🗺 CPC Memory Map — Click any region for details</h3>
+    <p style="color:var(--cpc-dimwhite);font-size:0.87rem;margin-bottom:1rem">Standard 64 KB layout. The Gate Array can switch ROMs in/out of each 16 KB region. Also includes the Z80 I/O port map below.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;font-size:0.75rem">
+        <span style="background:rgba(26,56,192,0.4);padding:2px 8px;border-radius:3px">RAM</span>
+        <span style="background:rgba(234,179,8,0.3);padding:2px 8px;border-radius:3px">ROM (switchable)</span>
+        <span style="background:rgba(239,68,68,0.3);padding:2px 8px;border-radius:3px">I/O ports</span>
+    </div>
+    <div class="memmap-wrap" id="cpcMmap"></div>
+    <div style="margin-top:1.2rem;font-weight:600;color:var(--basic-yellow);font-size:0.85rem;margin-bottom:0.5rem">Z80 I/O Port Map (click for details)</div>
+    <div class="memmap-wrap" id="cpcIoMap"></div>
+  </div>
+  <div class="mmap-overlay" id="cpcMmapModal" onclick="if(event.target===this)cpcMmapClose()">
+    <div class="mmap-popup" style="border-color:var(--basic-blue-l)">
+      <button class="mmap-close" onclick="cpcMmapClose()">✕</button>
+      <div class="mmap-addr-badge" id="cpcMmapBadge"></div>
+      <div class="mmap-title" id="cpcMmapTitle"></div>
+      <div class="mmap-desc" id="cpcMmapDesc"></div>
+      <div class="mmap-regs" id="cpcMmapRegs"></div>
+    </div>
+  </div>
+
 </section>
 </div>
 
@@ -2326,5 +2689,272 @@ function cpcCopy(btn) {
     });
 })();
 </script>
+
+<script>
+function toggleTheme() {
+    var isLight = document.body.classList.toggle('light-mode');
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    
+}
+</script>
+
+<script>
+var CPC_CHIP_DATA = {
+  ga: {
+    id:'Gate Array 40010 — Ferranti/ASIC custom',
+    title: `Gate Array 40010 — The CPC\'s Central Hub`,
+    body:`<p>The Gate Array 40010 is the most important chip on the CPC mainboard — it performs functions that would require a dozen separate chips on simpler designs. It handles video generation, Z80 bus timing (inserting wait states during video DMA), memory banking, interrupt generation, and system clock distribution.</p>
+<h3>Key functions</h3><ul>
+<li>Generates pixel data from DRAM for all 3 video modes</li>
+<li>Inserts wait states into Z80 bus during video DMA (every 4 µs in Mode 1/2)</li>
+<li>Handles memory banking (ROM lower/upper enable)</li>
+<li>Generates 50 Hz frame interrupt (VSYNC-based)</li>
+<li>Distributes 16 MHz master clock to Z80 (4 MHz) and CRTC (1 MHz)</li></ul>
+<h3>Programming (I/O port $7Fxx)</h3><ul>
+<li><code>$7F80–$7F9F</code> — Select mode (0, 1, or 2) and border colour</li>
+<li><code>$7FA0–$7FBF</code> — Memory banking (ROM enable/disable)</li>
+<li><code>$7FC0–$7FDF</code> — RAM banking (6128 only — select 64 KB bank)</li>
+<li><code>$7FE0–$7FFF</code> — Interrupt counter reset</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead machine, completely corrupted video (all modes), or machine boots but video has wrong timing/sync. Very unlikely to fail spontaneously — mostly damaged by ESD or incorrect voltage.</p>
+<h3>Repair</h3>
+<p class="good">CPLD replicas exist on GitHub (search "CPC Gate Array CPLD 40010"). Requires SMD soldering skills. NOS 40010 chips occasionally appear on eBay — verify authenticity carefully.</p>`
+  },
+  z80: {
+    id:'Zilog Z80A — DIP-40',
+    title:'Z80A CPU — 4 MHz Main Processor',
+    body:`<p>The Zilog Z80A is the CPC's main processor, running at 4 MHz (but with wait states inserted by the Gate Array reducing effective speed to ~3.3 MHz average). The Z80 has a rich instruction set — 176 instructions including 16-bit arithmetic, block move/search operations, and two complete register sets for fast interrupt handling.</p>
+<h3>Register file</h3><ul>
+<li>AF, BC, DE, HL — Main 16-bit register pairs (8-bit accessible as A,F,B,C,D,E,H,L)</li>
+<li>AF', BC', DE', HL' — Alternate (shadow) register set — swap with EXX/EX AF,AF'</li>
+<li>IX, IY — Index registers (for (IX+d) and (IY+d) addressing)</li>
+<li>SP — Stack Pointer · PC — Program Counter</li>
+<li>I — Interrupt vector register · R — Refresh register (DRAM refresh)</li></ul>
+<h3>Interrupt modes</h3><ul>
+<li>IM 0 — Device places opcode on bus (not used on CPC)</li>
+<li>IM 1 — Fixed jump to $0038 (CPC uses this for 50 Hz interrupt)</li>
+<li>IM 2 — Vectored via I register (used by some demos for precise timing)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead machine, completely unresponsive. Very rarely fails — the Z80 is extremely robust.</p>
+<h3>Replacement</h3>
+<p class="good">Zilog Z84C0008 CMOS — still manufactured, fully compatible, runs cooler. Available from Mouser/DigiKey for ~£4. The 8 MHz version works at 4 MHz without issue.</p>`
+  },
+  crtc: {
+    id:'MC6845 / HD6845 / UM6845 — DIP-40',
+    title:'CRTC 6845 — CRT Controller',
+    body:`<p>The 6845 CRTC generates all video timing signals — horizontal and vertical sync, the display enable signal, and character/raster addresses. The Gate Array reads the CRTC's MA (memory address) and RA (raster address) outputs to fetch pixel data from RAM at the right time.</p>
+<p>Unlike the BBC Micro, the CPC's CRTC is programmed for a much higher resolution and the timing interacts with the Gate Array in ways that are exploited by demos for hardware scrolling and raster effects.</p>
+<h3>Key registers (select via $BC00, write via $BD00)</h3><ul>
+<li>R0 — Horizontal total (characters per line - 1)</li>
+<li>R1 — Horizontal displayed</li>
+<li>R2 — HSYNC position</li>
+<li>R4 — Vertical total (character rows - 1)</li>
+<li>R5 — Vertical total adjust (fine tune)</li>
+<li>R6 — Vertical displayed</li>
+<li>R7 — VSYNC position</li>
+<li>R9 — Max raster address (scan lines per character row - 1)</li>
+<li>R12/R13 — Display start address (hi/lo)</li></ul>
+<h3>CRTC types</h3><ul>
+<li>Type 0 — HD6845S (Hitachi) — some differences in VSYNC handling</li>
+<li>Type 1 — UM6845 (UMC) — most common on 464, standard for demos</li>
+<li>Type 2 — MC6845 (Motorola) — most emulators default to this</li>
+<li>Type 3/4 — Less common variants</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No video output, wrong sync (rolling picture), all white screen. Rarely fails — very robust chip.</p>
+<h3>Replacement</h3>
+<p class="good">HD6845S or UM6845R from eBay (NOS). Match the type if running demo software. MC6845 (Type 2) is the most common substitute.</p>`
+  },
+  ay: {
+    id:'AY-3-8912 — DIP-28',
+    title:'AY-3-8912 — 3-Channel Programmable Sound Generator',
+    body:`<p>The General Instruments AY-3-8912 is the CPC's sound chip, providing three independent tone channels plus a noise generator and hardware envelope generator. It also contains an 8-bit I/O port (used by the CPC for joystick input). The "8912" suffix indicates the single I/O port variant (vs 8910 with two ports).</p>
+<h3>Register map (16 registers, selected via PPI Port A)</h3><ul>
+<li>R0/R1 — Channel A frequency (lo/hi, 12-bit)</li>
+<li>R2/R3 — Channel B frequency (lo/hi)</li>
+<li>R4/R5 — Channel C frequency (lo/hi)</li>
+<li>R6 — Noise period (5-bit)</li>
+<li>R7 — Mixer: enable/disable tone and noise per channel, I/O direction</li>
+<li>R8–R10 — Volume A/B/C (4-bit, bit 4 = use envelope)</li>
+<li>R11/R12 — Envelope period (lo/hi, 16-bit)</li>
+<li>R13 — Envelope shape (attack/decay/hold/continue)</li>
+<li>R14 — I/O Port A (joystick input on CPC)</li></ul>
+<h3>Accessing from BASIC</h3>
+<p>Use <code>SOUND channel,volume,duration,pitch</code> or direct port access via <code>OUT &F400,register: OUT &F600,value</code>.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">No sound on any or all channels. Joystick not working (shares the I/O port).</p>
+<h3>Replacement</h3>
+<p class="good">YM2149F (Yamaha) — 100% pin-compatible and still manufactured. Available from Mouser/DigiKey for ~£3. The standard repair.</p>`
+  },
+  ppi: {
+    id:'Intel 8255A PPI — DIP-40',
+    title:'8255 PPI — Programmable Peripheral Interface',
+    body:`<p>The Intel 8255 is a general-purpose parallel I/O chip that acts as the glue between the CPC's Z80, the AY sound chip, the keyboard matrix, and the cassette interface. It provides three 8-bit ports (A, B, C) each configurable as input or output.</p>
+<h3>CPC port assignments</h3><ul>
+<li><strong>Port A ($F400)</strong> — AY-3-8912 data bus (read/write sound chip registers). Also expansion port data.</li>
+<li><strong>Port B ($F500, read-only)</strong> — Keyboard row data (inputs), cassette data input (bit 7), printer busy (bit 6), CRTC VSYNC (bit 0), various status bits</li>
+<li><strong>Port C ($F600)</strong> — Keyboard column select (bits 3–0, selects 1 of 10 rows), cassette write/motor (bits 4–5), AY register/data select (bits 6–7), speaker output (bit 5 also)</li>
+<li><strong>Control ($F603)</strong> — PPI mode select register</li></ul>
+<h3>Reading the keyboard</h3>
+<p>Write row number (0–9) to Port C bits 3–0, then read Port B to get the 8 key states for that row. The CPC keyboard matrix is 10 rows × 8 columns = 80 key positions.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead keyboard, AY sound chip not responding, cassette motor not starting, screen border colour stuck.</p>
+<h3>Replacement</h3>
+<p class="good">NEC D8255AC or any 8255A-compatible chip. Still manufactured — available from electronics suppliers for ~£3.</p>`
+  },
+  ram: {
+    id:'4164 × 8 (CPC 464) / 4564 × 8 (CPC 6128)',
+    title:'DRAM — 64 KB or 128 KB Main RAM',
+    body:`<p>The CPC uses dynamic RAM chips organised as 8 × 1-bit chips per 64 KB bank. The 464 has one bank (64 KB), the 6128 has two banks (128 KB). The Gate Array handles DRAM refresh automatically — the Z80's RFSH cycles are used for this, which is why the R register increments during normal operation.</p>
+<h3>CPC 464 — 8 × 4164 (64K × 1 bit)</h3><ul>
+<li>Total: 64 KB</li>
+<li>Each chip contributes one bit of the 8-bit data bus</li>
+<li>150 ns access time required</li></ul>
+<h3>CPC 6128 — 8 × 4564 (64K × 4 bit)</h3><ul>
+<li>Total: 128 KB (two 64 KB banks, selected via Gate Array)</li>
+<li>Each chip contributes 4 bits — only 2 chips per 64 KB bank needed per byte</li>
+<li>100–150 ns access time</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Corrupted characters at startup, memory errors, BASIC reports wrong amount of memory, crashes in programs using large arrays.</p>
+<h3>Repair</h3>
+<p class="warn">Run a diagnostic ROM to identify which chip(s) are faulty. The failing bit pattern (which characters look wrong) indicates the bit position and thus the chip. Source NOS 4164/4564 from eBay. Buy matched batches — if one fails, others are likely to follow.</p>`
+  },
+  rom: {
+    id:'27C256 EPROM — DIP-28',
+    title:'Locomotive BASIC ROM — 32 KB Lower ROM',
+    body:`<p>The lower ROM contains Locomotive BASIC 1.0 (464/664) or 1.1 (6128) plus the firmware (BIOS). It is mapped to $0000–$3FFF and can be switched out by the Gate Array to reveal RAM underneath — used by CP/M and some advanced programs. The upper ROM ($C000–$FFFF) contains AMSDOS on disk models.</p>
+<h3>ROM contents</h3><ul>
+<li>$0000–$003F — Firmware jump table (RST vectors, BIOS entry points)</li>
+<li>$0040–$1FFF — Firmware (BIOS): screen, keyboard, sound, tape/disk drivers</li>
+<li>$2000–$7FFF — Locomotive BASIC interpreter</li></ul>
+<h3>Key firmware entry points</h3><ul>
+<li>$BB5A — KM_READ_KEY: read key from keyboard buffer</li>
+<li>$BB5D — KM_CHAR_RETURN: put key back</li>
+<li>$BB6C — TXT_OUTPUT: output character to screen</li>
+<li>$BC02 — SCR_SET_MODE: set screen mode</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Garbage on screen at startup, BASIC keywords not recognised, specific functions fail while others work (partial ROM bit-rot).</p>
+<h3>Replacement</h3>
+<p class="good">A 27C256 EPROM programmed with the Locomotive BASIC ROM image is a direct replacement. Free ROM images are available at cpcwiki.eu. If you have an EPROM programmer, this is a ~£2 fix.</p>`
+  },
+  fdc: {
+    id:'NEC 765A / Intel 8272A — DIP-40',
+    title:'FDC 765A — Floppy Disk Controller',
+    body:`<p>The NEC 765A floppy disk controller is present on the CPC 664 and CPC 6128 (not the 464). It manages all communication with the internal 3" disk drive and any external drives connected to the floppy port. The CPC communicates with it via I/O ports, with DMA handled by the Z80 under software control.</p>
+<h3>I/O ports</h3><ul>
+<li><code>$FB7F</code> — Motor control (bit 0 = drive A motor on)</li>
+<li><code>$FA7E</code> — FDC status register (read)</li>
+<li><code>$FB7E</code> — FDC data register (read/write)</li></ul>
+<h3>Key FDC commands</h3><ul>
+<li>$02 — Read track</li>
+<li>$05 — Write sector</li>
+<li>$06 — Read sector</li>
+<li>$0A — Read sector ID</li>
+<li>$0D — Format track</li></ul>
+<h3>Disk formats</h3>
+<p>The CPC uses 3" CF2 disks (hard to find). Standard format is 42 tracks, 9 sectors, 512 bytes. CP/M uses different interleaving. Use a Gotek HxC floppy emulator with HxC firmware for full format support via USB or SD card.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Drive not detected, disk read errors, motor runs but no data read. Also check the drive belt and disk head.</p>
+<h3>Replacement</h3>
+<p class="good">NEC 765A and Intel 8272A are direct pin-compatible replacements. NOS available from eBay. Alternatively, a Gotek USB floppy emulator eliminates the FDC dependency entirely for most purposes.</p>`
+  }
+};
+function cpcOpenChip(id) {
+  var d = CPC_CHIP_DATA[id];
+  if (!d) return;
+  document.getElementById('cpcChipId').textContent = d.id;
+  document.getElementById('cpcChipTitle').textContent = d.title;
+  document.getElementById('cpcChipBody').innerHTML = d.body;
+  document.getElementById('cpcChipModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cpcCloseChip() {
+  document.getElementById('cpcChipModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') cpcCloseChip();
+});
+</script>
+
+<script>
+var CPC_MMAP = [
+  {id:'lower_rom', addr:'$0000–$3FFF', label:'Lower ROM / RAM bank 0', size:'16 KB', bg:'rgba(234,179,8,0.3)', color:'#fde047',
+   title:'$0000–$3FFF: Lower ROM (Locomotive BASIC + Firmware)',
+   desc:'On reset, the lower ROM (Locomotive BASIC and firmware) is mapped here, hiding the underlying RAM. The Gate Array can disable the lower ROM to reveal RAM — used by CP/M and advanced programs needing the full 64 KB. The ROM includes the BIOS (firmware) from $0000 and BASIC from approximately $2000.',
+   regs:[['$0000–$003F','Firmware jump table (RST vectors)'],['$0040','Firmware start (screen, keyboard, sound drivers)'],['$2000','Locomotive BASIC interpreter start'],['Gate Array $7FA0','Lower ROM enable/disable (bit 2 = 0 to disable)']]},
+  {id:'bank1', addr:'$4000–$7FFF', label:'RAM bank 1 (always RAM)', size:'16 KB', bg:'rgba(26,56,192,0.4)', color:'#93c5fd',
+   title:'$4000–$7FFF: RAM — Always Accessible',
+   desc:'This 16 KB region is always RAM, never overlaid by ROM. BASIC programs that load at $0000 (after lower ROM is mapped in) see this as their variable and array workspace. On the 6128, this can be swapped with extended RAM banks via Gate Array banking.',
+   regs:[['$4000','Start of RAM bank 1'],['$7FFF','End of RAM bank 1']]},
+  {id:'bank2', addr:'$8000–$BFFF', label:'RAM bank 2 (always RAM)', size:'16 KB', bg:'rgba(26,56,192,0.4)', color:'#93c5fd',
+   title:'$8000–$BFFF: RAM — Always Accessible',
+   desc:'Second always-RAM region. BASIC programs use this area for variables and the string pool (strings grow downward from HIMEM, which defaults to $B FFF on a 64 KB CPC). Machine code programs often sit in this area to avoid conflicts with BASIC.',
+   regs:[['$8000','Start of RAM bank 2'],['$BFFF','Default HIMEM — top of BASIC memory (64 KB CPC)']]},
+  {id:'upper_rom', addr:'$C000–$FFFF', label:'Upper ROM / RAM bank 3', size:'16 KB', bg:'rgba(234,179,8,0.35)', color:'#fde047',
+   title:'$C000–$FFFF: Upper ROM (AMSDOS / CP/M) or RAM',
+   desc:'The upper ROM typically contains AMSDOS (the disc operating system) on 664/6128 models, or can hold expansion ROMs. Like the lower ROM, it can be disabled by the Gate Array to reveal the underlying RAM (required for CP/M, which needs the full 64 KB as RAM). Multiple upper ROMs can be banked using the ROM select register.',
+   regs:[['$C000','Upper ROM start (AMSDOS or selected expansion ROM)'],['$FFFF','Top of address space / interrupt vectors'],['Gate Array $7FB0','Upper ROM enable/disable (bit 3 = 1 to disable)'],['$DFxx','ROM select register — choose which upper ROM (0=AMSDOS, 7=CP/M)']]},
+];
+var CPC_IO = [
+  {id:'ga', addr:'$7Fxx (A15=0, A14=1)', label:'Gate Array — Video, Banking, Clock', size:'', bg:'rgba(239,68,68,0.4)', color:'#f87171',
+   title:'Gate Array I/O ($7Fxx) — Ink Colours, Mode, Banking',
+   desc:'The Gate Array is accessed by writing to any address with A15=0 and A14=1 (typically $7F00–$7FFF). The upper 2 bits of the value written select the function. The Gate Array controls all video output, memory banking, and interrupt timing.',
+   regs:[['$7F00–$7F1F','Select pen / set ink colour (5 pens × 2 × 17 colours)'],['$7F80–$7F9F','Screen mode + border colour (bits 4–5 = mode 0/1/2, bits 0–3 = border)'],['$7FA0–$7FBF','RAM + ROM banking (bit 2 = disable lower ROM, bit 3 = disable upper ROM)'],['$7FC0–$7FDF','RAM banking for 6128 (select extra 64 KB bank)'],['$7FE0–$7FFF','Interrupt counter reset']]},
+  {id:'crtc', addr:'$BC00 / $BD00', label:'CRTC 6845 — Video Timing', size:'', bg:'rgba(168,85,247,0.3)', color:'#c4b5fd',
+   title:'CRTC Register Access ($BC00/$BD00)',
+   desc:'The MC6845 CRTC has a register select port and a data port. Select a register by writing its number to $BC00, then write the value to $BD00. The CRTC controls all horizontal and vertical timing, display dimensions, and the screen start address.',
+   regs:[['OUT $BC00, reg','Select CRTC register (0–17)'],['OUT $BD00, val','Write value to selected register'],['R0','Horizontal total (chars per line - 1)'],['R1','Horizontal displayed'],['R6','Vertical displayed (character rows)'],['R9','Max raster address (scan lines per char - 1)'],['R12/R13','Display start address (hi/lo)']]},
+  {id:'ppi', addr:'$F400–$F603', label:'8255 PPI — Keyboard, Sound, Cassette', size:'', bg:'rgba(234,179,8,0.3)', color:'#fde047',
+   title:'8255 PPI Ports ($F400–$F603)',
+   desc:'The Intel 8255 Programmable Peripheral Interface connects the Z80 to the AY sound chip, keyboard matrix, cassette, and expansion bus.',
+   regs:[['OUT $F400, val','Write to AY-3-8912 (Port A — data)'],['IN $F500','Read keyboard row / cassette / VSYNC status (Port B)'],['OUT $F600, val','Write Port C: keyboard col (bits 3-0), AY ctrl (bits 7-6), motor (bit 4), speaker (bit 5)'],['OUT $F603, ctrl','8255 mode control register']]},
+  {id:'fdc', addr:'$FA7E / $FB7E / $FB7F', label:'FDC 765A — Disk Controller', size:'', bg:'rgba(59,130,246,0.3)', color:'#7dd3fc',
+   title:'FDC 765A Disk Controller (664/6128 only)',
+   desc:'The NEC 765A floppy disk controller manages the internal 3" drive and any external drive. All disk I/O goes through this controller.',
+   regs:[['OUT $FB7F, val','Motor control (bit 0 = drive A motor on/off)'],['IN $FA7E','FDC main status register'],['IN/OUT $FB7E','FDC data register (command bytes and results']]}
+];
+function cpcMmapRender() {
+  [['cpcMmap', CPC_MMAP], ['cpcIoMap', CPC_IO]].forEach(function(pair) {
+    var c = document.getElementById(pair[0]);
+    if (!c) return;
+    pair[1].forEach(function(r) {
+      var row = document.createElement('div');
+      row.className = 'memmap-row';
+      row.style.background = r.bg;
+      row.onclick = function() { cpcMmapOpen(r.id, pair[1]); };
+      row.innerHTML = '<span class="memmap-addr" style="color:' + r.color + '">' + r.addr + '</span>' +
+        '<span class="memmap-label" style="color:' + r.color + '">' + r.label + '</span>' +
+        '<span class="memmap-size">' + r.size + '</span>';
+      c.appendChild(row);
+    });
+  });
+}
+function cpcMmapOpen(id, list) {
+  var r = list.find(function(x){return x.id===id;});
+  if (!r) return;
+  document.getElementById('cpcMmapBadge').textContent = r.addr;
+  document.getElementById('cpcMmapBadge').style.background = r.bg;
+  document.getElementById('cpcMmapBadge').style.color = r.color;
+  document.getElementById('cpcMmapTitle').textContent = r.title;
+  document.getElementById('cpcMmapDesc').textContent = r.desc;
+  var html = '';
+  if (r.regs && r.regs.length) {
+    html = '<table><tr><th>Address / Command</th><th>Description</th></tr>';
+    r.regs.forEach(function(reg) { html += '<tr><td>' + reg[0] + '</td><td>' + reg[1] + '</td></tr>'; });
+    html += '</table>';
+  }
+  document.getElementById('cpcMmapRegs').innerHTML = html;
+  document.getElementById('cpcMmapModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cpcMmapClose() {
+  document.getElementById('cpcMmapModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', cpcMmapRender);
+document.addEventListener('keydown', function(e) { if(e.key==='Escape') cpcMmapClose(); });
+</script>
+
 </body>
 </html>
