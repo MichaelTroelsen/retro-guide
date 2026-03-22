@@ -14407,7 +14407,7 @@ function copyCode(btn) {
     function doSearch(q){
         clearHL();
         if (!q || q.length < 2) return;
-        var re = new RegExp(q.replace(/[-[\]{}()*+?.,\^$|#\s]/g, '\$&'), 'gi');
+        var re = new RegExp(q.replace(/[.*+?^${}()|\[\]\\]/g, '\\$&'), 'gi');
         var root = document.querySelector('.bbc-section.active') || document.body;
         var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
         var nodes=[]; var n;
