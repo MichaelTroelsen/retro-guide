@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amstrad CPC 464/664/6128 — Reference Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+
+  :root {
+    /* ── CPC BASIC Screen palette (PAPER 1 blue + INK 3 yellow) ── */
+    --basic-blue:   #1a38c0;   /* CPC PAPER 1 — royal blue */
+    --basic-blue-d: #122890;   /* darker blue shade */
+    --basic-blue-l: #2448d8;   /* lighter blue shade */
+    --basic-blue-x: #0e1e6e;   /* very deep blue */
+    --basic-yellow: #ffe000;   /* CPC INK 3 — bright yellow */
+    --basic-yellow-d:#d4b800;  /* dimmed yellow */
+    --basic-white:  #ffffff;   /* white text on blue */
+    --basic-blue-glow: rgba(26,56,192,0.5);
+    --yellow-glow:  rgba(255,224,0,0.35);
+
+    /* ── CTM640 Monitor accent palette ── */
+    --cpc-cyan:     #00e8ff;
+    --cpc-orange:   #ff6400;
+    --cpc-green:    #00ff80;
+    --cpc-magenta:  #ff40ff;
+    --cpc-white:    #deeeff;
+    --cpc-dimwhite: #7898b8;
+    --orange-glow:  rgba(255,100,0,0.4);
+
+    /* ── CPC 464 Keyboard hardware palette ── */
+    --kbd-chassis:  #2a2826;   /* dark charcoal body */
+    --kbd-chassis2: #38342f;   /* slightly lighter chassis */
+    --kbd-key:      #c8c0b0;   /* warm cream key cap face */
+    --kbd-key-hi:   #e0d8c8;   /* key cap highlight (top edge) */
+    --kbd-key-sh:   #7a7268;   /* key cap shadow (bottom edge) */
+    --kbd-key-mid:  #a09890;   /* mid-grey between keys */
+    --kbd-legend:   #1a1614;   /* key cap legend (dark on light) */
+    --kbd-legend-hi:#f0e8d8;   /* off-white legend */
+    --kbd-fn-key:   #48403a;   /* function/special key face */
+    --kbd-fn-hi:    #5c5248;   /* function key highlight */
+    --kbd-border:   rgba(200,192,176,0.18);
+
+    /* ── Legacy aliases for compatibility ── */
+    --bg-deep:      #080e28;
+    --bg-main:      #0c1640;
+    --bg-panel:     var(--basic-blue-x);
+    --bg-card:      var(--basic-blue-d);
+    --cpc-yellow:   var(--basic-yellow);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg-deep);
+  }
+
+  body {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 400;
+    color: var(--cpc-white);
+    background: var(--bg-deep);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── SCANLINE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  }
+
+  /* ── HEADER — keyboard chassis with BASIC blue accent stripe ── */
+  header {
+    background: linear-gradient(180deg, var(--kbd-chassis) 0%, #201e1c 100%);
+    border-bottom: 3px solid var(--basic-blue);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 30px var(--basic-blue-glow), inset 0 1px 0 rgba(200,192,176,0.12);
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .amstrad-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* AMSTRAD logo: basic-yellow on keyboard chassis */
+  .amstrad-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--basic-yellow);
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px var(--basic-yellow), 0 0 40px rgba(255,224,0,0.35);
+    line-height: 1;
+  }
+
+  .amstrad-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--kbd-key-mid);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-title {
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Title: yellow on dark chassis */
+  .header-title h1 {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--basic-yellow);
+    text-shadow: 0 0 15px var(--yellow-glow);
+    letter-spacing: 0.1em;
+  }
+
+  .header-meta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--kbd-key-mid);
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  .model-pills {
+    display: flex;
+    gap: 6px;
+  }
+
+  .pill {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.15em;
+    border: 1px solid;
+  }
+
+  /* Pills: blue/yellow/orange — all three palettes */
+  .pill-464  { background: rgba(255,224,0,0.12);  border-color: var(--basic-yellow); color: var(--basic-yellow); }
+  .pill-664  { background: rgba(26,56,192,0.25);  border-color: #6080ff;             color: #a0b8ff; }
+  .pill-6128 { background: rgba(255,100,0,0.15);  border-color: var(--cpc-orange);   color: var(--cpc-orange); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: calc(100vh - 73px);
+  }
+
+  /* ── SIDEBAR — keyboard chassis with yellow+blue accents ── */
+  nav {
+    background: linear-gradient(180deg, var(--kbd-chassis) 0%, #1c1a18 100%);
+    border-right: 2px solid var(--basic-blue-d);
+    padding: 24px 0;
+    position: sticky;
+    top: 73px;
+    height: calc(100vh - 73px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--basic-yellow) var(--kbd-chassis);
+  }
+
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-track { background: var(--kbd-chassis); }
+  nav::-webkit-scrollbar-thumb { background: var(--basic-blue); border-radius: 2px; }
+
+  .nav-section-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    color: var(--basic-yellow);
+    text-transform: uppercase;
+    padding: 10px 20px 4px;
+    margin-top: 8px;
+    opacity: 0.9;
+  }
+
+  nav a {
+    display: block;
+    padding: 5px 20px 5px 24px;
+    font-size: 0.78rem;
+    color: var(--kbd-key-mid);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+
+  nav a:hover {
+    color: var(--basic-yellow);
+    background: rgba(26,56,192,0.25);
+    border-left-color: var(--basic-yellow);
+    text-shadow: 0 0 8px rgba(255,224,0,0.4);
+  }
+
+  /* ── MAIN CONTENT ── */
+  main {
+    padding: 40px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* ── HERO — CPC BASIC blue screen ── */
+  .hero {
+    background: linear-gradient(135deg, var(--basic-blue) 0%, var(--basic-blue-d) 100%);
+    border: 2px solid var(--basic-blue-l);
+    border-bottom: 3px solid var(--kbd-chassis);
+    border-radius: 6px;
+    padding: 36px 40px 32px;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px var(--basic-blue-glow), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .hero::before {
+    content: 'AMSTRAD';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* Keyboard stripe strip between hero and content */
+  .keyboard-stripe {
+    display: flex;
+    gap: 3px;
+    padding: 10px 12px;
+    background: var(--kbd-chassis);
+    border: 1px solid var(--kbd-key-sh);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    margin-bottom: 40px;
+    overflow: hidden;
+    flex-wrap: nowrap;
+  }
+
+  .keyboard-stripe .k {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: bold;
+    color: var(--kbd-legend);
+    background: linear-gradient(180deg, var(--kbd-key-hi) 0%, var(--kbd-key) 55%, var(--kbd-key-sh) 100%);
+    padding: 3px 5px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 2px solid #4a4238;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    min-width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+    cursor: default;
+    transition: all 0.1s;
+  }
+
+  .keyboard-stripe .k:hover {
+    transform: translateY(1px);
+    border-bottom-width: 1px;
+    background: linear-gradient(180deg, #f0e8d8 0%, #d0c8b8 55%, #888078 100%);
+  }
+
+  .keyboard-stripe .k-sp {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: bold;
+    color: var(--kbd-legend-hi);
+    background: linear-gradient(180deg, var(--kbd-fn-hi) 0%, var(--kbd-fn-key) 70%, #1e1c18 100%);
+    padding: 3px 8px 5px;
+    border-radius: 3px;
+    border: 1px solid #1e1c18;
+    border-bottom: 2px solid #0e0c0a;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    min-width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    cursor: default;
+  }
+
+  /* Hero title: bright yellow on blue — exact CPC BASIC screen colours */
+  .hero h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--basic-yellow);
+    text-shadow: 0 0 30px var(--basic-yellow), 0 0 60px rgba(255,224,0,0.3);
+    margin-bottom: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--basic-white);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    opacity: 0.85;
+  }
+
+  .hero p {
+    color: var(--basic-white);
+    font-size: 0.92rem;
+    max-width: 680px;
+    line-height: 1.7;
+    opacity: 0.9;
+  }
+
+  .hero-specs {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* Spec chips: keyboard keycap look, pops out from the blue hero */
+  .spec-chip {
+    background: linear-gradient(180deg, var(--kbd-key-hi) 0%, var(--kbd-key) 55%, var(--kbd-key-sh) 100%);
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 3px solid #4a4238;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+    cursor: default;
+  }
+
+  .spec-chip span:first-child {
+    color: var(--kbd-fn-key);
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    font-weight: bold;
+  }
+
+  .spec-chip span:last-child {
+    color: var(--kbd-legend);
+    font-weight: bold;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    margin-bottom: 52px;
+  }
+
+  /* Section headers: blue divider — BASIC screen echo */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--basic-blue);
+  }
+
+  /* Section number: CPC BASIC blue+yellow — most iconic combination */
+  .section-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--basic-yellow);
+    background: linear-gradient(180deg, var(--basic-blue-l) 0%, var(--basic-blue) 55%, var(--basic-blue-d) 100%);
+    padding: 4px 9px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--basic-blue-l);
+    border-bottom: 3px solid var(--basic-blue-x);
+    box-shadow: 0 2px 8px rgba(26,56,192,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+    min-width: 36px;
+    text-align: center;
+    cursor: default;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 6px rgba(255,224,0,0.4);
+  }
+
+  /* h2: bright yellow — CPC INK 3 on dark */
+  h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--basic-yellow);
+    text-shadow: 0 0 12px rgba(255,224,0,0.35);
+    letter-spacing: 0.06em;
+  }
+
+  h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--basic-yellow);
+    letter-spacing: 0.08em;
+    margin: 28px 0 14px;
+    text-shadow: 0 0 8px rgba(255,224,0,0.25);
+    opacity: 0.9;
+  }
+
+  h4 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--cpc-green);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 20px 0 10px;
+  }
+
+  p {
+    color: var(--cpc-white);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    line-height: 1.75;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border-radius: 5px;
+    border: 1px solid rgba(26,56,192,0.4);
+    box-shadow: 0 2px 12px rgba(26,56,192,0.15);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  /* Table headers: CPC BASIC blue + yellow — the iconic screen palette */
+  thead tr {
+    background: linear-gradient(90deg, var(--basic-blue) 0%, var(--basic-blue-d) 100%);
+  }
+
+  th {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--basic-yellow);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--basic-blue-l);
+    white-space: nowrap;
+    text-shadow: 0 0 8px rgba(255,224,0,0.3);
+  }
+
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(26,56,192,0.15);
+    color: var(--cpc-white);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tr:nth-child(even) td { background: rgba(26,56,192,0.06); }
+  tr:hover td { background: rgba(255,224,0,0.04); }
+
+  td:first-child {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--cpc-yellow);
+    white-space: nowrap;
+    font-size: 0.78rem;
+  }
+
+  .addr { color: #80aaff !important; }
+  .reg  { color: var(--cpc-orange) !important; }
+  .val  { color: #90ff90 !important; }
+  .note { color: var(--cpc-dimwhite) !important; font-size: 0.78rem; }
+
+  /* ── CODE BLOCKS — styled like a CPC key surface ── */
+  pre {
+    background: var(--kbd-chassis);
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 3px solid #1a1816;
+    border-left: 3px solid var(--basic-blue-l);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    overflow-x: auto;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--kbd-key-hi);
+    box-shadow: inset 0 1px 0 rgba(200,192,176,0.08), 0 3px 8px rgba(0,0,0,0.5);
+  }
+
+  pre .comment { color: #6878a0; }
+  pre .keyword { color: var(--cpc-cyan); }
+  pre .string  { color: var(--cpc-green); }
+  pre .number  { color: var(--cpc-yellow); }
+  pre .label   { color: var(--cpc-orange); }
+  pre .instr   { color: #90d4ff; }
+
+  /* Inline code: blue bg + yellow — exactly CPC BASIC screen colours */
+  code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82em;
+    color: var(--basic-yellow);
+    background: var(--basic-blue-d);
+    padding: 2px 7px;
+    border-radius: 3px;
+    border: 1px solid var(--basic-blue-l);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4);
+  }
+
+  /* ── KEYCAP ELEMENT ── physical keyboard key style ── */
+  .keycap {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--kbd-legend);
+    background: linear-gradient(180deg, var(--kbd-key-hi) 0%, var(--kbd-key) 60%, var(--kbd-key-sh) 100%);
+    padding: 3px 8px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 3px solid #5a5248;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+    font-weight: bold;
+    vertical-align: middle;
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  .keycap:hover {
+    background: linear-gradient(180deg, #f0e8d8 0%, #d8d0c0 60%, #908880 100%);
+    transform: translateY(1px);
+    border-bottom-width: 2px;
+  }
+
+  /* ── FUNCTION KEY STYLE ── */
+  .keycap-fn {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--kbd-legend-hi);
+    background: linear-gradient(180deg, var(--kbd-fn-hi) 0%, var(--kbd-fn-key) 70%, #2a2420 100%);
+    padding: 3px 7px 5px;
+    border-radius: 3px;
+    border: 1px solid #2a2420;
+    border-bottom: 3px solid #141210;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+    letter-spacing: 0.08em;
+    font-weight: bold;
+    vertical-align: middle;
+    cursor: default;
+  }
+
+  /* ── INFO BOXES ── */
+  .info-box {
+    border-radius: 5px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 0.86rem;
+    border-left: 3px solid;
+    line-height: 1.65;
+    border-top: 1px solid var(--kbd-border);
+    border-right: 1px solid var(--kbd-border);
+    border-bottom: 2px solid rgba(0,0,0,0.4);
+  }
+
+  /* Info boxes: blue-tinted — BASIC screen atmosphere */
+  .info-box.note    { background: linear-gradient(135deg, var(--basic-blue-x) 0%, rgba(26,56,192,0.15) 100%); border-left-color: var(--basic-yellow); border-top-color: rgba(26,56,192,0.5); border-right-color: rgba(26,56,192,0.3); }
+  .info-box.warning { background: linear-gradient(135deg, rgba(26,56,192,0.1) 0%, rgba(60,20,0,0.4) 100%); border-left-color: var(--cpc-orange); border-top-color: rgba(26,56,192,0.3); border-right-color: rgba(26,56,192,0.2); }
+  .info-box.tip     { background: linear-gradient(135deg, rgba(26,56,192,0.1) 0%, rgba(0,30,14,0.4) 100%); border-left-color: var(--cpc-green); border-top-color: rgba(26,56,192,0.3); border-right-color: rgba(26,56,192,0.2); }
+
+  .info-box strong {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .info-box.note    strong { color: var(--basic-yellow); }
+  .info-box.warning strong { color: var(--cpc-orange); }
+  .info-box.tip     strong { color: var(--cpc-green); }
+
+  /* ── COLOUR PALETTE SWATCHES ── */
+  .colour-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+    margin: 16px 0;
+  }
+
+  .colour-swatch {
+    background: linear-gradient(180deg, var(--basic-blue-x) 0%, var(--basic-blue-d) 100%);
+    border: 1px solid var(--basic-blue);
+    border-bottom: 2px solid var(--kbd-chassis);
+    border-radius: 4px;
+    padding: 8px 6px 6px;
+    text-align: center;
+    cursor: default;
+    transition: transform 0.15s;
+    box-shadow: 0 2px 6px rgba(26,56,192,0.2);
+  }
+
+  .colour-swatch:hover { transform: scale(1.05); }
+
+  .swatch-box {
+    width: 100%;
+    height: 24px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .swatch-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--basic-yellow);
+    display: block;
+  }
+
+  .swatch-name {
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.7);
+    display: block;
+    line-height: 1.3;
+    margin-top: 1px;
+  }
+
+  /* ── KEYBOARD MATRIX — actual keycap cells ── */
+  .kbd-matrix th {
+    background: linear-gradient(90deg, var(--basic-blue) 0%, var(--basic-blue-d) 100%);
+    color: var(--basic-yellow);
+    border-bottom-color: var(--basic-blue-l);
+    font-size: 0.65rem;
+    text-shadow: 0 0 6px rgba(255,224,0,0.3);
+  }
+
+  .kbd-matrix td {
+    padding: 4px 8px;
+    text-align: center;
+  }
+
+  .kbd-matrix td:first-child {
+    background: linear-gradient(180deg, var(--basic-blue) 0%, var(--basic-blue-d) 100%);
+    color: var(--basic-yellow);
+    font-size: 0.72rem;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(255,224,0,0.3);
+  }
+
+  .kbd-matrix td:not(:first-child) {
+    padding: 3px 4px;
+  }
+
+  /* Each keyboard cell as a miniature key cap */
+  .key {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: bold;
+    color: var(--kbd-legend);
+    background: linear-gradient(180deg, var(--kbd-key-hi) 0%, var(--kbd-key) 60%, var(--kbd-key-sh) 100%);
+    padding: 3px 6px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 2px solid #5a5248;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25);
+    white-space: nowrap;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .key-special {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: bold;
+    color: var(--kbd-legend-hi);
+    background: linear-gradient(180deg, var(--kbd-fn-hi) 0%, var(--kbd-fn-key) 70%, #1e1c18 100%);
+    padding: 3px 6px 5px;
+    border-radius: 3px;
+    border: 1px solid #1e1c18;
+    border-bottom: 2px solid #0e0c0a;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+    white-space: nowrap;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  /* ── REGISTER DIAGRAM ── keyboard chassis style ── */
+  .reg-diagram {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    background: var(--kbd-chassis);
+    border: 1px solid var(--kbd-key-sh);
+    border-bottom: 3px solid #1a1816;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 14px 0;
+    overflow-x: auto;
+    box-shadow: inset 0 1px 0 rgba(200,192,176,0.07), 0 3px 8px rgba(0,0,0,0.4);
+  }
+
+  .reg-row {
+    display: flex;
+    margin-bottom: 6px;
+    align-items: stretch;
+  }
+
+  .reg-label {
+    color: var(--cpc-orange);
+    min-width: 40px;
+    font-weight: bold;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+  }
+
+  .reg-bits {
+    display: flex;
+    flex: 1;
+  }
+
+  .bit-cell {
+    flex: 1;
+    border: 1px solid rgba(160,152,144,0.25);
+    text-align: center;
+    padding: 4px 2px;
+    font-size: 0.65rem;
+    color: var(--kbd-key);
+    min-width: 22px;
+  }
+
+  .bit-cell.used  { background: rgba(26,56,192,0.25); color: #a0c0ff; }
+  .bit-cell.hi    { background: rgba(255,100,0,0.12); color: var(--cpc-orange); }
+  .bit-cell.flag  { background: rgba(255,224,0,0.1); color: var(--cpc-yellow); }
+
+  /* ── MODEL COMPARISON CARDS ── */
+  .model-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  /* Model cards: CPC BASIC blue — keyboard stripe top ↓ */
+  .model-card {
+    background: linear-gradient(160deg, var(--basic-blue) 0%, var(--basic-blue-d) 100%);
+    border: 1px solid var(--basic-blue-l);
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(26,56,192,0.3);
+  }
+
+  .model-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .model-card.m464::before  { background: var(--basic-yellow); }
+  .model-card.m664::before  { background: #ffffff; opacity: 0.5; }
+  .model-card.m6128::before { background: var(--cpc-orange); }
+
+  .model-card h3 {
+    margin: 0 0 4px;
+    font-size: 1rem;
+  }
+
+  /* Model titles: yellow on blue — BASIC screen */
+  .model-card.m464  h3 { color: var(--basic-yellow); text-shadow: 0 0 12px rgba(255,224,0,0.5); }
+  .model-card.m664  h3 { color: var(--basic-yellow); text-shadow: 0 0 12px rgba(255,224,0,0.5); }
+  .model-card.m6128 h3 { color: var(--basic-yellow); text-shadow: 0 0 12px rgba(255,224,0,0.5); }
+
+  .model-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 14px;
+  }
+
+  .model-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    gap: 8px;
+  }
+
+  .model-row:last-child { border-bottom: none; }
+
+  .model-key   { color: rgba(255,255,255,0.7); }
+  .model-value { color: var(--basic-yellow); font-weight: 600; text-align: right; }
+
+  /* ── NOTE PERIOD TABLE ── */
+  .note-period td:nth-child(n+2) {
+    color: var(--basic-yellow) !important;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    text-align: right;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    margin: 20px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--basic-yellow), var(--basic-blue), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 5px;
+    width: 8px; height: 8px;
+    background: var(--basic-yellow);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255,224,0,0.6);
+  }
+
+  .timeline-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--basic-yellow);
+    margin-bottom: 2px;
+  }
+
+  .timeline-text {
+    font-size: 0.85rem;
+    color: var(--cpc-dimwhite);
+  }
+
+  /* ── QUICK REF GRID ── */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .quick-card {
+    background: linear-gradient(160deg, var(--basic-blue-x) 0%, rgba(26,56,192,0.12) 100%);
+    border: 1px solid rgba(26,56,192,0.5);
+    border-bottom: 2px solid var(--kbd-chassis);
+    border-radius: 5px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(26,56,192,0.2);
+  }
+
+  .quick-card h4 {
+    margin-top: 0;
+    font-size: 0.72rem;
+    margin-bottom: 10px;
+    color: var(--basic-yellow);
+  }
+
+  .quick-card table { font-size: 0.76rem; }
+  .quick-card td    { padding: 4px 8px; }
+  .quick-card th    { padding: 6px 8px; font-size: 0.65rem; }
+
+  /* ── LINKS ── */
+  a {
+    color: #80aaff;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  a:hover {
+    color: var(--basic-yellow);
+    text-shadow: 0 0 8px rgba(255,224,0,0.4);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: linear-gradient(180deg, var(--basic-blue-x) 0%, var(--kbd-chassis) 100%);
+    border-top: 2px solid var(--basic-blue);
+    padding: 20px 48px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(255,224,0,0.5);
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+
+  footer span { color: var(--basic-yellow); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--cpc-orange); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { display: none; }
+    main { padding: 24px 20px 60px; }
+    .model-cards { grid-template-columns: 1fr; }
+    .quick-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="amstrad-badge">
+      <div class="amstrad-logo">AMSTRAD</div>
+      <div class="amstrad-sub">COLOUR PERSONAL COMPUTER</div>
+    </div>
+    <div class="header-title">
+      <h1>CPC 464 / 664 / 6128 — COMPREHENSIVE REFERENCE GUIDE</h1>
+      <div class="header-meta">Z80A · AY-3-8912 · GATE ARRAY 40010 · LOCOMOTIVE BASIC · AMSDOS</div>
+    </div>
+    <div class="model-pills">
+      <div class="pill pill-464">CPC 464</div>
+      <div class="pill pill-664">CPC 664</div>
+      <div class="pill pill-6128">CPC 6128</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════ LAYOUT ═══════════════════════════════ -->
+<div class="layout">
+
+<!-- ── SIDEBAR NAV ── -->
+<nav>
+  <div class="nav-section-title">Overview</div>
+  <a href="#history">History &amp; Timeline</a>
+  <a href="#models">Model Comparison</a>
+  <a href="#hardware">Hardware Specifications</a>
+
+  <div class="nav-section-title">CPU</div>
+  <a href="#z80">Z80A CPU</a>
+  <a href="#memory">Memory Map</a>
+  <a href="#banking">CPC 6128 Banking</a>
+
+  <div class="nav-section-title">Video</div>
+  <a href="#gatearray">Gate Array 40010</a>
+  <a href="#modes">Screen Modes</a>
+  <a href="#crtc">CRTC 6845</a>
+  <a href="#colours">Colour Palette</a>
+  <a href="#raster">Raster Tricks</a>
+
+  <div class="nav-section-title">Sound</div>
+  <a href="#ay">AY-3-8912</a>
+  <a href="#soundtech">Sound Techniques</a>
+
+  <div class="nav-section-title">I/O &amp; Hardware</div>
+  <a href="#iomap">I/O Port Map</a>
+  <a href="#ppi">PPI 8255</a>
+  <a href="#interrupts">Interrupts</a>
+  <a href="#keyboard">Keyboard Matrix</a>
+  <a href="#joystick">Joystick</a>
+  <a href="#tape">Tape (CPC 464)</a>
+  <a href="#disk">Disk (664/6128)</a>
+  <a href="#expansion">Expansion Port</a>
+
+  <div class="nav-section-title">Software</div>
+  <a href="#basic">Locomotive BASIC</a>
+  <a href="#firmware">Firmware Calls</a>
+  <a href="#z80asm">Z80 Assembly</a>
+  <a href="#opcodes">Z80 Opcodes</a>
+  <a href="#amsdos">AMSDOS</a>
+
+  <div class="nav-section-title">Development</div>
+  <a href="#tools">Cross-Dev Tools</a>
+  <a href="#emulators">Emulators</a>
+  <a href="#resources">Resources</a>
+  <a href="#resources" style="padding-left:32px;font-size:0.72rem;">↳ PCBWay Community</a>
+  <a href="#resources" style="padding-left:32px;font-size:0.72rem;">↳ Tindie Marketplace</a>
+  <a href="#quickref">Quick Reference</a>
+</nav>
+
+<!-- ── MAIN ── -->
+<main>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <h2>CPC 464 / 664 / 6128</h2>
+  <div class="hero-tagline">► AMSTRAD COLOUR PERSONAL COMPUTER · 1984–1990</div>
+  <p>The Amstrad CPC range brought a complete 8-bit computing system — monitor included — to the mass market at an aggressive price point. Running a Z80A at 4 MHz with the proprietary Gate Array 40010 for video, three-channel AY sound, and Locomotive BASIC in ROM, the CPC sold approximately <strong style="color:var(--basic-yellow);text-shadow:0 0 8px rgba(255,224,0,0.4)">3 million units</strong> across Europe and built one of the era's most vibrant software libraries.</p>
+  <div class="hero-specs">
+    <div class="spec-chip"><span>CPU</span><span>Z80A @ 4 MHz</span></div>
+    <div class="spec-chip"><span>RAM</span><span>64KB / 128KB</span></div>
+    <div class="spec-chip"><span>SOUND</span><span>AY-3-8912 × 3ch</span></div>
+    <div class="spec-chip"><span>VIDEO</span><span>3 MODES · 27 COLOURS</span></div>
+    <div class="spec-chip"><span>BASIC</span><span>LOCOMOTIVE BASIC 1.1</span></div>
+    <div class="spec-chip"><span>OS</span><span>AMSDOS / CP/M 2.2</span></div>
+  </div>
+</div>
+
+<!-- ═══ KEYBOARD STRIP ═══ -->
+<div class="keyboard-stripe">
+  <span class="k-sp">ESC</span>
+  <span class="k-sp">F1</span><span class="k-sp">F2</span><span class="k-sp">F3</span><span class="k-sp">F4</span><span class="k-sp">F5</span><span class="k-sp">F6</span><span class="k-sp">F7</span><span class="k-sp">F8</span><span class="k-sp">F9</span><span class="k-sp">F0</span>
+  <span class="k-sp">CLR</span><span class="k-sp">DEL</span>
+  <span class="k">1</span><span class="k">2</span><span class="k">3</span><span class="k">4</span><span class="k">5</span><span class="k">6</span><span class="k">7</span><span class="k">8</span><span class="k">9</span><span class="k">0</span>
+  <span class="k-sp">TAB</span>
+  <span class="k">Q</span><span class="k">W</span><span class="k">E</span><span class="k">R</span><span class="k">T</span><span class="k">Y</span><span class="k">U</span><span class="k">I</span><span class="k">O</span><span class="k">P</span>
+  <span class="k-sp">CAPS</span>
+  <span class="k">A</span><span class="k">S</span><span class="k">D</span><span class="k">F</span><span class="k">G</span><span class="k">H</span><span class="k">J</span><span class="k">K</span><span class="k">L</span>
+  <span class="k-sp">CTRL</span>
+  <span class="k">Z</span><span class="k">X</span><span class="k">C</span><span class="k">V</span><span class="k">B</span><span class="k">N</span><span class="k">M</span>
+  <span class="k-sp">SHIFT</span><span class="k-sp">RETURN</span><span class="k-sp">COPY</span>
+  <span class="k-sp">↑</span><span class="k-sp">↓</span><span class="k-sp">←</span><span class="k-sp">→</span>
+</div>
+<section id="history">
+  <div class="section-header"><span class="section-num">01</span><h2>Overview &amp; History</h2></div>
+
+  <p>Designed by Amstrad Consumer Electronics (Alan Sugar) and launched in the UK in June 1984, the CPC was a deliberate response to the fragmented British home computer market. By bundling a monitor and built-in storage, Amstrad eliminated the extra costs that plagued ZX Spectrum and Commodore 64 buyers.</p>
+
+  <div class="timeline">
+    <div class="timeline-item"><div class="timeline-year">1984</div><div class="timeline-text">CPC 464 launches in the UK at £199 (green monitor) / £299 (colour). Simultaneous European rollout in Germany, France, Spain, Australia.</div></div>
+    <div class="timeline-item"><div class="timeline-year">1985</div><div class="timeline-text">CPC 664 introduced — built-in 3" floppy replacing the tape deck. CPC 6128 follows quickly: 128KB RAM, CP/M Plus included. CPC 664 discontinued within months.</div></div>
+    <div class="timeline-item"><div class="timeline-year">1986</div><div class="timeline-text">Amstrad acquires Sinclair brand. CPC continues alongside the Spectrum range.</div></div>
+    <div class="timeline-item"><div class="timeline-year">1990</div><div class="timeline-text">CPC Plus range (464+, 6128+) and GX4000 games console released with hardware sprite ASIC. Classic CPC range discontinued.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: MODEL COMPARISON
+════════════════════════════════════════════ -->
+<section id="models">
+  <div class="section-header"><span class="section-num">02</span><h2>Model Comparison</h2></div>
+
+  <div class="model-cards">
+    <div class="model-card m464">
+      <h3>CPC 464</h3>
+      <div class="model-year">► 1984 — The Original</div>
+      <div class="model-row"><span class="model-key">RAM</span><span class="model-value">64 KB</span></div>
+      <div class="model-row"><span class="model-key">ROM</span><span class="model-value">32 KB</span></div>
+      <div class="model-row"><span class="model-key">Storage</span><span class="model-value">Built-in tape 1500 baud</span></div>
+      <div class="model-row"><span class="model-key">BASIC</span><span class="model-value">Locomotive 1.0</span></div>
+      <div class="model-row"><span class="model-key">CP/M</span><span class="model-value">Via DDI-1 add-on</span></div>
+      <div class="model-row"><span class="model-key">Price (UK)</span><span class="model-value">£199 / £299</span></div>
+    </div>
+    <div class="model-card m664">
+      <h3>CPC 664</h3>
+      <div class="model-year">► 1985 — Short-lived</div>
+      <div class="model-row"><span class="model-key">RAM</span><span class="model-value">64 KB</span></div>
+      <div class="model-row"><span class="model-key">ROM</span><span class="model-value">32 KB</span></div>
+      <div class="model-row"><span class="model-key">Storage</span><span class="model-value">Built-in 3" disk 180KB</span></div>
+      <div class="model-row"><span class="model-key">BASIC</span><span class="model-value">Locomotive 1.1</span></div>
+      <div class="model-row"><span class="model-key">CP/M</span><span class="model-value">CP/M 2.2</span></div>
+      <div class="model-row"><span class="model-key">Price (UK)</span><span class="model-value">£299</span></div>
+    </div>
+    <div class="model-card m6128">
+      <h3>CPC 6128</h3>
+      <div class="model-year">► 1985 — The Definitive CPC</div>
+      <div class="model-row"><span class="model-key">RAM</span><span class="model-value">128 KB (banked)</span></div>
+      <div class="model-row"><span class="model-key">ROM</span><span class="model-value">32 KB + 16 KB CP/M</span></div>
+      <div class="model-row"><span class="model-key">Storage</span><span class="model-value">Built-in 3" disk 180KB</span></div>
+      <div class="model-row"><span class="model-key">BASIC</span><span class="model-value">Locomotive 1.1</span></div>
+      <div class="model-row"><span class="model-key">CP/M</span><span class="model-value">CP/M 2.2 + CP/M Plus</span></div>
+      <div class="model-row"><span class="model-key">Price (UK)</span><span class="model-value">£349</span></div>
+    </div>
+  </div>
+
+  <div class="info-box note"><strong>Compatibility</strong>All three models are fully software-compatible. CPC 6128 extra 64KB requires explicit bank switching to access — standard 64KB software runs identically across all models. CRTC type varies between units and can affect timing-sensitive demos.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: HARDWARE
+════════════════════════════════════════════ -->
+<section id="hardware">
+  <div class="section-header"><span class="section-num">03</span><h2>Hardware Specifications</h2></div>
+
+  <h3>Core Chips</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Chip</th><th>Function</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Zilog Z80A</td><td>CPU</td><td>4 MHz · 8-bit data · 16-bit address</td></tr>
+      <tr><td class="reg">Amstrad 40010</td><td>Gate Array</td><td>Video timing, palette, ROM banking, interrupt</td></tr>
+      <tr><td>Motorola HD6845 / UM6845</td><td>CRTC</td><td>CRT timing controller · multiple variants</td></tr>
+      <tr><td class="reg">GI AY-3-8912</td><td>PSG Sound</td><td>3 tone channels + noise + envelope</td></tr>
+      <tr><td>Intel 8255</td><td>PPI</td><td>Keyboard · sound control · tape · printer</td></tr>
+      <tr><td>NEC µPD765A</td><td>FDC</td><td>Floppy Disk Controller (664 / 6128 only)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Clock &amp; Timing</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>CPU clock</td><td class="val">4.000 MHz</td><td>250 ns per cycle nominal</td></tr>
+      <tr><td>Effective CPU speed</td><td class="val">~3.3 MHz avg</td><td>WAIT states during video DMA</td></tr>
+      <tr><td>AY-3-8912 clock</td><td class="val">1.000 MHz</td><td>CPU clock / 4</td></tr>
+      <tr><td>Screen refresh</td><td class="val">50 Hz</td><td>PAL standard (60 Hz NTSC variants)</td></tr>
+      <tr><td>Gate Array interrupt</td><td class="val">300 Hz</td><td>Every 52 scan lines</td></tr>
+      <tr><td>Scan lines per frame</td><td class="val">312</td><td>PAL: 312 total, 200 displayed</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: Z80A CPU
+════════════════════════════════════════════ -->
+<section id="z80">
+  <div class="section-header"><span class="section-num">04</span><h2>CPU — Zilog Z80A</h2></div>
+
+  <h3>Register Set</h3>
+  <div class="reg-diagram">
+    <div class="reg-row"><span class="reg-label">AF</span><div class="reg-bits">
+      <div class="bit-cell hi" style="flex:4">A — Accumulator (8-bit)</div>
+      <div class="bit-cell flag" style="flex:4">F — Flags: S Z Y H X P/V N C</div>
+    </div></div>
+    <div class="reg-row"><span class="reg-label">BC</span><div class="reg-bits">
+      <div class="bit-cell used" style="flex:4">B (8-bit)</div>
+      <div class="bit-cell used" style="flex:4">C (8-bit)</div>
+    </div></div>
+    <div class="reg-row"><span class="reg-label">DE</span><div class="reg-bits">
+      <div class="bit-cell used" style="flex:4">D (8-bit)</div>
+      <div class="bit-cell used" style="flex:4">E (8-bit)</div>
+    </div></div>
+    <div class="reg-row"><span class="reg-label">HL</span><div class="reg-bits">
+      <div class="bit-cell used" style="flex:4">H (8-bit)</div>
+      <div class="bit-cell used" style="flex:4">L (8-bit)</div>
+    </div></div>
+    <div class="reg-row"><span class="reg-label">IX</span><div class="reg-bits"><div class="bit-cell used" style="flex:8">Index Register X (16-bit)</div></div></div>
+    <div class="reg-row"><span class="reg-label">IY</span><div class="reg-bits"><div class="bit-cell used" style="flex:8">Index Register Y (16-bit)</div></div></div>
+    <div class="reg-row"><span class="reg-label">SP</span><div class="reg-bits"><div class="bit-cell hi" style="flex:8">Stack Pointer (16-bit)</div></div></div>
+    <div class="reg-row"><span class="reg-label">PC</span><div class="reg-bits"><div class="bit-cell hi" style="flex:8">Program Counter (16-bit)</div></div></div>
+    <div style="color:#4a7a60;font-size:0.65rem;margin-top:6px">+ Shadow set: AF' BC' DE' HL'  ·  I register (interrupt vector)  ·  R register (refresh)</div>
+  </div>
+
+  <h3>Z80 vs 6502 Key Differences</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Feature</th><th>Z80 (CPC)</th><th>6502 (C64)</th></tr></thead>
+    <tbody>
+      <tr><td>Register set</td><td>Rich: 8-bit + 16-bit index + shadow</td><td>8-bit A, X, Y only</td></tr>
+      <tr><td>Stack</td><td>Any location, 16-bit SP</td><td>Fixed page 1, 256 bytes</td></tr>
+      <tr><td>Indirect addressing</td><td>(HL), (BC), (DE), (IX+d), (IY+d)</td><td>(ZP,X), (ZP),Y</td></tr>
+      <tr><td>Block moves</td><td class="val">LDIR / LDDR built-in</td><td>Must loop manually</td></tr>
+      <tr><td>I/O</td><td>Dedicated IN/OUT port space</td><td>Memory-mapped only</td></tr>
+      <tr><td>Bit operations</td><td>SET / RES / BIT on memory</td><td>Load / modify / store</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Interrupt Modes</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mode</th><th>Description</th><th>CPC Usage</th></tr></thead>
+    <tbody>
+      <tr><td>IM 0</td><td>Execute instruction placed on data bus by device</td><td>Rarely used</td></tr>
+      <tr><td>IM 1</td><td>Fixed RST &amp;38 on interrupt</td><td class="val">Default at reset</td></tr>
+      <tr><td>IM 2</td><td>Vectored via I register + device byte</td><td>Firmware &amp; advanced programs</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: MEMORY MAP
+════════════════════════════════════════════ -->
+<section id="memory">
+  <div class="section-header"><span class="section-num">05</span><h2>Memory Map</h2></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Address</th><th>Size</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="addr">&amp;0000–&amp;3FFF</td><td>16 KB</td><td>Lower ROM (BASIC/firmware) overlays RAM when enabled</td></tr>
+      <tr><td class="addr">&amp;4000–&amp;7FFF</td><td>16 KB</td><td>RAM — commonly used for machine code</td></tr>
+      <tr><td class="addr">&amp;8000–&amp;BFFF</td><td>16 KB</td><td>RAM — BASIC program area extension / stack</td></tr>
+      <tr><td class="addr">&amp;C000–&amp;FFFF</td><td>16 KB</td><td>RAM — default screen area / Upper ROM overlay</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Key RAM Addresses</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Address</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="addr">&amp;0038</td><td>IM 1 interrupt vector (calls firmware handler)</td></tr>
+      <tr><td class="addr">&amp;0066</td><td>NMI handler</td></tr>
+      <tr><td class="addr">&amp;4000</td><td>Start of free RAM — common machine code placement</td></tr>
+      <tr><td class="addr">&amp;AC00</td><td>Default BASIC program start address</td></tr>
+      <tr><td class="addr">&amp;B000</td><td>Stack area (grows downward)</td></tr>
+      <tr><td class="addr">&amp;B100–&amp;B6FF</td><td>Firmware data areas</td></tr>
+      <tr><td class="addr">&amp;C000–&amp;FFFF</td><td>Screen RAM (default MODE 1 / CRTC start address &amp;3000)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="info-box note"><strong>Screen Address Formula</strong>
+    CRTC registers 12/13 hold the 14-bit start address. Gate Array multiplies by 2 to get the byte address.<br>
+    Default: R12=&amp;30, R13=&amp;00 → (&amp;3000) × 2 = <code>&amp;C000</code>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6: CPC 6128 BANKING
+════════════════════════════════════════════ -->
+<section id="banking">
+  <div class="section-header"><span class="section-num">06</span><h2>CPC 6128 Extended Memory</h2></div>
+
+  <p>The CPC 6128 contains an additional 64KB of RAM accessed via Gate Array bank switching. Standard 64KB software sees none of it without explicit use.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Write to &amp;7F</th><th>Configuration</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val">&amp;C0</td><td>Standard</td><td>Normal 64KB layout (default)</td></tr>
+      <tr><td class="val">&amp;C1</td><td>Bank 1</td><td>&amp;0000–&amp;3FFF → extra bank 4, rest standard</td></tr>
+      <tr><td class="val">&amp;C2</td><td>Bank 2</td><td>All 4 blocks from extra 64KB banks</td></tr>
+      <tr><td class="val">&amp;C3</td><td>Bank 3</td><td>Mix of standard and extra RAM</td></tr>
+      <tr><td class="val">&amp;C4–&amp;C7</td><td>Bank 4–7</td><td>Additional configurations</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="info-box tip"><strong>CP/M Plus Usage</strong>CP/M Plus (3.0) on the CPC 6128 uses the extra 64KB extensively for TPA (Transient Program Area), extended BDOS buffers, and RSX modules, giving significantly more working space than CP/M 2.2.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7: GATE ARRAY
+════════════════════════════════════════════ -->
+<section id="gatearray">
+  <div class="section-header"><span class="section-num">07</span><h2>Gate Array 40010</h2></div>
+
+  <p>The Amstrad 40010 is the CPC's custom chip. It handles video pixel output, the 32-colour hardware palette (16 selectable), screen mode, ROM banking, and generates the 300 Hz interrupt.</p>
+
+  <h3>Gate Array Port &amp;7F (Write Only)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bits 7–6</th><th>Operation</th><th>Bits 5–0</th></tr></thead>
+    <tbody>
+      <tr><td class="val">01</td><td>Select pen</td><td>Bits 4–0 = pen number (0–15). Bit 4 set = border pen.</td></tr>
+      <tr><td class="val">00</td><td>Set colour</td><td>Bits 4–0 = hardware colour (0–31) for selected pen</td></tr>
+      <tr><td class="val">11</td><td>Mode / ROM / Interrupt</td><td>Bits 1–0 = mode · Bit 4 = disable upper ROM · Bit 5 = disable lower ROM</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Mode / ROM Control</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Value</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td class="val">&amp;C0</td><td>MODE 0, ROMs enabled</td></tr>
+      <tr><td class="val">&amp;C1</td><td>MODE 1, ROMs enabled (default)</td></tr>
+      <tr><td class="val">&amp;C2</td><td>MODE 2, ROMs enabled</td></tr>
+      <tr><td class="val">&amp;E0</td><td>MODE 0, ROMs disabled (full 64KB RAM visible)</td></tr>
+      <tr><td class="val">&amp;E1</td><td>MODE 1, ROMs disabled</td></tr>
+      <tr><td class="val">&amp;E2</td><td>MODE 2, ROMs disabled</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8: SCREEN MODES
+════════════════════════════════════════════ -->
+<section id="modes">
+  <div class="section-header"><span class="section-num">08</span><h2>Video Modes &amp; Screen Layout</h2></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mode</th><th>Resolution</th><th>Colours</th><th>Bits/pixel</th><th>Pixels/byte</th></tr></thead>
+    <tbody>
+      <tr><td class="val">MODE 0</td><td>160 × 200</td><td class="val">16</td><td>4 bpp</td><td>2</td></tr>
+      <tr><td class="val">MODE 1</td><td>320 × 200</td><td class="val">4</td><td>2 bpp</td><td>4</td></tr>
+      <tr><td class="val">MODE 2</td><td>640 × 200</td><td class="val">2</td><td>1 bpp</td><td>8</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>MODE 0 Pixel Encoding (4 bpp — 2 pixels/byte)</h3>
+  <pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
+; Left pixel  = b7 b3 b5 b1  (→ pen bits 3,2,1,0)
+; Right pixel = b6 b2 b4 b0  (→ pen bits 3,2,1,0)</span></pre>
+
+  <h3>MODE 1 Pixel Encoding (2 bpp — 4 pixels/byte)</h3>
+  <pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
+; Pixel 0 = b7 b3     Pixel 1 = b6 b2
+; Pixel 2 = b5 b1     Pixel 3 = b4 b0</span></pre>
+
+  <h3>Screen RAM Address Calculation</h3>
+  <p>The CPC uses an <strong style="color:var(--cpc-orange)">interleaved raster layout</strong> — consecutive bytes do NOT go to consecutive scan lines. Character rows are interleaved across 8 scan lines.</p>
+  <pre><span class="comment">; Screen address for (X_byte, Y) with base &amp;C000:</span>
+<span class="comment">; Address = &amp;C000 + (char_row × 80) + (scan_line × 2048) + X_byte</span>
+<span class="comment">; Where: char_row = Y / 8,  scan_line = Y MOD 8</span>
+
+<span class="label">SCREEN_ADDR:</span>
+    <span class="instr">LD</span>  A, L          <span class="comment">; L = Y coordinate</span>
+    <span class="instr">AND</span> <span class="number">&amp;07</span>          <span class="comment">; Scan line within char row</span>
+    <span class="instr">RRCA</span>              <span class="comment">; × 256 high byte</span>
+    <span class="instr">RRCA</span>
+    <span class="instr">RRCA</span>
+    <span class="instr">OR</span>  <span class="number">&amp;C0</span>          <span class="comment">; Add base &amp;C000</span>
+    <span class="instr">LD</span>  H, A
+    <span class="instr">LD</span>  A, L
+    <span class="instr">AND</span> <span class="number">&amp;F8</span>          <span class="comment">; Char row × 8</span>
+    <span class="instr">RRCA</span>
+    <span class="instr">RRCA</span>
+    <span class="instr">RRCA</span>              <span class="comment">; ÷ 8 then × 80 = × 10</span>
+    <span class="instr">ADD</span> A, <span class="number">80</span>        <span class="comment">; Actually multiply properly...</span>
+    <span class="instr">LD</span>  L, A          <span class="comment">; HL = screen address</span></pre>
+
+  <div class="info-box note"><strong>Graphics Coordinate System</strong>BASIC graphics always use a 640×400 coordinate system regardless of MODE. In MODE 0 each physical pixel = 4×2 units; in MODE 1 = 2×2 units; in MODE 2 = 1×2 units.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9: CRTC
+════════════════════════════════════════════ -->
+<section id="crtc">
+  <div class="section-header"><span class="section-num">09</span><h2>CRTC 6845 — Video Timing</h2></div>
+
+  <h3>CRTC Variants in CPC Hardware</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Type</th><th>Chip</th><th>Found in</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="val">Type 0</td><td>HD6845S</td><td>Early CPC 464</td><td>Most restrictive status register</td></tr>
+      <tr><td class="val">Type 1</td><td>UM6845</td><td>CPC 464</td><td>Different status register</td></tr>
+      <tr><td class="val">Type 2</td><td>MC6845</td><td>464 · 664 · 6128</td><td class="val">Standard · most emulators default</td></tr>
+      <tr><td class="val">Type 3</td><td>ASIC</td><td>CPC+</td><td>Very different — hardware sprites</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>CRTC Port Access</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Port</th><th>R/W</th><th>Function</th></tr></thead>
+    <tbody>
+      <tr><td class="addr">&amp;BC00</td><td>Write</td><td>Select CRTC register (0–17)</td></tr>
+      <tr><td class="addr">&amp;BD00</td><td>Write</td><td>Write to selected register</td></tr>
+      <tr><td class="addr">&amp;BC00</td><td>Read</td><td>Status register (CRTC type-dependent)</td></tr>
+      <tr><td class="addr">&amp;BD00</td><td>Read</td><td>Read selected register</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>CRTC Registers</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Reg</th><th>Name</th><th>Description</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td class="reg">R0</td><td>Horiz Total</td><td>Total chars per line − 1</td><td class="val">63</td></tr>
+      <tr><td class="reg">R1</td><td>Horiz Displayed</td><td>Displayed chars per line</td><td class="val">40</td></tr>
+      <tr><td class="reg">R2</td><td>H Sync Position</td><td>Start of H sync</td><td class="val">46</td></tr>
+      <tr><td class="reg">R3</td><td>H/V Sync Width</td><td>H sync (bits 3–0), V sync (bits 7–4)</td><td class="val">&amp;8E</td></tr>
+      <tr><td class="reg">R4</td><td>Vertical Total</td><td>Total char rows − 1</td><td class="val">38</td></tr>
+      <tr><td class="reg">R5</td><td>Vertical Adjust</td><td>Extra scan lines</td><td class="val">0</td></tr>
+      <tr><td class="reg">R6</td><td>Vert Displayed</td><td>Displayed char rows</td><td class="val">25</td></tr>
+      <tr><td class="reg">R7</td><td>V Sync Position</td><td>Start of V sync</td><td class="val">30</td></tr>
+      <tr><td class="reg">R9</td><td>Max Scan Line</td><td>Scan lines per char row − 1</td><td class="val">7</td></tr>
+      <tr><td class="reg">R12</td><td>Start Addr High</td><td>Screen start address high byte</td><td class="val">&amp;30</td></tr>
+      <tr><td class="reg">R13</td><td>Start Addr Low</td><td>Screen start address low byte</td><td class="val">&amp;00</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="info-box tip"><strong>Hardware Scrolling</strong>Change CRTC R12/R13 each frame for smooth hardware scroll — no memory copy needed. This is one of the most powerful CPC programming techniques.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 10: COLOURS
+════════════════════════════════════════════ -->
+<section id="colours">
+  <div class="section-header"><span class="section-num">10</span><h2>Colour Palette</h2></div>
+
+  <p>The CPC Gate Array supports <strong style="color:var(--cpc-yellow)">27 distinct colours</strong> (32 hardware numbers, some duplicates). Up to 16 pens are active simultaneously, each mapped to one hardware colour.</p>
+
+  <div class="colour-grid">
+    <div class="colour-swatch"><div class="swatch-box" style="background:#000000"></div><span class="swatch-num">#16</span><span class="swatch-name">Black</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#000080"></div><span class="swatch-num">#04</span><span class="swatch-name">Blue</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#0000FF"></div><span class="swatch-num">#21</span><span class="swatch-name">Bright Blue</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#800000"></div><span class="swatch-num">#28</span><span class="swatch-name">Red</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#800080"></div><span class="swatch-num">#24</span><span class="swatch-name">Magenta</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#8000FF"></div><span class="swatch-num">#29</span><span class="swatch-name">Mauve</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FF0000"></div><span class="swatch-num">#12</span><span class="swatch-name">Bright Red</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FF0080"></div><span class="swatch-num">#05</span><span class="swatch-name">Purple</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FF00FF"></div><span class="swatch-num">#13</span><span class="swatch-name">Bright Magenta</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#0080FF"></div><span class="swatch-num">#22</span><span class="swatch-name">Sky Blue</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#00FFFF"></div><span class="swatch-num">#06</span><span class="swatch-name">Cyan</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#80FFFF"></div><span class="swatch-num">#23</span><span class="swatch-name">Pastel Blue</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#808000"></div><span class="swatch-num">#30</span><span class="swatch-name">Yellow</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FFFFFF"></div><span class="swatch-num">#00</span><span class="swatch-name">White</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FFFF80"></div><span class="swatch-num">#31</span><span class="swatch-name">Pastel Yellow</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FF8000"></div><span class="swatch-num">#14</span><span class="swatch-name">Orange</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FF80FF"></div><span class="swatch-num">#07</span><span class="swatch-name">Pink</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#008000"></div><span class="swatch-num">#18</span><span class="swatch-name">Green</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#80FF00"></div><span class="swatch-num">#19</span><span class="swatch-name">Lime Green</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#00FF00"></div><span class="swatch-num">#26</span><span class="swatch-name">Bright Green</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#80FF80"></div><span class="swatch-num">#25</span><span class="swatch-name">Pastel Green</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#00FFFF"></div><span class="swatch-num">#27</span><span class="swatch-name">Bright Cyan</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#808000"></div><span class="swatch-num">#10</span><span class="swatch-name">Lime</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FFFF00"></div><span class="swatch-num">#11</span><span class="swatch-name">Bright Yellow</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#FFFF80"></div><span class="swatch-num">#03</span><span class="swatch-name">Pastel Yellow</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#80FF80"></div><span class="swatch-num">#02</span><span class="swatch-name">Sea Green</span></div>
+    <div class="colour-swatch"><div class="swatch-box" style="background:#00FFFF"></div><span class="swatch-num">#17</span><span class="swatch-name">Bright Cyan</span></div>
+  </div>
+
+  <h3>Setting Palette in Assembly</h3>
+  <pre><span class="comment">; Set pen 1 to hardware colour 6 (Cyan)</span>
+<span class="comment">; Step 1: Select pen  (write %01xxxxxx to port &amp;7F)</span>
+    <span class="instr">LD</span>  A, <span class="number">&amp;41</span>         <span class="comment">; %01 000001 = pen 1</span>
+    <span class="instr">LD</span>  BC, <span class="number">&amp;7F00</span>
+    <span class="instr">OUT</span> (C), A
+<span class="comment">; Step 2: Set colour (write %00xxxxx to port &amp;7F)</span>
+    <span class="instr">LD</span>  A, <span class="number">&amp;06</span>         <span class="comment">; Hardware colour 6 = Cyan</span>
+    <span class="instr">OUT</span> (C), A</pre>
+
+  <pre><span class="comment">; BASIC equivalent:</span>
+INK 1, 6         <span class="comment">: REM pen 1 = hardware colour 6 (cyan)</span>
+INK 0, 16        <span class="comment">: REM pen 0 = hardware colour 16 (black)</span>
+BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange)</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 11: SOUND
+════════════════════════════════════════════ -->
+<section id="ay">
+  <div class="section-header"><span class="section-num">11</span><h2>Sound — AY-3-8912</h2></div>
+
+  <p>The General Instrument AY-3-8912 (equivalent to YM2149) provides 3 independent tone channels (A, B, C), one shared noise generator, and one envelope generator. It runs at <strong style="color:var(--cpc-yellow)">1 MHz</strong> (CPU clock / 4) and is accessed via the PPI 8255.</p>
+
+  <h3>AY Register Map</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Reg</th><th>Name</th><th>Bits</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="reg">R0</td><td>Ch A Tone Low</td><td>7–0</td><td>Channel A frequency, lower 8 bits</td></tr>
+      <tr><td class="reg">R1</td><td>Ch A Tone High</td><td>3–0</td><td>Channel A frequency, upper 4 bits</td></tr>
+      <tr><td class="reg">R2</td><td>Ch B Tone Low</td><td>7–0</td><td>Channel B frequency, lower 8 bits</td></tr>
+      <tr><td class="reg">R3</td><td>Ch B Tone High</td><td>3–0</td><td>Channel B frequency, upper 4 bits</td></tr>
+      <tr><td class="reg">R4</td><td>Ch C Tone Low</td><td>7–0</td><td>Channel C frequency, lower 8 bits</td></tr>
+      <tr><td class="reg">R5</td><td>Ch C Tone High</td><td>3–0</td><td>Channel C frequency, upper 4 bits</td></tr>
+      <tr><td class="reg">R6</td><td>Noise Period</td><td>4–0</td><td>Noise frequency (0–31)</td></tr>
+      <tr><td class="reg">R7</td><td>Mixer Control</td><td>7–0</td><td>Bits 5–3: noise enable, 2–0: tone enable (0=on)</td></tr>
+      <tr><td class="reg">R8</td><td>Ch A Volume</td><td>4–0</td><td>Volume 0–15 · bit 4=1: use envelope</td></tr>
+      <tr><td class="reg">R9</td><td>Ch B Volume</td><td>4–0</td><td>Volume 0–15 · bit 4=1: use envelope</td></tr>
+      <tr><td class="reg">R10</td><td>Ch C Volume</td><td>4–0</td><td>Volume 0–15 · bit 4=1: use envelope</td></tr>
+      <tr><td class="reg">R11</td><td>Envelope Low</td><td>7–0</td><td>Envelope period, lower 8 bits</td></tr>
+      <tr><td class="reg">R12</td><td>Envelope High</td><td>7–0</td><td>Envelope period, upper 8 bits</td></tr>
+      <tr><td class="reg">R13</td><td>Envelope Shape</td><td>3–0</td><td>Waveform shape (0–15)</td></tr>
+      <tr><td class="reg">R14</td><td>I/O Port A</td><td>7–0</td><td>Joystick port 1 + keyboard row data</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Mixer Register (R7) Bit Map</h3>
+  <pre>Bit:   7    6    5    4    3    2    1    0
+       IOB  IOA  /NC  /NB  /NA  /TC  /TB  /TA
+              ← noise enable → ← tone enable →
+       0 = channel ENABLED (active low)</pre>
+
+  <h3>Tone Frequency Formula</h3>
+  <pre><span class="comment">; Frequency (Hz) = AY_Clock / (16 × Tone_Period)
+; AY_Clock = 1,000,000 Hz (1 MHz)
+;
+; Middle C (261.63 Hz):
+;   TP = 1,000,000 / (16 × 261.63) ≈ 239  = &amp;EF
+;   R0 = &amp;EF,  R1 = &amp;00</span></pre>
+
+  <h3>Note Period Table</h3>
+  <div class="table-wrap"><table class="note-period">
+    <thead><tr><th>Note</th><th>Octave 3</th><th>Octave 4</th><th>Octave 5</th><th>Octave 6</th></tr></thead>
+    <tbody>
+      <tr><td>C</td><td>477</td><td>239</td><td>119</td><td>60</td></tr>
+      <tr><td>C#</td><td>450</td><td>225</td><td>113</td><td>56</td></tr>
+      <tr><td>D</td><td>425</td><td>213</td><td>106</td><td>53</td></tr>
+      <tr><td>E</td><td>379</td><td>190</td><td>95</td><td>47</td></tr>
+      <tr><td>F</td><td>357</td><td>179</td><td>89</td><td>45</td></tr>
+      <tr><td>G</td><td>318</td><td>159</td><td>80</td><td>40</td></tr>
+      <tr><td>A</td><td>284</td><td>142</td><td>71</td><td>35</td></tr>
+      <tr><td>B</td><td>253</td><td>127</td><td>63</td><td>32</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Writing to AY Registers (Assembly)</h3>
+  <pre><span class="label">AY_WRITE:</span>       <span class="comment">; B = register number, C = value</span>
+    <span class="instr">LD</span>  A, B
+    <span class="instr">OUT</span> (<span class="number">&amp;F4</span>), A   <span class="comment">; PPI Port A = register number</span>
+    <span class="instr">LD</span>  A, <span class="number">&amp;C0</span>     <span class="comment">; BDIR=1, BC1=1 → Latch address</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
+    <span class="instr">LD</span>  A, <span class="number">&amp;40</span>     <span class="comment">; Inactive</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
+    <span class="instr">LD</span>  A, C
+    <span class="instr">OUT</span> (<span class="number">&amp;F4</span>), A   <span class="comment">; PPI Port A = data value</span>
+    <span class="instr">LD</span>  A, <span class="number">&amp;80</span>     <span class="comment">; BDIR=1, BC1=0 → Write data</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
+    <span class="instr">LD</span>  A, <span class="number">&amp;40</span>     <span class="comment">; Inactive</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
+    <span class="instr">RET</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 12: I/O PORT MAP
+════════════════════════════════════════════ -->
+<section id="iomap">
+  <div class="section-header"><span class="section-num">12</span><h2>I/O Port Map</h2></div>
+
+  <p>The CPC decodes only the <strong style="color:var(--cpc-orange)">upper 8 bits</strong> of the Z80 16-bit port address. Each register is accessible from 256 consecutive port addresses.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Port (A15–A8)</th><th>Read</th><th>Write</th></tr></thead>
+    <tbody>
+      <tr><td class="addr">&amp;7F xx</td><td>—</td><td>Gate Array: pen, colour, mode, ROM</td></tr>
+      <tr><td class="addr">&amp;BC xx</td><td>CRTC status</td><td>CRTC register select</td></tr>
+      <tr><td class="addr">&amp;BD xx</td><td>CRTC data</td><td>CRTC data write</td></tr>
+      <tr><td class="addr">&amp;DF xx</td><td>—</td><td>ROM expansion select</td></tr>
+      <tr><td class="addr">&amp;F4 xx</td><td>PPI Port A</td><td>PPI Port A (AY data bus)</td></tr>
+      <tr><td class="addr">&amp;F5 xx</td><td>PPI Port B</td><td>PPI Port B (VSYNC, tape in, etc.)</td></tr>
+      <tr><td class="addr">&amp;F6 xx</td><td>PPI Port C</td><td>PPI Port C (AY control, keyboard row)</td></tr>
+      <tr><td class="addr">&amp;F7 xx</td><td>—</td><td>PPI Control Word</td></tr>
+      <tr><td class="addr">&amp;FB7E</td><td>FDC status</td><td>FDC command (664/6128)</td></tr>
+      <tr><td class="addr">&amp;FB7F</td><td>FDC data</td><td>FDC data (664/6128)</td></tr>
+      <tr><td class="addr">&amp;FA7E</td><td>—</td><td>Disk motor control (664/6128)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 13: PPI 8255
+════════════════════════════════════════════ -->
+<section id="ppi">
+  <div class="section-header"><span class="section-num">13</span><h2>PPI 8255 — Peripheral Interface</h2></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Port</th><th>I/O</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="addr">&amp;F4 — Port A</td><td>In/Out</td><td>AY-3-8912 bi-directional data bus</td></tr>
+      <tr><td class="addr">&amp;F5 — Port B</td><td>Input</td><td>VSYNC · printer busy · tape in · CRTC type · refresh rate</td></tr>
+      <tr><td class="addr">&amp;F6 — Port C</td><td>Output</td><td>Upper: AY control (BDIR/BC1) · Lower: tape motor · tape data · keyboard row</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>PPI Port B Bit Map</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bit</th><th>Signal</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val">7</td><td>VSYNC</td><td class="val">1 during vertical sync</td></tr>
+      <tr><td class="val">6</td><td>LK4</td><td>Printer ready / expansion port</td></tr>
+      <tr><td class="val">5</td><td>LK3</td><td>1 = 50 Hz screen refresh</td></tr>
+      <tr><td class="val">4</td><td>LK2</td><td>CRTC type indicator</td></tr>
+      <tr><td class="val">1</td><td>PRNT</td><td>Printer busy (0 = busy)</td></tr>
+      <tr><td class="val">0</td><td>TAPE</td><td>Tape data input</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>PPI Port C Bit Map</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bit</th><th>Signal</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val">7</td><td>BDIR</td><td>AY Bus Direction (1 = write to AY)</td></tr>
+      <tr><td class="val">6</td><td>BC1</td><td>AY Bus Control 1</td></tr>
+      <tr><td class="val">5</td><td>/TAPE MOTOR</td><td>Tape motor relay (0 = motor on)</td></tr>
+      <tr><td class="val">4</td><td>TAPE DATA</td><td>Tape data output</td></tr>
+      <tr><td class="val">3–0</td><td>KEY ROW</td><td>Keyboard matrix row select (0–9)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>AY Control Lines (Port C)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>BDIR</th><th>BC1</th><th>Operation</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0</td><td>Inactive</td></tr>
+      <tr><td>0</td><td>1</td><td>Read from AY register</td></tr>
+      <tr><td>1</td><td>0</td><td class="val">Write to AY register</td></tr>
+      <tr><td>1</td><td>1</td><td class="val">Latch address into AY</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 14: INTERRUPTS
+════════════════════════════════════════════ -->
+<section id="interrupts">
+  <div class="section-header"><span class="section-num">14</span><h2>Interrupts</h2></div>
+
+  <p>The Gate Array fires an interrupt every <strong style="color:var(--cpc-yellow)">52 scan lines</strong> = 6× per frame at 50 Hz = <strong style="color:var(--cpc-yellow)">300 Hz</strong>. The firmware uses this for the system clock, keyboard scanning, SOUND queue management, and AFTER/EVERY BASIC timers.</p>
+
+  <h3>Adding a Timer Interrupt (Firmware)</h3>
+  <pre><span class="comment">; KL ADD TICKER at &amp;BC0E — fires custom routine at regular intervals
+; Ticker block: 2 bytes countdown, 2 bytes reload, 2 bytes routine address</span>
+
+<span class="label">ticker_block:</span>
+    <span class="instr">DW</span>  6              <span class="comment">; Countdown (decremented each interrupt)</span>
+    <span class="instr">DW</span>  6              <span class="comment">; Reload value</span>
+    <span class="instr">DW</span>  my_routine     <span class="comment">; Routine address (called at count=0)</span>
+
+<span class="label">install_ticker:</span>
+    <span class="instr">LD</span>  HL, ticker_block
+    <span class="instr">CALL</span> <span class="number">&amp;BC0E</span>          <span class="comment">; KL ADD TICKER — fires my_routine at 50Hz</span>
+    <span class="instr">RET</span>
+
+<span class="label">my_routine:</span>          <span class="comment">; Called every 6 Gate Array interrupts (50Hz)</span>
+    <span class="instr">PUSH</span> AF            <span class="comment">; Must preserve ALL registers</span>
+    <span class="comment">; ... your per-frame code here ...</span>
+    <span class="instr">POP</span>  AF
+    <span class="instr">RET</span>
+
+<span class="label">wait_vsync:</span>          <span class="comment">; Wait for vertical sync</span>
+    <span class="instr">IN</span>  A, (<span class="number">&amp;F5</span>)       <span class="comment">; Read PPI Port B</span>
+    <span class="instr">AND</span> <span class="number">&amp;80</span>            <span class="comment">; Bit 7 = VSYNC</span>
+    <span class="instr">JR</span>  Z, wait_vsync
+    <span class="instr">RET</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 15: KEYBOARD
+════════════════════════════════════════════ -->
+<section id="keyboard">
+  <div class="section-header"><span class="section-num">15</span><h2>Keyboard Matrix</h2></div>
+
+  <div class="table-wrap"><table class="kbd-matrix">
+    <thead><tr><th>Row</th><th>Bit 7</th><th>Bit 6</th><th>Bit 5</th><th>Bit 4</th><th>Bit 3</th><th>Bit 2</th><th>Bit 1</th><th>Bit 0</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td><span class="key-special">↑</span></td><td><span class="key-special">→</span></td><td><span class="key-special">↓</span></td><td><span class="key-special">F9</span></td><td><span class="key-special">F6</span></td><td><span class="key-special">F3</span></td><td><span class="key-special">ENTER</span></td><td><span class="key-special">F.</span></td></tr>
+      <tr><td>1</td><td><span class="key-special">←</span></td><td><span class="key-special">COPY</span></td><td><span class="key-special">F7</span></td><td><span class="key-special">F8</span></td><td><span class="key-special">F5</span></td><td><span class="key-special">F1</span></td><td><span class="key-special">F2</span></td><td><span class="key-special">F0</span></td></tr>
+      <tr><td>2</td><td><span class="key-special">CLR</span></td><td><span class="key">[</span></td><td><span class="key-special">RETURN</span></td><td><span class="key">]</span></td><td><span class="key-special">F4</span></td><td><span class="key-special">SHIFT</span></td><td><span class="key">\</span></td><td><span class="key-special">CTRL</span></td></tr>
+      <tr><td>3</td><td><span class="key">^</span></td><td><span class="key">-</span></td><td><span class="key">@</span></td><td><span class="key">P</span></td><td><span class="key">;</span></td><td><span class="key">:</span></td><td><span class="key">/</span></td><td><span class="key">.</span></td></tr>
+      <tr><td>4</td><td><span class="key">0</span></td><td><span class="key">9</span></td><td><span class="key">O</span></td><td><span class="key">I</span></td><td><span class="key">L</span></td><td><span class="key">K</span></td><td><span class="key">M</span></td><td><span class="key">,</span></td></tr>
+      <tr><td>5</td><td><span class="key">8</span></td><td><span class="key">7</span></td><td><span class="key">U</span></td><td><span class="key">Y</span></td><td><span class="key">H</span></td><td><span class="key">J</span></td><td><span class="key">N</span></td><td><span class="key">SPC</span></td></tr>
+      <tr><td>6</td><td><span class="key">6</span></td><td><span class="key">5</span></td><td><span class="key">R</span></td><td><span class="key">T</span></td><td><span class="key">G</span></td><td><span class="key">F</span></td><td><span class="key">B</span></td><td><span class="key">V</span></td></tr>
+      <tr><td>7</td><td><span class="key">4</span></td><td><span class="key">3</span></td><td><span class="key">E</span></td><td><span class="key">W</span></td><td><span class="key">S</span></td><td><span class="key">D</span></td><td><span class="key">C</span></td><td><span class="key">X</span></td></tr>
+      <tr><td>8</td><td><span class="key">1</span></td><td><span class="key">2</span></td><td><span class="key-special">ESC</span></td><td><span class="key">Q</span></td><td><span class="key-special">TAB</span></td><td><span class="key">A</span></td><td><span class="key-special">CAPS</span></td><td><span class="key">Z</span></td></tr>
+      <tr><td>9</td><td><span class="key-special">DEL</span></td><td><span class="key">-(n)</span></td><td>—</td><td><span class="key-special">SHIFT</span></td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Reading Keyboard in Assembly</h3>
+  <pre><span class="comment">; Read keyboard row and check for keypress
+; PPI Port C lower nibble → row select
+; AY Port A (R14) → column bits (0 = pressed)</span>
+
+<span class="label">KM_TEST_ROW:</span>    <span class="comment">; Input: A = row (0-9)</span>
+    <span class="instr">IN</span>  B, (<span class="number">&amp;F6</span>)    <span class="comment">; Read current Port C</span>
+    <span class="instr">AND</span> <span class="number">&amp;F0</span>         <span class="comment">; Preserve upper bits</span>
+    <span class="instr">OR</span>  B           <span class="comment">; Mix in row number (A must be cleared first)</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A    <span class="comment">; Set keyboard row</span>
+    <span class="comment">; Now read AY register 14 via PPI</span>
+    <span class="instr">LD</span>  A, <span class="number">14</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F4</span>), A    <span class="comment">; Select AY R14</span>
+    <span class="instr">LD</span>  A, <span class="number">&amp;40</span>     <span class="comment">; BC1=1, BDIR=0 → Read</span>
+    <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
+    <span class="instr">IN</span>  A, (<span class="number">&amp;F4</span>)   <span class="comment">; Read column bits</span>
+    <span class="instr">CPL</span>             <span class="comment">; Invert (1 = pressed)</span>
+    <span class="instr">RET</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 16: LOCOMOTIVE BASIC
+════════════════════════════════════════════ -->
+<section id="basic">
+  <div class="section-header"><span class="section-num">16</span><h2>Locomotive BASIC Reference</h2></div>
+
+  <h3>Screen &amp; Graphics Commands</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>MODE n</code></td><td>Set screen mode: 0 (160×200·16col), 1 (320×200·4col), 2 (640×200·2col)</td></tr>
+      <tr><td><code>CLS</code></td><td>Clear text screen</td></tr>
+      <tr><td><code>CLSG</code></td><td>Clear graphics screen</td></tr>
+      <tr><td><code>BORDER c</code></td><td>Set border to hardware colour c</td></tr>
+      <tr><td><code>INK p, c [, f]</code></td><td>Set pen p to hardware colour c (optional flash)</td></tr>
+      <tr><td><code>PEN p</code></td><td>Set foreground pen</td></tr>
+      <tr><td><code>PAPER p</code></td><td>Set background pen</td></tr>
+      <tr><td><code>LOCATE c, r</code></td><td>Move text cursor to column c, row r (1-based)</td></tr>
+      <tr><td><code>MOVE x, y</code></td><td>Move graphics cursor (no draw)</td></tr>
+      <tr><td><code>DRAW x, y [, ink]</code></td><td>Draw line to (x,y)</td></tr>
+      <tr><td><code>DRAWR dx, dy</code></td><td>Draw relative</td></tr>
+      <tr><td><code>PLOT x, y [, ink]</code></td><td>Plot single pixel</td></tr>
+      <tr><td><code>CIRCLE x, y, r</code></td><td>Draw circle</td></tr>
+      <tr><td><code>FILL [ink]</code></td><td>Flood fill from graphics cursor</td></tr>
+      <tr><td><code>ORIGIN x, y</code></td><td>Set graphics origin</td></tr>
+      <tr><td><code>TAG</code></td><td>Print text at graphics cursor position</td></tr>
+      <tr><td><code>SYMBOL n, b1..b8</code></td><td>Redefine character n with 8 bytes</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Sound Commands</h3>
+  <pre>SOUND ch, period [, dur [, vol [, venv [, tenv [, noise]]]]]
+<span class="comment">; ch: 1=A, 2=B, 4=C  (bitmask — 7=all three)
+; period: tone period 0-4095
+; dur: duration in 1/100ths second
+; vol: 0-15</span>
+
+SOUND <span class="number">1</span>, <span class="number">239</span>, <span class="number">100</span>, <span class="number">15</span>   <span class="comment">: REM Middle C on Ch A, 1 sec, full volume</span>
+SOUND <span class="number">7</span>, <span class="number">239</span>, <span class="number">50</span>        <span class="comment">: REM All three channels simultaneously</span>
+PLAY <span class="string">"CDEGAEC"</span>           <span class="comment">: REM MML music string</span>
+ENV  <span class="number">1</span>, <span class="number">5</span>, -1, <span class="number">16</span>       <span class="comment">: REM Define volume envelope</span>
+ENT  <span class="number">1</span>, <span class="number">100</span>, <span class="number">2</span>, <span class="number">8</span>       <span class="comment">: REM Define tone envelope</span></pre>
+
+  <h3>Timing &amp; Interrupts</h3>
+  <pre>AFTER <span class="number">300</span> GOSUB <span class="number">1000</span>        <span class="comment">: REM Call line 1000 after 1 second</span>
+EVERY <span class="number">150</span> GOSUB <span class="number">2000</span>        <span class="comment">: REM Call line 2000 every 0.5 seconds</span>
+AFTER <span class="number">0</span>, <span class="number">1</span> STOP            <span class="comment">: REM Cancel timer 1</span>
+PRINT TIME                   <span class="comment">: REM System time in 1/300ths seconds</span></pre>
+
+  <h3>Machine Code Integration</h3>
+  <pre>HIMEM = <span class="number">&amp;9FFF</span>              <span class="comment">: REM Protect &amp;A000-&amp;BFFF from BASIC</span>
+POKE <span class="number">&amp;4000</span>, <span class="number">&amp;C9</span>           <span class="comment">: REM Write RET at &amp;4000</span>
+CALL <span class="number">&amp;4000</span>                  <span class="comment">: REM Execute machine code routine</span>
+PEEK(<span class="number">&amp;4000</span>)                 <span class="comment">: REM Read byte from address</span></pre>
+
+  <h3>File I/O</h3>
+  <pre>LOAD <span class="string">"prog"</span>                <span class="comment">: REM Load BASIC program</span>
+SAVE <span class="string">"prog"</span>                <span class="comment">: REM Save BASIC program</span>
+LOAD <span class="string">"data.bin"</span>, <span class="number">&amp;4000</span>    <span class="comment">: REM Load binary to &amp;4000</span>
+SAVE <span class="string">"code.bin"</span>, B, <span class="number">&amp;4000</span>, <span class="number">&amp;2000</span>  <span class="comment">: REM Save 8KB binary from &amp;4000</span>
+RUN <span class="string">"game"</span>                 <span class="comment">: REM Load and run</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 17: FIRMWARE CALLS
+════════════════════════════════════════════ -->
+<section id="firmware">
+  <div class="section-header"><span class="section-num">17</span><h2>Firmware (BIOS) Calls</h2></div>
+
+  <div class="quick-grid">
+    <div class="quick-card">
+      <h4>Text / Screen (TXT)</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Address</th><th>Name</th><th>Params</th></tr></thead>
+        <tbody>
+          <tr><td class="addr">&amp;BB06</td><td>SET PEN</td><td>A=pen</td></tr>
+          <tr><td class="addr">&amp;BB0F</td><td>SET PAPER</td><td>A=paper</td></tr>
+          <tr><td class="addr">&amp;BB2A</td><td>SET CURSOR</td><td>H=col, L=row</td></tr>
+          <tr><td class="addr">&amp;BB30</td><td>GET CURSOR</td><td>→ H=col, L=row</td></tr>
+          <tr><td class="addr">&amp;BB54</td><td>STR OUTPUT</td><td>HL=addr, BC=len</td></tr>
+          <tr><td class="addr">&amp;BB5A</td><td>OUTPUT char</td><td>A=char</td></tr>
+          <tr><td class="addr">&amp;BB84</td><td>CLEAR WIN</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>Keyboard (KM)</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Address</th><th>Name</th><th>Returns</th></tr></thead>
+        <tbody>
+          <tr><td class="addr">&amp;BB06</td><td>WAIT CHAR</td><td>A=char</td></tr>
+          <tr><td class="addr">&amp;BB09</td><td>READ CHAR</td><td>Carry=0 if none</td></tr>
+          <tr><td class="addr">&amp;BB1E</td><td>READ CHAR</td><td>A=char, C set</td></tr>
+          <tr><td class="addr">&amp;BB21</td><td>WAIT KEY</td><td>A=key</td></tr>
+          <tr><td class="addr">&amp;BB24</td><td>TEST KEY</td><td>B=key#; C=pressed</td></tr>
+          <tr><td class="addr">&amp;BB2D</td><td>GET JOYSTICK</td><td>HL=values</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>Graphics (GRA)</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Address</th><th>Name</th><th>Params</th></tr></thead>
+        <tbody>
+          <tr><td class="addr">&amp;BBB6</td><td>MOVE ABS</td><td>DE=X, HL=Y</td></tr>
+          <tr><td class="addr">&amp;BBBB</td><td>MOVE REL</td><td>DE=dX, HL=dY</td></tr>
+          <tr><td class="addr">&amp;BBD0</td><td>PLOT ABS</td><td>DE=X, HL=Y</td></tr>
+          <tr><td class="addr">&amp;BBD9</td><td>DRAW ABS</td><td>DE=X, HL=Y</td></tr>
+          <tr><td class="addr">&amp;BBDC</td><td>DRAW REL</td><td>DE=dX, HL=dY</td></tr>
+          <tr><td class="addr">&amp;BBE2</td><td>FILL</td><td>A=ink</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>Screen / Mode (SCR)</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Address</th><th>Name</th><th>Params</th></tr></thead>
+        <tbody>
+          <tr><td class="addr">&amp;BC0B</td><td>SET MODE</td><td>A=mode (0/1/2)</td></tr>
+          <tr><td class="addr">&amp;BC14</td><td>SET INK</td><td>A=pen, B=colour</td></tr>
+          <tr><td class="addr">&amp;BC17</td><td>GET INK</td><td>A=pen → B=colour</td></tr>
+          <tr><td class="addr">&amp;BC1A</td><td>SET BORDER</td><td>B=colour</td></tr>
+          <tr><td class="addr">&amp;BC2F</td><td>SET OFFSET</td><td>HL=CRTC addr</td></tr>
+          <tr><td class="addr">&amp;BCAA</td><td>WAIT FLYBACK</td><td>Wait for VSYNC</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 18: Z80 ASSEMBLY
+════════════════════════════════════════════ -->
+<section id="z80asm">
+  <div class="section-header"><span class="section-num">18</span><h2>Z80 Assembly — Common Patterns</h2></div>
+
+  <h3>Hello World</h3>
+  <pre><span class="instr">ORG</span> <span class="number">&amp;4000</span>
+
+<span class="label">start:</span>
+    <span class="instr">LD</span>  HL, hello_str   <span class="comment">; Point to string</span>
+    <span class="instr">LD</span>  BC, hello_len   <span class="comment">; String length</span>
+    <span class="instr">CALL</span> <span class="number">&amp;BB54</span>          <span class="comment">; TXT STR OUTPUT</span>
+    <span class="instr">RET</span>
+
+<span class="label">hello_str:</span>  <span class="instr">DEFM</span> <span class="string">"Hello, Amstrad CPC!"</span>
+<span class="label">hello_len</span>   <span class="instr">EQU</span>  $ - hello_str</pre>
+
+  <h3>Block Move (LDIR)</h3>
+  <pre><span class="instr">LD</span>  HL, source      <span class="comment">; Source address</span>
+<span class="instr">LD</span>  DE, dest        <span class="comment">; Destination address</span>
+<span class="instr">LD</span>  BC, <span class="number">4096</span>        <span class="comment">; Byte count</span>
+<span class="instr">LDIR</span>                <span class="comment">; Copy 4KB — hardware accelerated!</span></pre>
+
+  <h3>Hardware Scroll</h3>
+  <pre><span class="label">SCROLL_RIGHT:</span>
+    <span class="instr">LD</span>  BC, <span class="number">&amp;BC0D</span>       <span class="comment">; Select CRTC register 13 (offset low)</span>
+    <span class="instr">OUT</span> (C), B
+    <span class="instr">LD</span>  A, (scroll_lo)
+    <span class="instr">INC</span> A
+    <span class="instr">LD</span>  (scroll_lo), A
+    <span class="instr">LD</span>  B, <span class="number">&amp;BD</span>
+    <span class="instr">OUT</span> (C), A          <span class="comment">; Write new offset (2 pixels right in MODE 1)</span>
+    <span class="instr">RET</span>
+<span class="label">scroll_lo:</span> <span class="instr">DEFB</span> <span class="number">0</span></pre>
+
+  <h3>Play Three-Voice Chord</h3>
+  <pre><span class="comment">; C major chord: C(239), E(190), G(159) in octave 4</span>
+<span class="label">PLAY_CHORD:</span>
+    <span class="instr">LD</span>  B, <span class="number">0</span>  : <span class="instr">LD</span>  C, <span class="number">239</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R0: Ch A low</span>
+    <span class="instr">LD</span>  B, <span class="number">1</span>  : <span class="instr">LD</span>  C, <span class="number">0</span>   : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R1: Ch A high</span>
+    <span class="instr">LD</span>  B, <span class="number">2</span>  : <span class="instr">LD</span>  C, <span class="number">190</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R2: Ch B low</span>
+    <span class="instr">LD</span>  B, <span class="number">3</span>  : <span class="instr">LD</span>  C, <span class="number">0</span>   : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R3: Ch B high</span>
+    <span class="instr">LD</span>  B, <span class="number">4</span>  : <span class="instr">LD</span>  C, <span class="number">159</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R4: Ch C low</span>
+    <span class="instr">LD</span>  B, <span class="number">5</span>  : <span class="instr">LD</span>  C, <span class="number">0</span>   : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R5: Ch C high</span>
+    <span class="instr">LD</span>  B, <span class="number">8</span>  : <span class="instr">LD</span>  C, <span class="number">12</span>  : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Volume A = 12</span>
+    <span class="instr">LD</span>  B, <span class="number">9</span>  : <span class="instr">LD</span>  C, <span class="number">12</span>  : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Volume B = 12</span>
+    <span class="instr">LD</span>  B, <span class="number">10</span> : <span class="instr">LD</span>  C, <span class="number">12</span>  : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Volume C = 12</span>
+    <span class="instr">LD</span>  B, <span class="number">7</span>  : <span class="instr">LD</span>  C, <span class="number">&amp;F8</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Mixer: all tones on</span>
+    <span class="instr">RET</span></pre>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 19: Z80 OPCODE REFERENCE
+════════════════════════════════════════════ -->
+<section id="opcodes">
+  <div class="section-header"><span class="section-num">19</span><h2>Z80 Opcode Reference</h2></div>
+
+  <h3>Load Instructions</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mnemonic</th><th>Bytes</th><th>Cycles</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>LD A, n</code></td><td>2</td><td>7</td><td>Load immediate into A</td></tr>
+      <tr><td><code>LD r, r'</code></td><td>1</td><td>4</td><td>Register to register</td></tr>
+      <tr><td><code>LD A, (HL)</code></td><td>1</td><td>7</td><td>Load from address in HL</td></tr>
+      <tr><td><code>LD A, (nn)</code></td><td>3</td><td>13</td><td>Load from absolute address</td></tr>
+      <tr><td><code>LD (HL), A</code></td><td>1</td><td>7</td><td>Store A to address in HL</td></tr>
+      <tr><td><code>LD (nn), A</code></td><td>3</td><td>13</td><td>Store A to absolute address</td></tr>
+      <tr><td><code>LD HL, nn</code></td><td>3</td><td>10</td><td>Load 16-bit immediate into HL</td></tr>
+      <tr><td><code>LD HL, (nn)</code></td><td>3</td><td>16</td><td>Load HL from memory address</td></tr>
+      <tr><td><code>LD A,(IX+d)</code></td><td>3</td><td>19</td><td>Load from indexed address</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Arithmetic &amp; Logic</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mnemonic</th><th>Flags</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ADD A, r</code></td><td>S Z H P/V N C</td><td>A = A + r</td></tr>
+      <tr><td><code>ADC A, r</code></td><td>S Z H P/V N C</td><td>A = A + r + Carry</td></tr>
+      <tr><td><code>SUB r</code></td><td>S Z H P/V N C</td><td>A = A − r</td></tr>
+      <tr><td><code>AND r</code></td><td>S Z H 0 P 0 0</td><td>A = A AND r</td></tr>
+      <tr><td><code>OR r</code></td><td>S Z 0 0 P 0 0</td><td>A = A OR r</td></tr>
+      <tr><td><code>XOR r</code></td><td>S Z 0 0 P 0 0</td><td>A = A XOR r</td></tr>
+      <tr><td><code>CP r</code></td><td>S Z H P N C</td><td>Compare A with r (flags only)</td></tr>
+      <tr><td><code>INC r</code></td><td>S Z H P/V N —</td><td>r = r + 1 (C unaffected)</td></tr>
+      <tr><td><code>DEC r</code></td><td>S Z H P/V N —</td><td>r = r − 1 (C unaffected)</td></tr>
+      <tr><td><code>ADD HL, rr</code></td><td>— — H — N C</td><td>HL = HL + 16-bit register pair</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Block Instructions (Z80 unique!)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mnemonic</th><th>Cycles</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val"><code>LDIR</code></td><td>21/16</td><td>(DE)←(HL), inc HL/DE, dec BC — repeat until BC=0</td></tr>
+      <tr><td class="val"><code>LDDR</code></td><td>21/16</td><td>(DE)←(HL), dec HL/DE, dec BC — repeat until BC=0</td></tr>
+      <tr><td class="val"><code>CPIR</code></td><td>21/16</td><td>Compare A=(HL), inc HL, dec BC — repeat until match or BC=0</td></tr>
+      <tr><td class="val"><code>OTIR</code></td><td>21/16</td><td>OUT(C)←(HL), inc HL, dec B — repeat until B=0</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Jump &amp; Call</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mnemonic</th><th>Cycles</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>JP nn</code></td><td>10</td><td>Unconditional jump</td></tr>
+      <tr><td><code>JP cc, nn</code></td><td>10</td><td>Conditional jump (NZ/Z/NC/C/PO/PE/P/M)</td></tr>
+      <tr><td><code>JR e</code></td><td>12</td><td>Relative jump ±127 bytes</td></tr>
+      <tr><td><code>JR cc, e</code></td><td>7/12</td><td>Conditional relative jump (NZ/Z/NC/C)</td></tr>
+      <tr><td class="val"><code>DJNZ e</code></td><td>8/13</td><td>Decrement B, jump if non-zero (loop counter)</td></tr>
+      <tr><td><code>CALL nn</code></td><td>17</td><td>Call subroutine</td></tr>
+      <tr><td><code>RET</code></td><td>10</td><td>Return from subroutine</td></tr>
+      <tr><td><code>RETI</code></td><td>14</td><td>Return from interrupt</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 20: AMSDOS
+════════════════════════════════════════════ -->
+<section id="amsdos">
+  <div class="section-header"><span class="section-num">20</span><h2>AMSDOS — Disc Operating System</h2></div>
+
+  <h3>Disc Specifications (3-inch format)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Format</td><td class="val">3-inch (CF2 / Hitachi)</td></tr>
+      <tr><td>Capacity</td><td class="val">180 KB per side</td></tr>
+      <tr><td>Tracks</td><td class="val">40 per side</td></tr>
+      <tr><td>Sectors per track</td><td class="val">9</td></tr>
+      <tr><td>Bytes per sector</td><td class="val">512</td></tr>
+      <tr><td>Encoding</td><td class="val">MFM double density</td></tr>
+      <tr><td>Transfer rate</td><td class="val">250 Kbit/s</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>RSX Commands</h3>
+  <pre>|CAT                    <span class="comment">; Directory listing</span>
+|ERA, <span class="string">"filename"</span>        <span class="comment">; Erase file</span>
+|REN, <span class="string">"newname"</span>, <span class="string">"old"</span>  <span class="comment">; Rename file</span>
+|DIR                    <span class="comment">; Detailed directory</span>
+|USER, n                <span class="comment">; Set user area (0–15)</span>
+|DRIVE, n               <span class="comment">; Select drive (0=A, 1=B)</span>
+|TAPE                   <span class="comment">; Switch to tape (464)</span>
+|DISC                   <span class="comment">; Switch to disc</span></pre>
+
+  <h3>AMSDOS File Header (128 bytes)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Offset</th><th>Size</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val">0</td><td>1</td><td>User number (0 = default)</td></tr>
+      <tr><td class="val">1–8</td><td>8</td><td>Filename (space-padded)</td></tr>
+      <tr><td class="val">9–11</td><td>3</td><td>Extension</td></tr>
+      <tr><td class="val">15</td><td>1</td><td>File type: 0=BASIC, 2=binary, 16=ASCII</td></tr>
+      <tr><td class="val">18–19</td><td>2</td><td>Load address</td></tr>
+      <tr><td class="val">21–22</td><td>2</td><td>Logical file length</td></tr>
+      <tr><td class="val">23–24</td><td>2</td><td>Execution address</td></tr>
+      <tr><td class="val">64–65</td><td>2</td><td>Checksum (bytes 0–63)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 21: TOOLS
+════════════════════════════════════════════ -->
+<section id="tools">
+  <div class="section-header"><span class="section-num">21</span><h2>Cross-Development Tools</h2></div>
+
+  <h3>Assemblers</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tool</th><th>Platform</th><th>Description</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td class="val">RASM</td><td>Win/Linux/Mac</td><td class="val">CPC-focused Z80 assembler · highly recommended</td><td><a href="https://github.com/EdouardBERGE/rasm" target="_blank">GitHub</a></td></tr>
+      <tr><td class="val">WinAPE</td><td>Windows</td><td>All-in-one emulator + built-in assembler</td><td><a href="https://www.winape.net/" target="_blank">winape.net</a></td></tr>
+      <tr><td class="val">Pasmo</td><td>Cross-platform</td><td>Lightweight Z80 assembler</td><td><a href="https://pasmo.speccy.org/" target="_blank">pasmo.speccy.org</a></td></tr>
+      <tr><td class="val">z88dk</td><td>Cross-platform</td><td>C compiler + assembler suite · CPC target</td><td><a href="https://z88dk.org/" target="_blank">z88dk.org</a></td></tr>
+      <tr><td class="val">SDCC</td><td>Cross-platform</td><td>Small Device C Compiler · Z80 backend</td><td><a href="http://sdcc.sourceforge.net/" target="_blank">sdcc.sf.net</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Disc Image Tools</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tool</th><th>Description</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td class="val">iDSK</td><td>Create / manage CPC .DSK images</td><td><a href="https://github.com/cpcsdk/iDSK" target="_blank">GitHub</a></td></tr>
+      <tr><td class="val">cpcxfs</td><td>CPC disc image filesystem access</td><td><a href="https://github.com/reidrac/cpcxfs" target="_blank">GitHub</a></td></tr>
+      <tr><td class="val">HxC Floppy</td><td>USB floppy emulator · supports CPC format</td><td><a href="https://hxc2001.com/" target="_blank">hxc2001.com</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Music Tools</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tool</th><th>Description</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td class="val">Arkos Tracker 2</td><td class="val">Professional CPC/ZX music tracker with ASM export</td><td><a href="https://www.julien-nevo.com/arkostracker/" target="_blank">julien-nevo.com</a></td></tr>
+      <tr><td class="val">PT3 Player</td><td>ProTracker 3 replayer for CPC</td><td>CPCWiki</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 22: EMULATORS
+════════════════════════════════════════════ -->
+<section id="emulators">
+  <div class="section-header"><span class="section-num">22</span><h2>Emulators</h2></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Emulator</th><th>Platform</th><th>Description</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td class="val">WinAPE</td><td>Windows</td><td class="val">Most popular · built-in assembler/debugger · excellent accuracy</td><td><a href="https://www.winape.net/" target="_blank">winape.net</a></td></tr>
+      <tr><td class="val">Caprice32</td><td>Win/Linux/Mac</td><td>High compatibility · actively maintained</td><td><a href="https://github.com/ColinPitrat/caprice32" target="_blank">GitHub</a></td></tr>
+      <tr><td class="val">RetroVirtualMachine</td><td>Win/Mac/Linux</td><td class="val">Excellent debugger · cycle-accurate</td><td><a href="https://www.retrovirtualmachine.org/" target="_blank">retrovirtualmachine.org</a></td></tr>
+      <tr><td class="val">MAME</td><td>Cross-platform</td><td>All CPC variants · very accurate</td><td><a href="https://www.mamedev.org/" target="_blank">mamedev.org</a></td></tr>
+      <tr><td class="val">CPC-EMU</td><td>Web browser</td><td>Online CPC emulator · instant access</td><td><a href="https://cpcemu.arnoldemu.com/" target="_blank">cpcemu.arnoldemu.com</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Disc Image Formats</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Extension</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td class="val">.DSK</td><td>Standard DSK format — most common, widely supported</td></tr>
+      <tr><td class="val">.EDK</td><td>Extended DSK — better sector-level support</td></tr>
+      <tr><td class="val">.SNA</td><td>Snapshot — memory + CPU state</td></tr>
+      <tr><td class="val">.CDT</td><td>Tape image for CPC 464 software</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 23: RESOURCES
+════════════════════════════════════════════ -->
+<section id="resources">
+  <div class="section-header"><span class="section-num">23</span><h2>Online Resources &amp; Communities</h2></div>
+
+  <h3>Documentation &amp; Community</h3>
+  <div class="quick-grid">
+    <div class="quick-card">
+      <h4>Reference &amp; Documentation</h4>
+      <div class="table-wrap"><table>
+        <tbody>
+          <tr><td><a href="https://www.cpcwiki.eu/" target="_blank">CPCWiki</a></td><td class="note">Comprehensive CPC encyclopedia</td></tr>
+          <tr><td><a href="https://www.cpc-power.com/" target="_blank">CPC-POWER</a></td><td class="note">10,000+ software archive</td></tr>
+          <tr><td><a href="https://github.com/EdouardBERGE/rasm" target="_blank">RASM docs</a></td><td class="note">Assembler documentation</td></tr>
+          <tr><td><a href="https://z88dk.org/" target="_blank">Z88DK CPC</a></td><td class="note">C development kit</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>Community</h4>
+      <div class="table-wrap"><table>
+        <tbody>
+          <tr><td><a href="https://www.cpcwiki.eu/forum/" target="_blank">CPCWiki Forum</a></td><td class="note">Primary English community</td></tr>
+          <tr><td><a href="https://www.reddit.com/r/amstrad/" target="_blank">r/amstrad</a></td><td class="note">Reddit community</td></tr>
+          <tr><td><a href="https://cpc.demobase.de/" target="_blank">CPC DemoBase</a></td><td class="note">Demo scene archive</td></tr>
+          <tr><td><a href="https://pouet.net/" target="_blank">Pouet.net</a></td><td class="note">Scene releases</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <h3>Hardware, PCBs &amp; Makers</h3>
+  <div class="quick-grid">
+
+    <!-- PCBWay Community -->
+    <div class="quick-card" style="border-color:rgba(26,56,192,0.6);">
+      <h4 style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;background:linear-gradient(135deg,#1155cc,#0044aa);color:#fff;font-family:'Share Tech Mono',monospace;font-size:0.62rem;font-weight:bold;padding:3px 8px;border-radius:3px;letter-spacing:0.08em;">PCBWay</span>
+        PCB Community Projects
+      </h4>
+      <p style="font-size:0.8rem;color:var(--cpc-dimwhite);margin-bottom:10px;line-height:1.5;">
+        Open project-sharing hub for PCB designs, schematics, and gerber files. Search <em>Amstrad</em> or <em>CPC</em> to find community-made replacement boards, expansions, and modern upgrades — all orderable directly from PCBWay.
+      </p>
+      <div class="table-wrap"><table>
+        <tbody>
+          <tr><td><a href="https://www.pcbway.com/project/shareproject/Computers-USB/" target="_blank">Computers &amp; USB</a></td><td class="note">Retro computer PCB category</td></tr>
+          <tr><td><a href="https://www.pcbway.com/project/shareproject/" target="_blank">All Projects</a></td><td class="note">Browse &amp; search full library</td></tr>
+          <tr><td><a href="https://www.pcbway.com/project/bazaar.html" target="_blank">PCBWay Bazaar</a></td><td class="note">Buy assembled boards &amp; kits</td></tr>
+        </tbody>
+      </table></div>
+      <div style="margin-top:10px;padding:8px 10px;background:rgba(26,56,192,0.15);border-left:3px solid var(--basic-blue-l);border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--kbd-key);">
+        ► Search: <span style="color:var(--basic-yellow)">"Amstrad CPC"</span> · <span style="color:var(--basic-yellow)">"Z80"</span> · <span style="color:var(--basic-yellow)">"CPC 464 repair"</span>
+      </div>
+    </div>
+
+    <!-- Tindie -->
+    <div class="quick-card" style="border-color:rgba(26,56,192,0.6);">
+      <h4 style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;background:linear-gradient(135deg,#e05a00,#c04000);color:#fff;font-family:'Share Tech Mono',monospace;font-size:0.62rem;font-weight:bold;padding:3px 8px;border-radius:3px;letter-spacing:0.08em;">Tindie</span>
+        Indie Hardware Marketplace
+      </h4>
+      <p style="font-size:0.8rem;color:var(--cpc-dimwhite);margin-bottom:10px;line-height:1.5;">
+        The go-to marketplace for indie makers selling finished hardware kits and boards. Find ready-to-ship CPC upgrades: RAM expansions, ROM boards, SD card interfaces, audio mods, FPGA replacements, and more.
+      </p>
+      <div class="table-wrap"><table>
+        <tbody>
+          <tr><td><a href="https://www.tindie.com/search/?q=amstrad+cpc" target="_blank">Amstrad CPC</a></td><td class="note">Search CPC hardware &amp; kits</td></tr>
+          <tr><td><a href="https://www.tindie.com/search/?q=z80" target="_blank">Z80 boards</a></td><td class="note">Z80-based projects &amp; kits</td></tr>
+          <tr><td><a href="https://www.tindie.com/search/?q=retro+computer" target="_blank">Retro Computer</a></td><td class="note">8-bit era hardware &amp; mods</td></tr>
+        </tbody>
+      </table></div>
+      <div style="margin-top:10px;padding:8px 10px;background:rgba(26,56,192,0.15);border-left:3px solid var(--cpc-orange);border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--kbd-key);">
+        ► Notable: <span style="color:var(--basic-yellow)">RAM expansions</span> · <span style="color:var(--basic-yellow)">SD card I/F</span> · <span style="color:var(--basic-yellow)">FPGA cores</span> · <span style="color:var(--basic-yellow)">audio mods</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 24: QUICK REFERENCE
+════════════════════════════════════════════ -->
+<section id="quickref">
+  <div class="section-header"><span class="section-num">24</span><h2>Quick Reference</h2></div>
+
+  <div class="quick-grid">
+    <div class="quick-card">
+      <h4>Gate Array Port &amp;7F Summary</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Value</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="val">&amp;40 + n</td><td>Select pen n (0–15)</td></tr>
+          <tr><td class="val">&amp;50</td><td>Select border pen</td></tr>
+          <tr><td class="val">&amp;00 + c</td><td>Set colour c for selected pen</td></tr>
+          <tr><td class="val">&amp;C0</td><td>MODE 0, ROMs on</td></tr>
+          <tr><td class="val">&amp;C1</td><td>MODE 1, ROMs on (default)</td></tr>
+          <tr><td class="val">&amp;C2</td><td>MODE 2, ROMs on</td></tr>
+          <tr><td class="val">&amp;E1</td><td>MODE 1, ROMs off</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>Key Firmware Addresses</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Address</th><th>Function</th></tr></thead>
+        <tbody>
+          <tr><td class="addr">&amp;BB09</td><td>Read key (non-blocking)</td></tr>
+          <tr><td class="addr">&amp;BB5A</td><td>Print character (A=char)</td></tr>
+          <tr><td class="addr">&amp;BB54</td><td>Print string (HL/BC)</td></tr>
+          <tr><td class="addr">&amp;BBD9</td><td>Draw line (DE=X, HL=Y)</td></tr>
+          <tr><td class="addr">&amp;BBD0</td><td>Plot point (DE=X, HL=Y)</td></tr>
+          <tr><td class="addr">&amp;BC0B</td><td>Set mode (A=0/1/2)</td></tr>
+          <tr><td class="addr">&amp;BC14</td><td>Set ink (A=pen, B=col)</td></tr>
+          <tr><td class="addr">&amp;BCAA</td><td>Wait for VSYNC</td></tr>
+          <tr><td class="addr">&amp;BC0E</td><td>Add ticker (HL=block)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>CRTC Ports</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Action</th><th>Port</th></tr></thead>
+        <tbody>
+          <tr><td>Select register</td><td class="addr">Write &amp;BC00</td></tr>
+          <tr><td>Write value</td><td class="addr">Write &amp;BD00</td></tr>
+          <tr><td>Read value</td><td class="addr">Read &amp;BD00</td></tr>
+          <tr><td>Screen start hi</td><td class="val">R12 default: &amp;30</td></tr>
+          <tr><td>Screen start lo</td><td class="val">R13 default: &amp;00</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="quick-card">
+      <h4>BASIC Quick Commands</h4>
+      <pre style="font-size:0.7rem;padding:10px;margin:0">MODE 1
+BORDER 16
+INK 0,16 : INK 1,26 : INK 2,6
+CLS : CLSG
+LOCATE 10,12
+PRINT "READY"
+MOVE 0,0 : DRAW 320,200
+CIRCLE 160,100,50
+SOUND 1,239,100,15
+CALL &amp;4000</pre>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <span>AMSTRAD CPC 464 / 664 / 6128</span> — COMPREHENSIVE REFERENCE GUIDE — March 2026
+  · Z80A · AY-3-8912 · Gate Array 40010 · Locomotive BASIC · AMSDOS
+  · Sources: CPCWiki · Locomotive BASIC Manual · Amstrad Firmware Guide
+</footer>
+
+</body>
+</html>

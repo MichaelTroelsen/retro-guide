@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macintosh SE/30 — Complete Reference Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --platinum: #c8c8c8;
+            --platinum-dark: #999999;
+            --mac-black: #1a1a1a;
+            --mac-bg: #111111;
+            --card-bg: #1e1e1e;
+            --card-hover: #252525;
+            --border: #333333;
+            --border-light: #444444;
+            --crt-green: #39ff14;
+            --crt-amber: #ffb000;
+            --crt-white: #e8e8e8;
+            --apple-red: #ff6347;
+            --apple-orange: #ff8c00;
+            --apple-yellow: #ffd700;
+            --apple-green: #32cd32;
+            --apple-blue: #4169e1;
+            --apple-purple: #9400d3;
+            --accent: #a0a0a0;
+            --text-dim: #777777;
+            --shadow: 0 8px 32px rgba(0,0,0,0.6);
+            --glow: 0 0 20px rgba(200,200,200,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--mac-bg);
+            color: var(--crt-white);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════
+           HEADER — Mac SE/30 silhouette design
+        ═══════════════════════════════════════ */
+        .header {
+            background: linear-gradient(160deg, #1c1c1c 0%, #111111 50%, #0a0a0a 100%);
+            border-bottom: 1px solid #333;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                var(--apple-red) 0%,
+                var(--apple-orange) 17%,
+                var(--apple-yellow) 33%,
+                var(--apple-green) 50%,
+                var(--apple-blue) 67%,
+                var(--apple-purple) 100%);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            padding: 2rem 2.5rem;
+        }
+
+        .mac-icon {
+            flex-shrink: 0;
+            width: 80px;
+            height: 96px;
+            position: relative;
+        }
+
+        .mac-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 16px rgba(200,200,200,0.15));
+        }
+
+        .header-text h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--platinum);
+            line-height: 1.1;
+        }
+
+        .header-text h1 span {
+            color: var(--crt-white);
+            opacity: 0.5;
+        }
+
+        .header-text p {
+            margin-top: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.65rem;
+            border-radius: 3px;
+            font-size: 0.72rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border: 1px solid;
+        }
+        .badge-cpu  { color: #7dd3fc; border-color: #1e4a6e; background: rgba(125,211,252,0.07); }
+        .badge-ram  { color: #86efac; border-color: #1e4a2e; background: rgba(134,239,172,0.07); }
+        .badge-year { color: #fdba74; border-color: #4a2e1e; background: rgba(253,186,116,0.07); }
+        .badge-os   { color: #d8b4fe; border-color: #3e1e5e; background: rgba(216,180,254,0.07); }
+
+        /* ═══════════════════════════════════════
+           NAVIGATION TABS
+        ═══════════════════════════════════════ */
+        .nav-bar {
+            background: #161616;
+            border-bottom: 1px solid #2a2a2a;
+            padding: 0 1rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-tab {
+            padding: 1rem 1.3rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .nav-tab:hover { color: var(--platinum); }
+        .nav-tab.active {
+            color: var(--platinum);
+            border-bottom-color: var(--platinum);
+        }
+
+        /* ═══════════════════════════════════════
+           SEARCH BAR
+        ═══════════════════════════════════════ */
+        .search-bar {
+            background: #161616;
+            padding: 0.75rem 2rem;
+            border-bottom: 1px solid #222;
+        }
+        .search-input-wrap {
+            position: relative;
+            max-width: 420px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555;
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+        .search-input {
+            width: 100%;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem 0.5rem 2.2rem;
+            color: var(--platinum);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: #666; }
+        .search-input::placeholder { color: #444; }
+
+        /* ═══════════════════════════════════════
+           MAIN CONTENT
+        ═══════════════════════════════════════ */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* ═══════════════════════════════════════
+           SECTION HEADINGS
+        ═══════════════════════════════════════ */
+        .section-title {
+            font-size: 0.72rem;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 1.2rem;
+            margin-top: 2.5rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #252525;
+        }
+        .section-title:first-child { margin-top: 0; }
+
+        /* ═══════════════════════════════════════
+           CARDS
+        ═══════════════════════════════════════ */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+        .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.4rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            border-color: #555;
+            box-shadow: var(--glow);
+        }
+
+        .card-title {
+            font-size: 0.7rem;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--platinum);
+            line-height: 1.2;
+        }
+
+        .card-sub {
+            font-size: 0.82rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .card-accent { border-left: 3px solid var(--platinum-dark); }
+
+        /* ═══════════════════════════════════════
+           SPEC TABLE
+        ═══════════════════════════════════════ */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+        .spec-table th {
+            background: #161616;
+            color: var(--text-dim);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.7rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .spec-table td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid #1e1e1e;
+            vertical-align: top;
+        }
+        .spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .spec-table .label { color: #888; width: 220px; }
+        .spec-table .value { color: var(--crt-white); }
+        .spec-table .mono {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            color: #aaa;
+        }
+
+        /* ═══════════════════════════════════════
+           CODE / MONO BLOCKS
+        ═══════════════════════════════════════ */
+        .code-block {
+            background: #0d0d0d;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 1.2rem 1.4rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.9;
+            margin-bottom: 1.2rem;
+            overflow-x: auto;
+        }
+        .code-block .comment { color: #555; }
+        .code-block .addr    { color: #7dd3fc; }
+        .code-block .instr   { color: #f9a8d4; }
+        .code-block .reg     { color: #86efac; }
+        .code-block .num     { color: #fdba74; }
+        .code-block .label   { color: #d8b4fe; }
+
+        .inline-code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82em;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 3px;
+            padding: 0.1em 0.4em;
+            color: #a0c4ff;
+        }
+
+        /* ═══════════════════════════════════════
+           MEMORY MAP
+        ═══════════════════════════════════════ */
+        .memory-map {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .mem-row {
+            display: grid;
+            grid-template-columns: 180px 160px 1fr;
+            border-bottom: 1px solid #1a1a1a;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .mem-row:hover { background: rgba(255,255,255,0.04); }
+        .mem-row:last-child { border-bottom: none; }
+        .mem-row.header {
+            background: #161616;
+            cursor: default;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+        .mem-row.header:hover { background: #161616; }
+        .mem-cell {
+            padding: 0.55rem 1rem;
+            border-right: 1px solid #1e1e1e;
+        }
+        .mem-cell:last-child { border-right: none; }
+        .mem-addr { color: #7dd3fc; }
+        .mem-size { color: #fdba74; }
+        .mem-desc { color: #aaa; }
+
+        /* Color-coded regions */
+        .mem-ram    { border-left: 3px solid #4ade80; }
+        .mem-rom    { border-left: 3px solid #f87171; }
+        .mem-io     { border-left: 3px solid #facc15; }
+        .mem-slot   { border-left: 3px solid #a78bfa; }
+        .mem-mirror { border-left: 3px solid #60a5fa; }
+        .mem-video  { border-left: 3px solid #34d399; }
+
+        /* ═══════════════════════════════════════
+           CHIP CARDS (clickable)
+        ═══════════════════════════════════════ */
+        .chip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chip-card {
+            background: var(--card-bg);
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .chip-card:hover {
+            border-color: #555;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .chip-card .chip-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--platinum);
+            margin-bottom: 0.3rem;
+        }
+        .chip-card .chip-full {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-bottom: 0.6rem;
+        }
+        .chip-card .chip-role {
+            font-size: 0.8rem;
+            color: #bbb;
+            line-height: 1.4;
+        }
+        .chip-tag {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* ═══════════════════════════════════════
+           REGISTER TABLE
+        ═══════════════════════════════════════ */
+        .reg-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.83rem;
+            margin-bottom: 1.5rem;
+        }
+        .reg-table th {
+            background: #161616;
+            color: var(--text-dim);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.65rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .reg-table td {
+            padding: 0.55rem 0.9rem;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+        .reg-table tr:hover td { background: rgba(255,255,255,0.025); }
+        .reg-table .rname { font-family: 'IBM Plex Mono', monospace; color: #86efac; }
+        .reg-table .rbits { font-family: 'IBM Plex Mono', monospace; color: #fdba74; font-size: 0.78rem; }
+        .reg-table .rdesc { color: #aaa; }
+        .reg-table .rnotes { color: #666; font-size: 0.78rem; }
+
+        /* ═══════════════════════════════════════
+           COMPARISON TABLE
+        ═══════════════════════════════════════ */
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .compare-table th {
+            background: #161616;
+            padding: 0.75rem 1rem;
+            color: var(--platinum);
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid #2a2a2a;
+        }
+        .compare-table th.highlight { background: #1e2a1e; color: #86efac; }
+        .compare-table td {
+            padding: 0.65rem 1rem;
+            border: 1px solid #1a1a1a;
+            color: #bbb;
+        }
+        .compare-table td.feature { color: #888; font-size: 0.82rem; }
+        .compare-table td.highlight { background: rgba(134,239,172,0.04); color: #d1fae5; }
+        .compare-table .win { color: #86efac; }
+        .compare-table .good { color: #7dd3fc; }
+        .compare-table .ok { color: #fdba74; }
+        .compare-table .weak { color: #f87171; }
+
+        /* ═══════════════════════════════════════
+           CRT SCREEN DEMO
+        ═══════════════════════════════════════ */
+        .crt-demo {
+            background: #000;
+            border: 3px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 2;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            min-height: 200px;
+        }
+        .crt-demo::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.1) 2px,
+                rgba(0,0,0,0.1) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+        .crt-demo .crt-line { color: #e8e8e8; position: relative; z-index: 2; }
+        .crt-demo .crt-prompt { color: #aaa; }
+        .crt-demo .crt-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1em;
+            background: #e8e8e8;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .crt-demo .crt-invert {
+            background: #e8e8e8;
+            color: #000;
+            padding: 0 2px;
+        }
+
+        /* ═══════════════════════════════════════
+           INFO BOXES
+        ═══════════════════════════════════════ */
+        .info-box {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4e;
+            border-left: 4px solid #4169e1;
+            border-radius: 6px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.875rem;
+            color: #b0c4de;
+        }
+        .info-box.warn {
+            background: #1e1a0e;
+            border-color: #4a3a1e;
+            border-left-color: var(--apple-orange);
+            color: #d4a855;
+        }
+        .info-box.tip {
+            background: #0e1e1a;
+            border-color: #1a3a2e;
+            border-left-color: #34d399;
+            color: #6ee7b7;
+        }
+        .info-box strong { display: block; margin-bottom: 0.3rem; }
+
+        /* ═══════════════════════════════════════
+           TWO-COLUMN LAYOUT
+        ═══════════════════════════════════════ */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ═══════════════════════════════════════
+           VIA REGISTER MAP
+        ═══════════════════════════════════════ */
+        .via-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .via-reg {
+            background: #161616;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+        }
+        .via-reg .offset { color: #7dd3fc; font-weight: 600; margin-right: 0.5rem; }
+        .via-reg .name   { color: #f9a8d4; }
+        .via-reg .bits   { color: #aaa; font-size: 0.72rem; display: block; margin-top: 0.3rem; }
+
+        /* ═══════════════════════════════════════
+           MODAL
+        ═══════════════════════════════════════ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 9000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+        }
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: #1a1a1a;
+            z-index: 1;
+        }
+        .modal-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            color: var(--platinum);
+        }
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            background: #333;
+            border: none;
+            border-radius: 50%;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover { background: #555; color: #fff; }
+        .modal-body { padding: 1.5rem; }
+
+        /* ═══════════════════════════════════════
+           KEYBOARD SHORTCUT HINT
+        ═══════════════════════════════════════ */
+        kbd {
+            display: inline-block;
+            padding: 0.1em 0.4em;
+            background: #252525;
+            border: 1px solid #444;
+            border-bottom: 2px solid #333;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78em;
+            color: #ccc;
+        }
+
+        /* ═══════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════ */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem 2.5rem;
+            border-top: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .header-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .two-col, .three-col { grid-template-columns: 1fr; }
+            .mem-row { grid-template-columns: 140px 100px 1fr; font-size: 0.75rem; }
+            .main { padding: 1rem; }
+        }
+
+        /* ═══════════════════════════════════════
+           SEARCH HIGHLIGHT
+        ═══════════════════════════════════════ */
+        .highlight-match { background: rgba(255,200,50,0.25); border-radius: 2px; }
+
+        /* ═══════════════════════════════════════
+           TIMELINE
+        ═══════════════════════════════════════ */
+        .timeline { position: relative; padding-left: 2rem; margin-bottom: 1.5rem; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: #2a2a2a;
+        }
+        .tl-item { position: relative; margin-bottom: 1.5rem; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -1.75rem;
+            top: 0.45rem;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #555;
+            border: 1px solid #888;
+        }
+        .tl-item.highlight::before { background: var(--platinum); }
+        .tl-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.2rem; }
+        .tl-event { font-size: 0.9rem; color: var(--crt-white); }
+        .tl-detail { font-size: 0.82rem; color: #666; margin-top: 0.2rem; }
+
+        /* ═══════════════════════════════════════
+           VIA BIT FIELD VISUALIZER
+        ═══════════════════════════════════════ */
+        .bit-field {
+            display: flex;
+            gap: 2px;
+            margin: 0.75rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .bit {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid #333;
+            cursor: default;
+            transition: opacity 0.2s;
+        }
+        .bit-0  { background: #1a2a1a; color: #4ade80; border-color: #2a4a2a; }
+        .bit-1  { background: #2a1a1a; color: #f87171; border-color: #4a2a2a; }
+        .bit-x  { background: #1a1a2a; color: #7dd3fc; border-color: #2a2a4a; }
+        .bit-label { font-size: 0.62rem; text-align: center; display: block; color: #666; margin-top: 0.15rem; }
+
+        /* progress-style specs */
+        .spec-bar-wrap { margin-bottom: 0.75rem; }
+        .spec-bar-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.3rem; }
+        .spec-bar-label .name { color: #888; }
+        .spec-bar-label .val  { color: #bbb; font-family: 'IBM Plex Mono', monospace; }
+        .spec-bar-track {
+            height: 4px;
+            background: #222;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .spec-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #555, var(--platinum));
+            transition: width 0.6s ease;
+        }
+
+        /* pill list */
+        .pill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
+        .pill {
+            padding: 0.3rem 0.75rem;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #aaa;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        h3 { color: var(--platinum); font-size: 1rem; margin: 1.5rem 0 0.75rem; }
+        h4 { color: #aaa; font-size: 0.875rem; margin: 1.2rem 0 0.5rem; font-weight: 500; }
+        p  { color: #888; font-size: 0.875rem; margin-bottom: 0.75rem; line-height: 1.7; }
+        ul, ol { color: #888; font-size: 0.875rem; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+        ul li, ol li { margin-bottom: 0.3rem; }
+        a { color: #7dd3fc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════ -->
+<header class="header">
+    <div class="header-inner">
+        <!-- Minimalist Mac SE/30 silhouette SVG -->
+        <div class="mac-icon">
+            <svg viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg">
+                <!-- Body -->
+                <rect x="6" y="4" width="68" height="80" rx="8" ry="8" fill="#2a2a2a" stroke="#555" stroke-width="1"/>
+                <!-- Top ridge -->
+                <rect x="10" y="4" width="60" height="8" rx="4" ry="0" fill="#333"/>
+                <!-- Screen bezel -->
+                <rect x="12" y="14" width="56" height="44" rx="4" fill="#1a1a1a" stroke="#444" stroke-width="1"/>
+                <!-- Screen -->
+                <rect x="16" y="18" width="48" height="36" rx="2" fill="#050505"/>
+                <!-- Screen scanlines effect -->
+                <rect x="16" y="18" width="48" height="2" fill="#111" opacity="0.5"/>
+                <rect x="16" y="24" width="48" height="2" fill="#111" opacity="0.3"/>
+                <rect x="16" y="30" width="48" height="2" fill="#111" opacity="0.3"/>
+                <!-- Happy mac -->
+                <text x="40" y="40" text-anchor="middle" font-size="20" fill="#e0e0e0">☺</text>
+                <!-- Disk drive slot -->
+                <rect x="20" y="62" width="40" height="6" rx="1" fill="#111" stroke="#444" stroke-width="0.5"/>
+                <!-- Speaker grille dots -->
+                <circle cx="22" cy="73" r="1" fill="#444"/>
+                <circle cx="27" cy="73" r="1" fill="#444"/>
+                <circle cx="22" cy="78" r="1" fill="#444"/>
+                <circle cx="27" cy="78" r="1" fill="#444"/>
+                <!-- Bottom base -->
+                <rect x="8" y="84" width="64" height="8" rx="0" ry="4" fill="#252525" stroke="#444" stroke-width="0.5"/>
+                <!-- Foot bumpers -->
+                <rect x="14" y="90" width="12" height="4" rx="2" fill="#1e1e1e"/>
+                <rect x="54" y="90" width="12" height="4" rx="2" fill="#1e1e1e"/>
+            </svg>
+        </div>
+        <div class="header-text">
+            <h1>Macintosh SE/30 <span>—</span> Reference Guide</h1>
+            <p>Motorola 68030 · 16 MHz · Compact Mac · 1989–1990</p>
+            <div class="header-badges">
+                <span class="badge badge-cpu">68030 @ 16 MHz</span>
+                <span class="badge badge-ram">1–128 MB RAM</span>
+                <span class="badge badge-year">Jan 1989</span>
+                <span class="badge badge-os">System 6–7.5.5</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════
+     NAV TABS
+══════════════════════════════════════════════════════ -->
+<nav class="nav-bar" id="navBar">
+    <div class="nav-tab active" data-tab="overview">🖥 Overview</div>
+    <div class="nav-tab" data-tab="cpu">⚙️ CPU & FPU</div>
+    <div class="nav-tab" data-tab="memory">🗺 Memory Map</div>
+    <div class="nav-tab" data-tab="chips">🔧 Chips</div>
+    <div class="nav-tab" data-tab="video">📺 Video</div>
+    <div class="nav-tab" data-tab="io">🔌 I/O & Ports</div>
+    <div class="nav-tab" data-tab="storage">💾 Storage</div>
+    <div class="nav-tab" data-tab="expansion">🎴 Expansion</div>
+    <div class="nav-tab" data-tab="software">🍎 Software</div>
+    <div class="nav-tab" data-tab="modern">🚀 Modern</div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════
+     SEARCH
+══════════════════════════════════════════════════════ -->
+<div class="search-bar">
+    <div class="search-input-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search reference... (press / to focus)">
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════════ -->
+<main class="main">
+
+<!-- ████████████████████████████████████████████████████
+     TAB: OVERVIEW
+████████████████████████████████████████████████████ -->
+<div class="tab-content active" id="tab-overview">
+
+    <div class="section-title">At a Glance</div>
+    <div class="card-grid">
+        <div class="card card-accent">
+            <div class="card-title">Processor</div>
+            <div class="card-value">68030</div>
+            <div class="card-sub">16 MHz · Motorola · 32-bit</div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">FPU</div>
+            <div class="card-value">68882</div>
+            <div class="card-sub">16 MHz · On-board · IEEE 754</div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">RAM (Stock)</div>
+            <div class="card-value">1 MB</div>
+            <div class="card-sub">Expandable to 128 MB via 8× SIMM slots</div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">ROM</div>
+            <div class="card-value">256 KB</div>
+            <div class="card-sub">v2.0 · "32-bit dirty" (see note)</div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">Display</div>
+            <div class="card-value">9″ CRT</div>
+            <div class="card-sub">512 × 342 · Monochrome · Built-in</div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">Introduced</div>
+            <div class="card-value">Jan 1989</div>
+            <div class="card-sub">MacWorld Expo · $6,649 USD (base)</div>
+        </div>
+    </div>
+
+    <div class="info-box warn">
+        <strong>⚠ "32-bit Dirty" ROM</strong>
+        The SE/30 shipped with a ROM that has non-zero values in the upper 8 bits of 32-bit addresses, making it incompatible with true 32-bit addressing above 8 MB without MODE32 or Connectix RAM Doubler patching. This is a critical consideration when adding >8 MB RAM.
+    </div>
+
+    <div class="section-title">Full Specifications</div>
+    <table class="spec-table">
+        <tr><th colspan="2">Processor & Performance</th></tr>
+        <tr><td class="label">CPU</td><td class="value">Motorola 68030 @ 16 MHz</td></tr>
+        <tr><td class="label">FPU</td><td class="value">Motorola 68882 @ 16 MHz (on-board)</td></tr>
+        <tr><td class="label">Data Bus</td><td class="value">32-bit internal / 32-bit external</td></tr>
+        <tr><td class="label">Address Space</td><td class="value">32-bit (4 GB theoretical)</td></tr>
+        <tr><td class="label">Cache</td><td class="value">256-byte instruction cache, 256-byte data cache (on-die)</td></tr>
+        <tr><th colspan="2">Memory</th></tr>
+        <tr><td class="label">RAM (Stock)</td><td class="value">1 MB</td></tr>
+        <tr><td class="label">RAM (Max)</td><td class="value">128 MB (8× 4 MB 30-pin SIMMs with MODE32)</td></tr>
+        <tr><td class="label">SIMM Slots</td><td class="value">8 × 30-pin SIMM (must install in groups of 4)</td></tr>
+        <tr><td class="label">ROM</td><td class="value">256 KB (2× 128K ROMs, socketed)</td></tr>
+        <tr><td class="label">ROM Version</td><td class="value">v2.0 (32-bit dirty) — checksum $36B8A5BF</td></tr>
+        <tr><th colspan="2">Display</th></tr>
+        <tr><td class="label">Screen</td><td class="value">9″ built-in monochrome CRT (Sony Trinitron tube)</td></tr>
+        <tr><td class="label">Resolution</td><td class="value">512 × 342 pixels</td></tr>
+        <tr><td class="label">Bit Depth</td><td class="value">1-bit (monochrome)</td></tr>
+        <tr><td class="label">Pixel Pitch</td><td class="value">~0.036 in (0.92 mm)</td></tr>
+        <tr><td class="label">Refresh Rate</td><td class="value">60.15 Hz</td></tr>
+        <tr><td class="label">Frame Buffer</td><td class="value">21,888 bytes (512×342 / 8)</td></tr>
+        <tr><th colspan="2">Storage</th></tr>
+        <tr><td class="label">Floppy</td><td class="value">1.44 MB SuperDrive (HD 3.5″)</td></tr>
+        <tr><td class="label">HDD Interface</td><td class="value">SCSI-1 (internal + external DB-25)</td></tr>
+        <tr><td class="label">HDD Options</td><td class="value">20, 40, 80 MB SCSI (originally); up to 4 GB supported</td></tr>
+        <tr><th colspan="2">I/O & Ports</th></tr>
+        <tr><td class="label">Serial</td><td class="value">2× DB-9 RS-422 (Printer / Modem)</td></tr>
+        <tr><td class="label">SCSI External</td><td class="value">1× DB-25 (SCSI-1)</td></tr>
+        <tr><td class="label">ADB</td><td class="value">2× ADB (Apple Desktop Bus) — keyboard, mouse</td></tr>
+        <tr><td class="label">Sound In</td><td class="value">1× 3.5 mm mono microphone input</td></tr>
+        <tr><td class="label">Sound Out</td><td class="value">1× 3.5 mm mono audio output + built-in speaker</td></tr>
+        <tr><th colspan="2">Expansion</th></tr>
+        <tr><td class="label">Expansion Slot</td><td class="value">1× PDS (Processor Direct Slot) — 96-pin</td></tr>
+        <tr><td class="label">PDS → NuBus</td><td class="value">Via IIsi NuBus adapter (2 NuBus slots)</td></tr>
+        <tr><th colspan="2">Physical</th></tr>
+        <tr><td class="label">Weight</td><td class="value">7.3 kg (16.1 lb)</td></tr>
+        <tr><td class="label">Dimensions</td><td class="value">H: 34.3 cm × W: 22.6 cm × D: 27.4 cm</td></tr>
+        <tr><td class="label">Power Supply</td><td class="value">Internal Sony PSU, 100W</td></tr>
+        <tr><td class="label">Operating Voltage</td><td class="value">110–240 VAC (universal)</td></tr>
+        <tr><th colspan="2">Software</th></tr>
+        <tr><td class="label">Min Mac OS</td><td class="value">System 6.0.4</td></tr>
+        <tr><td class="label">Max Mac OS</td><td class="value">System 7.5.5</td></tr>
+        <tr><td class="label">A/UX</td><td class="value">Yes — A/UX 3.x supported</td></tr>
+    </table>
+
+    <div class="section-title">Historical Timeline</div>
+    <div class="timeline">
+        <div class="tl-item">
+            <div class="tl-date">March 1987</div>
+            <div class="tl-event">Macintosh SE released</div>
+            <div class="tl-detail">68000 @ 8 MHz predecessor; established the compact Mac chassis design</div>
+        </div>
+        <div class="tl-item highlight">
+            <div class="tl-date">January 1989</div>
+            <div class="tl-event">Macintosh SE/30 introduced at MacWorld Expo</div>
+            <div class="tl-detail">Priced at $4,369 (1 MB / no HD) to $6,649 (4 MB / 40 MB HD)</div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-date">1989</div>
+            <div class="tl-event">MODE32 extension released (free from Apple)</div>
+            <div class="tl-detail">Enables 32-bit clean operation, allowing RAM beyond 8 MB</div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-date">October 1990</div>
+            <div class="tl-event">SE/30 discontinued — replaced by Macintosh Classic</div>
+            <div class="tl-detail">Classic used older 68000 CPU but was $999 — a market repositioning</div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-date">1991–1995</div>
+            <div class="tl-event">Continued heavy use in schools and small businesses</div>
+            <div class="tl-detail">Outlasted many machines it was compared against at launch</div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-date">Today</div>
+            <div class="tl-event">Highly coveted by collectors; considered the "pinnacle" compact Mac</div>
+            <div class="tl-detail">SE/30s in good condition sell for $200–$800+ on the vintage market</div>
+        </div>
+    </div>
+
+    <div class="section-title">SE vs SE/30 — Quick Comparison</div>
+    <table class="compare-table">
+        <tr>
+            <th>Feature</th>
+            <th>Macintosh SE (1987)</th>
+            <th class="highlight">Macintosh SE/30 (1989)</th>
+        </tr>
+        <tr>
+            <td class="feature">CPU</td>
+            <td class="ok">68000 @ 8 MHz</td>
+            <td class="highlight win">68030 @ 16 MHz</td>
+        </tr>
+        <tr>
+            <td class="feature">FPU</td>
+            <td class="weak">Optional 68881 (PDS)</td>
+            <td class="highlight win">68882 built-in</td>
+        </tr>
+        <tr>
+            <td class="feature">Max RAM</td>
+            <td class="ok">4 MB</td>
+            <td class="highlight win">128 MB</td>
+        </tr>
+        <tr>
+            <td class="feature">Bus Width</td>
+            <td class="ok">16-bit external</td>
+            <td class="highlight win">32-bit external</td>
+        </tr>
+        <tr>
+            <td class="feature">MMU</td>
+            <td class="weak">None (optional PMMU)</td>
+            <td class="highlight win">On-chip MMU</td>
+        </tr>
+        <tr>
+            <td class="feature">Expansion</td>
+            <td class="ok">SE PDS (16-bit)</td>
+            <td class="highlight win">SE/30 PDS (32-bit)</td>
+        </tr>
+        <tr>
+            <td class="feature">Floppy</td>
+            <td class="ok">800K or 1.44 MB</td>
+            <td class="highlight win">1.44 MB SuperDrive</td>
+        </tr>
+        <tr>
+            <td class="feature">A/UX Support</td>
+            <td class="weak">No</td>
+            <td class="highlight win">Yes (A/UX 3.x)</td>
+        </tr>
+        <tr>
+            <td class="feature">Performance</td>
+            <td class="ok">~1.0× (baseline)</td>
+            <td class="highlight win">~3.5× faster</td>
+        </tr>
+        <tr>
+            <td class="feature">Launch Price</td>
+            <td class="ok">$2,900</td>
+            <td class="ok">$4,369–$6,649</td>
+        </tr>
+    </table>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: CPU & FPU
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-cpu">
+
+    <div class="section-title">Motorola 68030 — Architecture Overview</div>
+    <p>The 68030 is a full 32-bit CISC processor introduced in 1987. It brought an on-chip MMU (Memory Management Unit), a 256-byte data cache, a 256-byte instruction cache, and a burst bus mode for faster memory access — making it a massive leap over the 68020 in the Mac II.</p>
+
+    <div class="two-col">
+        <div>
+            <h3>68030 Key Features</h3>
+            <ul>
+                <li>32-bit data and address buses</li>
+                <li>On-chip paged MMU (no external 68851 needed)</li>
+                <li>256-byte instruction cache (64 long-words)</li>
+                <li>256-byte data cache (16 × 4-byte entries)</li>
+                <li>Dynamic bus sizing (8, 16, 32-bit)</li>
+                <li>Burst fill mode for cache lines</li>
+                <li>14 addressing modes</li>
+                <li>Binary compatible with 68000/68010/68020</li>
+                <li>Up to 3.5 MIPS @ 16 MHz</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Motorola 68882 FPU</h3>
+            <ul>
+                <li>IEEE 754 floating-point coprocessor</li>
+                <li>80-bit extended precision internal registers</li>
+                <li>8 × 80-bit floating-point data registers (FP0–FP7)</li>
+                <li>Transcendental functions in hardware (sin, cos, log…)</li>
+                <li>Communicates via coprocessor interface (CPI)</li>
+                <li>Significant benefit for CAD, spreadsheets, scientific apps</li>
+                <li>Not present on plain SE — SE/30 has it on-board</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section-title">68030 Register Set</div>
+    <table class="reg-table">
+        <tr>
+            <th>Register</th>
+            <th>Width</th>
+            <th>Description</th>
+            <th>Notes</th>
+        </tr>
+        <tr><td class="rname">D0–D7</td><td class="rbits">32-bit</td><td class="rdesc">Data registers — general purpose arithmetic/logic</td><td class="rnotes">Can be accessed as 8, 16, or 32-bit</td></tr>
+        <tr><td class="rname">A0–A6</td><td class="rbits">32-bit</td><td class="rdesc">Address registers — pointers, index</td><td class="rnotes">Used for indirect/indexed addressing</td></tr>
+        <tr><td class="rname">A7 (SP)</td><td class="rbits">32-bit</td><td class="rdesc">Stack Pointer (User or Supervisor)</td><td class="rnotes">Mode-dependent (USP vs SSP)</td></tr>
+        <tr><td class="rname">PC</td><td class="rbits">32-bit</td><td class="rdesc">Program Counter</td><td class="rnotes">Points to next instruction</td></tr>
+        <tr><td class="rname">SR</td><td class="rbits">16-bit</td><td class="rdesc">Status Register (CCR + System byte)</td><td class="rnotes">T1,T0,S,M,—,I2,I1,I0,—,—,—,X,N,Z,V,C</td></tr>
+        <tr><td class="rname">SSP</td><td class="rbits">32-bit</td><td class="rdesc">Supervisor Stack Pointer</td><td class="rnotes">Active when S=1 in SR</td></tr>
+        <tr><td class="rname">MSP</td><td class="rbits">32-bit</td><td class="rdesc">Master Stack Pointer</td><td class="rnotes">Active when S=1 and M=1</td></tr>
+        <tr><td class="rname">USP</td><td class="rbits">32-bit</td><td class="rdesc">User Stack Pointer</td><td class="rnotes">Active when S=0</td></tr>
+        <tr><td class="rname">ISP</td><td class="rbits">32-bit</td><td class="rdesc">Interrupt Stack Pointer</td><td class="rnotes">Used during interrupt service</td></tr>
+        <tr><td class="rname">VBR</td><td class="rbits">32-bit</td><td class="rdesc">Vector Base Register</td><td class="rnotes">Base of exception vector table</td></tr>
+        <tr><td class="rname">SFC / DFC</td><td class="rbits">3-bit</td><td class="rdesc">Source / Destination Function Code</td><td class="rnotes">Used with MOVES instruction</td></tr>
+        <tr><td class="rname">CACR</td><td class="rbits">16-bit</td><td class="rdesc">Cache Control Register</td><td class="rnotes">Enable/clear instruction & data cache</td></tr>
+        <tr><td class="rname">CAAR</td><td class="rbits">32-bit</td><td class="rdesc">Cache Address Register</td><td class="rnotes">Address for cache flush operations</td></tr>
+        <tr><td class="rname">CRP</td><td class="rbits">64-bit</td><td class="rdesc">CPU Root Pointer (MMU)</td><td class="rnotes">Points to translation table (user)</td></tr>
+        <tr><td class="rname">SRP</td><td class="rbits">64-bit</td><td class="rdesc">Supervisor Root Pointer (MMU)</td><td class="rnotes">Points to translation table (supervisor)</td></tr>
+        <tr><td class="rname">TC</td><td class="rbits">32-bit</td><td class="rdesc">Translation Control (MMU enable)</td><td class="rnotes">Enable/configure paged MMU</td></tr>
+        <tr><td class="rname">TT0, TT1</td><td class="rbits">32-bit</td><td class="rdesc">Transparent Translation registers</td><td class="rnotes">Bypass MMU for address ranges</td></tr>
+        <tr><td class="rname">MMUSR</td><td class="rbits">16-bit</td><td class="rdesc">MMU Status Register</td><td class="rnotes">Result of PTEST instruction</td></tr>
+    </table>
+
+    <div class="section-title">68882 FPU Register Set</div>
+    <table class="reg-table">
+        <tr><th>Register</th><th>Width</th><th>Description</th></tr>
+        <tr><td class="rname">FP0–FP7</td><td class="rbits">80-bit</td><td class="rdesc">Floating-point data registers (extended precision)</td></tr>
+        <tr><td class="rname">FPCR</td><td class="rbits">32-bit</td><td class="rdesc">FP Control Register (rounding mode, precision, exception enable)</td></tr>
+        <tr><td class="rname">FPSR</td><td class="rbits">32-bit</td><td class="rdesc">FP Status Register (condition codes, exception bits, quotient)</td></tr>
+        <tr><td class="rname">FPIAR</td><td class="rbits">32-bit</td><td class="rdesc">FP Instruction Address Register (PC at last FP instruction)</td></tr>
+    </table>
+
+    <div class="section-title">68030 Status Register (SR) Bit Map</div>
+    <div class="bit-field">
+        <div><div class="bit bit-x">T1</div><span class="bit-label">Trace</span></div>
+        <div><div class="bit bit-x">T0</div><span class="bit-label">Trace</span></div>
+        <div><div class="bit bit-x">S</div><span class="bit-label">Super</span></div>
+        <div><div class="bit bit-x">M</div><span class="bit-label">Master</span></div>
+        <div><div class="bit bit-x">—</div><span class="bit-label">Rsvd</span></div>
+        <div><div class="bit bit-x">I2</div><span class="bit-label">IPL</span></div>
+        <div><div class="bit bit-x">I1</div><span class="bit-label">IPL</span></div>
+        <div><div class="bit bit-x">I0</div><span class="bit-label">IPL</span></div>
+        <div><div class="bit bit-0">—</div><span class="bit-label">CCR</span></div>
+        <div><div class="bit bit-0">—</div><span class="bit-label">CCR</span></div>
+        <div><div class="bit bit-0">—</div><span class="bit-label">CCR</span></div>
+        <div><div class="bit bit-0">X</div><span class="bit-label">Extend</span></div>
+        <div><div class="bit bit-0">N</div><span class="bit-label">Neg</span></div>
+        <div><div class="bit bit-0">Z</div><span class="bit-label">Zero</span></div>
+        <div><div class="bit bit-0">V</div><span class="bit-label">Overflow</span></div>
+        <div><div class="bit bit-0">C</div><span class="bit-label">Carry</span></div>
+    </div>
+
+    <div class="section-title">Common 68030 Assembly Instructions</div>
+    <div class="code-block">
+<span class="comment">; ── Data Movement ──────────────────────────────────────</span>
+<span class="instr">MOVE.L</span>   <span class="reg">D0</span>,<span class="reg">D1</span>          <span class="comment">; Copy longword D0 → D1</span>
+<span class="instr">MOVEA.L</span>  <span class="num">$40000000</span>,<span class="reg">A0</span>   <span class="comment">; Load ROM base address</span>
+<span class="instr">MOVEQ</span>    <span class="num">#42</span>,<span class="reg">D0</span>         <span class="comment">; Quick load 8-bit signed immediate</span>
+<span class="instr">LEA</span>      <span class="num">$50F00000</span>,<span class="reg">A1</span>   <span class="comment">; Load address of VIA1</span>
+<span class="instr">CLR.L</span>    <span class="reg">D0</span>             <span class="comment">; Clear register (D0 = 0)</span>
+
+<span class="comment">; ── Arithmetic ─────────────────────────────────────────</span>
+<span class="instr">ADD.L</span>    <span class="reg">D1</span>,<span class="reg">D0</span>          <span class="comment">; D0 = D0 + D1</span>
+<span class="instr">SUB.W</span>    <span class="num">#4</span>,<span class="reg">A7</span>          <span class="comment">; Adjust stack pointer</span>
+<span class="instr">MULS.W</span>   <span class="reg">D1</span>,<span class="reg">D0</span>          <span class="comment">; Signed 16×16→32 multiply</span>
+<span class="instr">DIVS.L</span>   <span class="reg">D1</span>,<span class="reg">D0</span>          <span class="comment">; Signed 32/32 divide (68030 only)</span>
+
+<span class="comment">; ── Branching ──────────────────────────────────────────</span>
+<span class="instr">BEQ.S</span>    <span class="label">.done</span>          <span class="comment">; Branch if zero (short)</span>
+<span class="instr">BSR.L</span>    <span class="label">MyRoutine</span>      <span class="comment">; Branch to subroutine</span>
+<span class="instr">RTS</span>                      <span class="comment">; Return from subroutine</span>
+<span class="instr">DBRA</span>     <span class="reg">D0</span>,<span class="label">.loop</span>       <span class="comment">; Decrement & branch (loop)</span>
+
+<span class="comment">; ── System Calls (Mac ROM) ─────────────────────────────</span>
+<span class="instr">_DrawString</span>              <span class="comment">; QuickDraw: draw Pascal string at current pen</span>
+<span class="instr">_GetNextEvent</span>            <span class="comment">; Event Manager: get next event from queue</span>
+<span class="instr">_NewHandle</span>               <span class="comment">; Memory Manager: allocate relocatable block</span>
+<span class="instr">_Gestalt</span>                 <span class="comment">; Gestalt Manager: query system capabilities</span>
+    </div>
+
+    <div class="section-title">Performance Context</div>
+    <div class="spec-bar-wrap">
+        <div class="spec-bar-label"><span class="name">Mac 128K / 512K (68000 @ 8 MHz)</span><span class="val">1.0× baseline</span></div>
+        <div class="spec-bar-track"><div class="spec-bar-fill" style="width:8%"></div></div>
+    </div>
+    <div class="spec-bar-wrap">
+        <div class="spec-bar-label"><span class="name">Macintosh SE (68000 @ 8 MHz)</span><span class="val">1.0×</span></div>
+        <div class="spec-bar-track"><div class="spec-bar-fill" style="width:8%"></div></div>
+    </div>
+    <div class="spec-bar-wrap">
+        <div class="spec-bar-label"><span class="name">Macintosh SE/30 (68030 @ 16 MHz)</span><span class="val">~3.5×</span></div>
+        <div class="spec-bar-track"><div class="spec-bar-fill" style="width:28%"></div></div>
+    </div>
+    <div class="spec-bar-wrap">
+        <div class="spec-bar-label"><span class="name">Macintosh IIci (68030 @ 25 MHz)</span><span class="val">~6×</span></div>
+        <div class="spec-bar-track"><div class="spec-bar-fill" style="width:48%"></div></div>
+    </div>
+    <div class="spec-bar-wrap">
+        <div class="spec-bar-label"><span class="name">Macintosh IIfx (68030 @ 40 MHz)</span><span class="val">~10×</span></div>
+        <div class="spec-bar-track"><div class="spec-bar-fill" style="width:80%"></div></div>
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: MEMORY MAP
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-memory">
+
+    <div class="section-title">Address Space Overview</div>
+    <p>The 68030 can address 4 GB of memory space. The SE/30 uses a portion of this 32-bit space. Click any row for details.</p>
+
+    <div class="info-box">
+        <strong>ℹ Addressing Note</strong>
+        The SE/30's ROM is "32-bit dirty" — Apple ROM code uses non-zero values in address bits 24–31, which causes problems with >8 MB RAM without MODE32 or equivalent patches. With MODE32, full 128 MB is addressable.
+    </div>
+
+    <div class="memory-map" id="memoryMap">
+        <div class="mem-row header">
+            <div class="mem-cell">Address Range</div>
+            <div class="mem-cell">Size</div>
+            <div class="mem-cell">Region</div>
+        </div>
+        <div class="mem-row mem-ram" data-modal="mem-ram">
+            <div class="mem-cell mem-addr">$00000000–$00FFFFFF</div>
+            <div class="mem-cell mem-size">16 MB</div>
+            <div class="mem-cell mem-desc">RAM (physical, 24-bit mode max)</div>
+        </div>
+        <div class="mem-row mem-ram" data-modal="mem-ram-high">
+            <div class="mem-cell mem-addr">$01000000–$3FFFFFFF</div>
+            <div class="mem-cell mem-size">≤1008 MB</div>
+            <div class="mem-cell mem-desc">RAM extension (32-bit clean, MODE32 required)</div>
+        </div>
+        <div class="mem-row mem-rom" data-modal="mem-rom">
+            <div class="mem-cell mem-addr">$40000000–$4003FFFF</div>
+            <div class="mem-cell mem-size">256 KB</div>
+            <div class="mem-cell mem-desc">ROM (primary bank)</div>
+        </div>
+        <div class="mem-row mem-io" data-modal="mem-via1">
+            <div class="mem-cell mem-addr">$50000000–$50001FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">VIA1 (6522) — ADB, RTC, SCC enable</div>
+        </div>
+        <div class="mem-row mem-io" data-modal="mem-via2">
+            <div class="mem-cell mem-addr">$50002000–$50003FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">VIA2 (6522) — SCSI, interrupts, video page</div>
+        </div>
+        <div class="mem-row mem-io">
+            <div class="mem-cell mem-addr">$50004000–$50005FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">SCC (Zilog 8530) — Read channel</div>
+        </div>
+        <div class="mem-row mem-io">
+            <div class="mem-cell mem-addr">$50006000–$50007FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">SCC (Zilog 8530) — Write channel</div>
+        </div>
+        <div class="mem-row mem-io" data-modal="mem-scsi">
+            <div class="mem-cell mem-addr">$50010000–$50011FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">SCSI (NCR 5380) — SCSI controller registers</div>
+        </div>
+        <div class="mem-row mem-io" data-modal="mem-asc">
+            <div class="mem-cell mem-addr">$50014000–$50015FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">ASC (Apple Sound Chip)</div>
+        </div>
+        <div class="mem-row mem-io" data-modal="mem-swim">
+            <div class="mem-cell mem-addr">$50016000–$50017FFF</div>
+            <div class="mem-cell mem-size">8 KB</div>
+            <div class="mem-cell mem-desc">SWIM (Super Woz Integrated Machine) — floppy</div>
+        </div>
+        <div class="mem-row mem-slot" data-modal="mem-pds">
+            <div class="mem-cell mem-addr">$60000000–$6FFFFFFF</div>
+            <div class="mem-cell mem-size">256 MB</div>
+            <div class="mem-cell mem-desc">PDS Expansion Slot space</div>
+        </div>
+        <div class="mem-row mem-video" data-modal="mem-video">
+            <div class="mem-cell mem-addr">$FA700000–$FA705800</div>
+            <div class="mem-cell mem-size">22.5 KB</div>
+            <div class="mem-cell mem-desc">Video frame buffer (512×342 / 8 = 21,888 bytes)</div>
+        </div>
+        <div class="mem-row mem-mirror">
+            <div class="mem-cell mem-addr">$F8000000–$FFFFFFFF</div>
+            <div class="mem-cell mem-size">128 MB</div>
+            <div class="mem-cell mem-desc">ROM mirror (upper 8-bit space legacy)</div>
+        </div>
+    </div>
+
+    <div class="section-title">RAM SIMM Configuration</div>
+    <div class="info-box warn">
+        <strong>⚠ Install SIMMs in groups of 4</strong>
+        The SE/30 has 8 SIMM slots arranged in 2 banks of 4. All 4 SIMMs in a bank must be identical. You cannot mix sizes within a bank. Common configs: 4×256K (1 MB), 4×1MB (4 MB), 8×4MB (32 MB), or 8×16MB (128 MB with MODE32).
+    </div>
+    <table class="spec-table">
+        <tr><th>Bank A (Slots 1–4)</th><th>Bank B (Slots 5–8)</th><th>Total RAM</th><th>Notes</th></tr>
+        <tr><td class="mono">4 × 256 KB</td><td class="value">—</td><td class="value">1 MB</td><td class="mono">Stock</td></tr>
+        <tr><td class="mono">4 × 256 KB</td><td class="mono">4 × 256 KB</td><td class="value">2 MB</td><td></td></tr>
+        <tr><td class="mono">4 × 1 MB</td><td class="value">—</td><td class="value">4 MB</td><td></td></tr>
+        <tr><td class="mono">4 × 1 MB</td><td class="mono">4 × 1 MB</td><td class="value">8 MB</td><td class="mono">Max without MODE32</td></tr>
+        <tr><td class="mono">4 × 4 MB</td><td class="mono">4 × 4 MB</td><td class="value">32 MB</td><td class="mono">Needs MODE32</td></tr>
+        <tr><td class="mono">4 × 16 MB</td><td class="mono">4 × 16 MB</td><td class="value">128 MB</td><td class="mono">Max; needs MODE32 + 80ns SIMMs</td></tr>
+    </table>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: CHIPS
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-chips">
+
+    <div class="section-title">Custom & Support Chips</div>
+    <p>The SE/30 uses a mix of Motorola standard chips, Zilog's SCC, Apple-custom ASICs, and a modified Wozniak-era floppy controller. Click a chip for details.</p>
+
+    <div class="chip-grid">
+        <div class="chip-card" data-chip="bbu">
+            <div class="chip-tag" style="background:#f87171"></div>
+            <div class="chip-name">BBU</div>
+            <div class="chip-full">Bob Bailey Unit</div>
+            <div class="chip-role">Apple custom gate array. Handles bus arbitration, DRAM refresh, video timing, and address decoding.</div>
+        </div>
+        <div class="chip-card" data-chip="via1">
+            <div class="chip-tag" style="background:#facc15"></div>
+            <div class="chip-name">VIA1</div>
+            <div class="chip-full">MOS 6522 VIA</div>
+            <div class="chip-role">Keyboard/ADB interface, real-time clock, sound enable, floppy disk select, soft power.</div>
+        </div>
+        <div class="chip-card" data-chip="via2">
+            <div class="chip-tag" style="background:#fdba74"></div>
+            <div class="chip-name">VIA2</div>
+            <div class="chip-full">MOS 6522 VIA</div>
+            <div class="chip-role">SCSI interrupt, NuBus/PDS slot interrupts, video page select, SCSI DRQ.</div>
+        </div>
+        <div class="chip-card" data-chip="scc">
+            <div class="chip-tag" style="background:#7dd3fc"></div>
+            <div class="chip-name">SCC</div>
+            <div class="chip-full">Zilog Z8530</div>
+            <div class="chip-role">Dual-channel serial controller for Printer and Modem ports (RS-422). Also used for LocalTalk.</div>
+        </div>
+        <div class="chip-card" data-chip="scsi">
+            <div class="chip-tag" style="background:#a78bfa"></div>
+            <div class="chip-name">SCSI</div>
+            <div class="chip-full">NCR 5380</div>
+            <div class="chip-role">SCSI-1 controller for internal HDD and external SCSI bus (DB-25).</div>
+        </div>
+        <div class="chip-card" data-chip="asc">
+            <div class="chip-tag" style="background:#34d399"></div>
+            <div class="chip-name">ASC</div>
+            <div class="chip-full">Apple Sound Chip</div>
+            <div class="chip-role">4-channel wavetable/PCM sound engine. Drives the built-in speaker and audio output jack.</div>
+        </div>
+        <div class="chip-card" data-chip="swim">
+            <div class="chip-tag" style="background:#86efac"></div>
+            <div class="chip-name">SWIM</div>
+            <div class="chip-full">Super Woz Integrated Machine</div>
+            <div class="chip-role">Floppy disk controller supporting 400K, 800K GCR, and 1.44 MB MFM (SuperDrive) formats.</div>
+        </div>
+        <div class="chip-card" data-chip="rtc">
+            <div class="chip-tag" style="background:#fca5a5"></div>
+            <div class="chip-name">RTC</div>
+            <div class="chip-full">343-0040-B (Custom)</div>
+            <div class="chip-role">Real-Time Clock chip. Keeps time with a 3.6V lithium battery. Also stores 256 bytes of PRAM (settings).</div>
+        </div>
+    </div>
+
+    <div class="section-title">VIA1 (6522) Register Map — $50000000</div>
+    <div class="via-grid">
+        <div class="via-reg"><span class="offset">+$000</span><span class="name">ORB / IRB</span><span class="bits">Port B data register — Sound enable, SCSI, floppy</span></div>
+        <div class="via-reg"><span class="offset">+$200</span><span class="name">ORA / IRA</span><span class="bits">Port A data register — ADB state, SCC wait/req</span></div>
+        <div class="via-reg"><span class="offset">+$400</span><span class="name">DDRB</span><span class="bits">Data direction register B (0=input, 1=output)</span></div>
+        <div class="via-reg"><span class="offset">+$600</span><span class="name">DDRA</span><span class="bits">Data direction register A</span></div>
+        <div class="via-reg"><span class="offset">+$800</span><span class="name">T1CL</span><span class="bits">Timer 1 counter low / latch low</span></div>
+        <div class="via-reg"><span class="offset">+$A00</span><span class="name">T1CH</span><span class="bits">Timer 1 counter high</span></div>
+        <div class="via-reg"><span class="offset">+$C00</span><span class="name">T1LL</span><span class="bits">Timer 1 latch low</span></div>
+        <div class="via-reg"><span class="offset">+$E00</span><span class="name">T1LH</span><span class="bits">Timer 1 latch high</span></div>
+        <div class="via-reg"><span class="offset">+$1000</span><span class="name">T2CL</span><span class="bits">Timer 2 counter/latch low</span></div>
+        <div class="via-reg"><span class="offset">+$1200</span><span class="name">T2CH</span><span class="bits">Timer 2 counter high</span></div>
+        <div class="via-reg"><span class="offset">+$1400</span><span class="name">SR</span><span class="bits">Shift register — keyboard data</span></div>
+        <div class="via-reg"><span class="offset">+$1600</span><span class="name">ACR</span><span class="bits">Auxiliary control register</span></div>
+        <div class="via-reg"><span class="offset">+$1800</span><span class="name">PCR</span><span class="bits">Peripheral control register</span></div>
+        <div class="via-reg"><span class="offset">+$1A00</span><span class="name">IFR</span><span class="bits">Interrupt flag register</span></div>
+        <div class="via-reg"><span class="offset">+$1C00</span><span class="name">IER</span><span class="bits">Interrupt enable register</span></div>
+        <div class="via-reg"><span class="offset">+$1E00</span><span class="name">ORA</span><span class="bits">Port A (no handshake)</span></div>
+    </div>
+
+    <div class="section-title">VIA1 Port B Bit Functions</div>
+    <div class="bit-field">
+        <div><div class="bit bit-0">7</div><span class="bit-label">SC/DI</span></div>
+        <div><div class="bit bit-0">6</div><span class="bit-label">SC/DO</span></div>
+        <div><div class="bit bit-1">5</div><span class="bit-label">SC/CK</span></div>
+        <div><div class="bit bit-x">4</div><span class="bit-label">SCSI</span></div>
+        <div><div class="bit bit-x">3</div><span class="bit-label">SCSI</span></div>
+        <div><div class="bit bit-x">2</div><span class="bit-label">RdRTCDat</span></div>
+        <div><div class="bit bit-1">1</div><span class="bit-label">RdRTCClk</span></div>
+        <div><div class="bit bit-0">0</div><span class="bit-label">SndOut</span></div>
+    </div>
+
+    <div class="section-title">NCR 5380 SCSI Registers — $50010000</div>
+    <table class="reg-table">
+        <tr><th>Offset</th><th>R Name</th><th>W Name</th><th>Description</th></tr>
+        <tr><td class="rname">+0</td><td class="rdesc">Current Data</td><td class="rdesc">Output Data</td><td class="rnotes">SCSI data bus value</td></tr>
+        <tr><td class="rname">+1</td><td class="rdesc">Initiator Cmd</td><td class="rdesc">Initiator Cmd</td><td class="rnotes">Assert bus control signals</td></tr>
+        <tr><td class="rname">+2</td><td class="rdesc">Mode</td><td class="rdesc">Mode</td><td class="rnotes">Arbitration, DMA enable</td></tr>
+        <tr><td class="rname">+3</td><td class="rdesc">Target Cmd</td><td class="rdesc">Target Cmd</td><td class="rnotes">Target mode control</td></tr>
+        <tr><td class="rname">+4</td><td class="rdesc">Current Status</td><td class="rdesc">Select Enable</td><td class="rnotes">Bus phase detection</td></tr>
+        <tr><td class="rname">+5</td><td class="rdesc">Bus/Status</td><td class="rdesc">Start DMA Send</td><td class="rnotes">DMA / IRQ status</td></tr>
+        <tr><td class="rname">+6</td><td class="rdesc">Input Data</td><td class="rdesc">Start DMA Rcv</td><td class="rnotes">Received data byte</td></tr>
+        <tr><td class="rname">+7</td><td class="rdesc">Reset Parity/Int</td><td class="rdesc">Start DMA T. Rcv</td><td class="rnotes">Clear interrupt / parity</td></tr>
+    </table>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: VIDEO
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-video">
+
+    <div class="section-title">Built-in Display</div>
+    <div class="card-grid">
+        <div class="card"><div class="card-title">Display Type</div><div class="card-value">9″ CRT</div><div class="card-sub">Sony Trinitron tube — built into chassis</div></div>
+        <div class="card"><div class="card-title">Resolution</div><div class="card-value">512 × 342</div><div class="card-sub">Horizontal × Vertical pixels</div></div>
+        <div class="card"><div class="card-title">Bit Depth</div><div class="card-value">1-bit</div><div class="card-sub">Monochrome — black and white only</div></div>
+        <div class="card"><div class="card-title">Refresh Rate</div><div class="card-value">60.15 Hz</div><div class="card-sub">Non-interlaced</div></div>
+        <div class="card"><div class="card-title">Frame Buffer Size</div><div class="card-value">21,888 B</div><div class="card-sub">512 × 342 ÷ 8 = 21,888 bytes</div></div>
+        <div class="card"><div class="card-title">Frame Buffer Location</div><div class="card-value">$FA700000</div><div class="card-sub">In RAM — double-buffered with BBU</div></div>
+    </div>
+
+    <div class="info-box tip">
+        <strong>💡 No External Video</strong>
+        Unlike the Mac II line, the SE/30 has no external video output in its stock configuration. The only way to add an external monitor is via a PDS card (e.g., Radius Pivot, Lapis DisplayServer). The BBU generates video entirely from the internal frame buffer.
+    </div>
+
+    <div class="section-title">Frame Buffer Layout</div>
+    <p>The video frame buffer is 1-bit per pixel, stored row by row. Each horizontal line is 512 bits = 64 bytes. Pixel (0,0) is the top-left; bit 7 of the first byte is the leftmost pixel.</p>
+    <div class="code-block">
+<span class="comment">; Frame buffer base address</span>
+<span class="label">FB_BASE</span>  <span class="instr">EQU</span>   <span class="num">$FA700000</span>
+
+<span class="comment">; Calculate address of pixel (X, Y)</span>
+<span class="comment">; Address = FB_BASE + (Y × 64) + (X ÷ 8)</span>
+<span class="comment">; Bit within byte = 7 - (X MOD 8)</span>
+
+<span class="comment">; Example: clear entire screen</span>
+         <span class="instr">LEA</span>   <span class="num">$FA700000</span>,<span class="reg">A0</span>    <span class="comment">; Point A0 at frame buffer</span>
+         <span class="instr">MOVE.W</span> <span class="num">#(21888/4)-1</span>,<span class="reg">D0</span> <span class="comment">; 5471 long-words to clear</span>
+<span class="label">.loop</span>    <span class="instr">CLR.L</span> (<span class="reg">A0</span>)+             <span class="comment">; Clear 4 bytes (32 pixels) at once</span>
+         <span class="instr">DBRA</span>  <span class="reg">D0</span>,<span class="label">.loop</span>          <span class="comment">; Repeat</span>
+
+<span class="comment">; Set pixel at (X=10, Y=20) — set bit in frame buffer</span>
+         <span class="instr">MOVE.L</span> <span class="num">#20</span>,<span class="reg">D0</span>            <span class="comment">; Y = 20</span>
+         <span class="instr">MULU.W</span> <span class="num">#64</span>,<span class="reg">D0</span>            <span class="comment">; Y × 64 bytes/row</span>
+         <span class="instr">ADDI.L</span> <span class="num">#1</span>,<span class="reg">D0</span>             <span class="comment">; X=10 → byte offset = 10÷8 = 1</span>
+         <span class="instr">BSET</span>   <span class="num">#5</span>,(<span class="num">$FA700000</span>,<span class="reg">D0</span>) <span class="comment">; bit = 7-(10 mod 8) = 5</span>
+    </div>
+
+    <div class="section-title">QuickDraw — The Graphics API</div>
+    <p>All Mac software draws to the screen via <strong>QuickDraw</strong>, Apple's 2D graphics library baked into the ROM. Applications never write directly to the frame buffer; they use QuickDraw routines which manage the GrafPort, clipping regions, and coordinate transforms.</p>
+
+    <div class="two-col">
+        <div>
+            <h3>QuickDraw Core Concepts</h3>
+            <ul>
+                <li><strong>GrafPort</strong> — Drawing destination (window or offscreen)</li>
+                <li><strong>Pen</strong> — Current drawing mode, pattern, size</li>
+                <li><strong>Pattern</strong> — 8×8 pixel fill patterns (stored in ROM)</li>
+                <li><strong>Region</strong> — Arbitrary clipping/fill areas</li>
+                <li><strong>BitMap</strong> — Rectangular 1-bit image data</li>
+                <li><strong>Rect</strong> — Rectangle: top, left, bottom, right</li>
+                <li><strong>Point</strong> — (h, v) coordinate pair</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Key ROM Trap Addresses</h3>
+            <div class="code-block" style="margin:0">
+<span class="comment">; QuickDraw Traps (A-line)</span>
+<span class="label">_InitGraf</span>    <span class="num">$A86E</span>
+<span class="label">_OpenPort</span>    <span class="num">$A86F</span>
+<span class="label">_MoveTo</span>      <span class="num">$A893</span>
+<span class="label">_LineTo</span>      <span class="num">$A891</span>
+<span class="label">_DrawString</span>  <span class="num">$A884</span>
+<span class="label">_FillRect</span>    <span class="num">$A8A5</span>
+<span class="label">_FrameRect</span>   <span class="num">$A8A1</span>
+<span class="label">_PaintOval</span>   <span class="num">$A8BB</span>
+<span class="label">_CopyBits</span>    <span class="num">$A8EC</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Screen Simulation</div>
+    <div class="crt-demo">
+        <div class="crt-line"><span class="crt-invert"> File  Edit  View  Label  Special </span></div>
+        <div class="crt-line"> </div>
+        <div class="crt-line">  ┌────────────────────────────────────────┐</div>
+        <div class="crt-line">  │  <span class="crt-invert">Macintosh SE/30 Reference — System 7</span>  │</div>
+        <div class="crt-line">  ├────────────────────────────────────────┤</div>
+        <div class="crt-line">  │  CPU:  Motorola 68030 @ 16 MHz         │</div>
+        <div class="crt-line">  │  FPU:  Motorola 68882 @ 16 MHz         │</div>
+        <div class="crt-line">  │  RAM:  8,192K  ■■■■■■■■░░░░░░░░        │</div>
+        <div class="crt-line">  │  HDD:  40 MB   ■■■■■■░░░░░░░░░░        │</div>
+        <div class="crt-line">  │                                        │</div>
+        <div class="crt-line">  │  &gt; <span class="crt-cursor"></span>                                  │</div>
+        <div class="crt-line">  └────────────────────────────────────────┘</div>
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: I/O & PORTS
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-io">
+
+    <div class="section-title">Port Reference</div>
+    <table class="spec-table">
+        <tr><th>Port</th><th>Connector</th><th>Standard</th><th>Description</th></tr>
+        <tr>
+            <td class="label">🖨 Printer Port</td>
+            <td class="mono">DB-9 (Female)</td>
+            <td class="value">RS-422 / LocalTalk</td>
+            <td class="value">High-speed serial; LocalTalk networking; AppleTalk</td>
+        </tr>
+        <tr>
+            <td class="label">📠 Modem Port</td>
+            <td class="mono">DB-9 (Female)</td>
+            <td class="value">RS-422</td>
+            <td class="value">Serial modem connection; can also run LocalTalk</td>
+        </tr>
+        <tr>
+            <td class="label">💾 SCSI External</td>
+            <td class="mono">DB-25 (Female)</td>
+            <td class="value">SCSI-1</td>
+            <td class="value">Up to 7 external SCSI devices (ID 0–6; 7 = Mac)</td>
+        </tr>
+        <tr>
+            <td class="label">⌨ ADB × 2</td>
+            <td class="mono">Mini-DIN 4</td>
+            <td class="value">Apple Desktop Bus</td>
+            <td class="value">Keyboard, mouse, graphics tablet; daisy-chainable</td>
+        </tr>
+        <tr>
+            <td class="label">🔈 Sound Out</td>
+            <td class="mono">3.5 mm TRS</td>
+            <td class="value">Mono analog</td>
+            <td class="value">Headphones / external speaker; 8-bit @ 22 kHz</td>
+        </tr>
+        <tr>
+            <td class="label">🎙 Sound In</td>
+            <td class="mono">3.5 mm TRS</td>
+            <td class="value">Mono analog</td>
+            <td class="value">External microphone input</td>
+        </tr>
+    </table>
+
+    <div class="section-title">Apple Desktop Bus (ADB)</div>
+    <p>ADB is a slow (10 kbps) serial bus that replaced the older Macintosh keyboard/mouse interface. It supports up to 16 devices daisy-chained on a single 4-wire cable. Each device has a 4-bit address (0–15).</p>
+    <div class="two-col">
+        <div>
+            <h3>ADB Pinout (Mini-DIN 4)</h3>
+            <table class="spec-table">
+                <tr><th>Pin</th><th>Function</th></tr>
+                <tr><td class="mono">1</td><td class="value">ADB Data (bidirectional, open-collector)</td></tr>
+                <tr><td class="mono">2</td><td class="value">Power Switch (PSW)</td></tr>
+                <tr><td class="mono">3</td><td class="value">+5V (500mA max)</td></tr>
+                <tr><td class="mono">4</td><td class="value">Ground</td></tr>
+            </table>
+        </div>
+        <div>
+            <h3>ADB Default Device Addresses</h3>
+            <table class="spec-table">
+                <tr><th>Address</th><th>Device</th></tr>
+                <tr><td class="mono">$00</td><td class="value">Reserved</td></tr>
+                <tr><td class="mono">$01</td><td class="value">Reserved</td></tr>
+                <tr><td class="mono">$02</td><td class="value">Keyboard (default)</td></tr>
+                <tr><td class="mono">$03</td><td class="value">Mouse (default)</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-title">Serial Ports (DB-9 RS-422)</div>
+    <p>Both serial ports use the Zilog Z8530 SCC and support RS-422 differential signaling. Speeds from 300 bps up to 1 Mbps (LocalTalk). DB-9 pinout differs from PC RS-232 — do NOT connect to PC serial without an adapter.</p>
+    <table class="spec-table">
+        <tr><th>Pin</th><th>Function</th><th>Direction</th></tr>
+        <tr><td class="mono">1</td><td class="value">HSKo (Handshake output / clock)</td><td class="mono">Output</td></tr>
+        <tr><td class="mono">2</td><td class="value">HSKi (Handshake input / ring detect)</td><td class="mono">Input</td></tr>
+        <tr><td class="mono">3</td><td class="value">TxD– (Transmit data, negative)</td><td class="mono">Output</td></tr>
+        <tr><td class="mono">4</td><td class="value">Ground</td><td class="mono">—</td></tr>
+        <tr><td class="mono">5</td><td class="value">RxD– (Receive data, negative)</td><td class="mono">Input</td></tr>
+        <tr><td class="mono">6</td><td class="value">TxD+ (Transmit data, positive)</td><td class="mono">Output</td></tr>
+        <tr><td class="mono">7</td><td class="value">GPi (General purpose input)</td><td class="mono">Input</td></tr>
+        <tr><td class="mono">8</td><td class="value">RxD+ (Receive data, positive)</td><td class="mono">Input</td></tr>
+        <tr><td class="mono">9</td><td class="value">+12V (not always present)</td><td class="mono">Power</td></tr>
+    </table>
+
+    <div class="section-title">Sound — Apple Sound Chip (ASC)</div>
+    <p>The ASC provides 4-channel wavetable synthesis and PCM playback. It was Apple's first dedicated sound chip, replacing the PWM buzzer sound of earlier Macs. The SE/30's ASC drives a single internal speaker and the 3.5 mm mono output jack.</p>
+    <div class="card-grid">
+        <div class="card"><div class="card-title">Channels</div><div class="card-value">4</div><div class="card-sub">Wavetable / PCM mixing</div></div>
+        <div class="card"><div class="card-title">Sample Rate</div><div class="card-value">22 kHz</div><div class="card-sub">8-bit unsigned PCM</div></div>
+        <div class="card"><div class="card-title">Wave Table</div><div class="card-value">512 B/ch</div><div class="card-sub">Each channel has 512-byte wavetable RAM</div></div>
+        <div class="card"><div class="card-title">Output</div><div class="card-value">Mono</div><div class="card-sub">Internal speaker + 3.5 mm jack</div></div>
+    </div>
+
+    <div class="info-box">
+        <strong>ℹ Sound Manager vs Direct ASC Access</strong>
+        Apple strongly discourages direct ASC register manipulation. The Sound Manager (System Software) handles mixing, sample rate conversion, and device routing. Use <span class="inline-code">SndPlay()</span>, <span class="inline-code">SndNewChannel()</span>, and <span class="inline-code">SndDoCommand()</span> for portable audio code.
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: STORAGE
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-storage">
+
+    <div class="section-title">Internal Storage</div>
+    <div class="two-col">
+        <div>
+            <h3>SuperDrive (1.44 MB)</h3>
+            <p>The SE/30 ships with Apple's SuperDrive — the first Mac floppy capable of reading and writing IBM PC-format disks (MFM) as well as Apple GCR formats. Managed by the SWIM chip.</p>
+            <table class="spec-table">
+                <tr><td class="label">Format support</td><td class="value">400K (GCR), 800K (GCR), 1.44 MB (MFM)</td></tr>
+                <tr><td class="label">IBM compatibility</td><td class="value">MS-DOS 720K and 1.44 MB with PC Exchange</td></tr>
+                <tr><td class="label">Controller</td><td class="value">SWIM (Super Woz Integrated Machine)</td></tr>
+                <tr><td class="label">Rotation</td><td class="value">Variable speed (300–600 RPM) for GCR</td></tr>
+                <tr><td class="label">Interface</td><td class="value">19-pin internal ribbon cable</td></tr>
+            </table>
+        </div>
+        <div>
+            <h3>Internal SCSI Hard Drive</h3>
+            <p>The SE/30 has a 3.5″ SCSI hard drive bay. Original options were 20, 40, or 80 MB drives. Any SCSI-1 device with ID≠7 can be used. The HDD is fixed at SCSI ID 0 internally.</p>
+            <table class="spec-table">
+                <tr><td class="label">Bus</td><td class="value">SCSI-1 (5 MB/s theoretical)</td></tr>
+                <tr><td class="label">Controller</td><td class="value">NCR 5380</td></tr>
+                <tr><td class="label">Internal ID</td><td class="value">SCSI ID 0 (factory default)</td></tr>
+                <tr><td class="label">Drive format</td><td class="value">3.5″ half-height SCSI</td></tr>
+                <tr><td class="label">Max size</td><td class="value">~4 GB (practical; HFS limit)</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-title">SCSI Bus Configuration</div>
+    <div class="info-box warn">
+        <strong>⚠ SCSI Termination</strong>
+        The SCSI bus must be terminated at both ends. The Mac itself provides termination at one end. The last device in the chain must have active termination. Daisy-chained devices in between should have termination removed. Incorrect termination causes data corruption and bus errors.
+    </div>
+    <table class="spec-table">
+        <tr><th>SCSI ID</th><th>Default Device</th><th>Notes</th></tr>
+        <tr><td class="mono">0</td><td class="value">Internal Hard Drive</td><td class="mono">Boot device</td></tr>
+        <tr><td class="mono">1</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">2</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">3</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">4</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">5</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">6</td><td class="value">Available</td><td></td></tr>
+        <tr><td class="mono">7</td><td class="value">Macintosh SE/30 (initiator)</td><td class="mono">Reserved — never use for peripherals</td></tr>
+    </table>
+
+    <div class="section-title">Modern Storage Alternatives</div>
+    <p>Original SCSI drives are unreliable at age 35+. Several modern alternatives exist:</p>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-title">SCSI2SD</div>
+            <div class="card-value" style="font-size:1.1rem">SD Card → SCSI</div>
+            <div class="card-sub">Most popular solution. v5.2 supports up to 4 virtual SCSI devices. Use 8 GB or 16 GB SD cards.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">BlueSCSI</div>
+            <div class="card-value" style="font-size:1.1rem">Open Source</div>
+            <div class="card-sub">ESP32-based SCSI emulator. Supports SD cards and WiFi (for remote disk images). Very active development.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">ZuluSCSI</div>
+            <div class="card-value" style="font-size:1.1rem">RP2040-based</div>
+            <div class="card-sub">Fast, reliable SCSI emulator using Raspberry Pi RP2040. Supports large SD cards and disk image files.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">RaSCSI / PiSCSI</div>
+            <div class="card-value" style="font-size:1.1rem">Raspberry Pi</div>
+            <div class="card-sub">Full SCSI emulation via Raspberry Pi. Supports CD-ROM, network adapters, and remote management via web UI.</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: EXPANSION
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-expansion">
+
+    <div class="section-title">PDS — Processor Direct Slot</div>
+    <p>The SE/30's PDS (Processor Direct Slot) is a 96-pin connector that places expansion cards directly on the 68030 bus. Unlike NuBus (used in Mac II), PDS cards get full 32-bit direct CPU access at full speed — no bridging overhead.</p>
+
+    <div class="card-grid">
+        <div class="card"><div class="card-title">Connector</div><div class="card-value">96-pin</div><div class="card-sub">3-row DIN 41612 — direct CPU bus</div></div>
+        <div class="card"><div class="card-title">Bus Width</div><div class="card-value">32-bit</div><div class="card-sub">Full CPU data and address bus</div></div>
+        <div class="card"><div class="card-title">Bus Speed</div><div class="card-value">16 MHz</div><div class="card-sub">CPU clock rate — no wait states on fast cards</div></div>
+        <div class="card"><div class="card-title">Slots</div><div class="card-value">1</div><div class="card-sub">One PDS slot (can expand via NuBus adapter)</div></div>
+    </div>
+
+    <div class="section-title">Notable PDS Expansion Cards</div>
+    <table class="spec-table">
+        <tr><th>Card</th><th>Manufacturer</th><th>Function</th></tr>
+        <tr><td class="value">Daystar Digital Turbo 040</td><td class="mono">Daystar</td><td class="value">CPU accelerator — 68040 @ 33–40 MHz</td></tr>
+        <tr><td class="value">Radius Rocket 25/33</td><td class="mono">Radius</td><td class="value">68040-based accelerator with own RAM</td></tr>
+        <tr><td class="value">Micron Xceed Color 30HR</td><td class="mono">Micron/Xceed</td><td class="value">External color video output (VGA)</td></tr>
+        <tr><td class="value">Radius ColorPivot</td><td class="mono">Radius</td><td class="value">Color external monitor support</td></tr>
+        <tr><td class="value">Lapis DisplayServer SE/30</td><td class="mono">Lapis</td><td class="value">External monitor output</td></tr>
+        <tr><td class="value">Asante MacCon SE/30</td><td class="mono">Asante</td><td class="value">10BaseT Ethernet adapter</td></tr>
+        <tr><td class="value">Dayna EtherPrint E/T</td><td class="mono">Dayna</td><td class="value">Ethernet + LocalTalk bridge</td></tr>
+        <tr><td class="value">IIsi NuBus Adapter</td><td class="mono">Apple</td><td class="value">Converts PDS to 2× NuBus slots</td></tr>
+        <tr><td class="value">Apple Workgroup Server Card</td><td class="mono">Apple</td><td class="value">Additional SCSI / networking</td></tr>
+        <tr><td class="value">Cache IIsi</td><td class="mono">Various</td><td class="value">32 KB static RAM cache card</td></tr>
+    </table>
+
+    <div class="section-title">PDS → NuBus Adapter</div>
+    <p>Apple's IIsi NuBus adapter (also called the "SE/30 NuBus Adapter") lets you install two standard NuBus cards in the SE/30. This opens up the entire NuBus ecosystem including high-resolution colour video, DSP cards, and network adapters originally designed for the Mac II family.</p>
+    <div class="info-box warn">
+        <strong>⚠ Physical Clearance</strong>
+        The NuBus adapter and cards protrude above the motherboard significantly. The SE/30's chassis is very tight — not all cards will physically fit. Cards must be low-profile or the lid may not close. Check compatibility lists before purchasing.
+    </div>
+
+    <div class="section-title">Network Options</div>
+    <div class="two-col">
+        <div>
+            <h3>Built-in Networking</h3>
+            <ul>
+                <li><strong>LocalTalk</strong> (230 kbps) — via Printer or Modem port</li>
+                <li>Uses PhoneNet adapters with standard phone wire</li>
+                <li>Supports AppleShare file sharing, AppleTalk printing</li>
+                <li>Max 32 nodes per zone</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Ethernet (PDS/NuBus Card)</h3>
+            <ul>
+                <li>10BaseT Ethernet via PDS card (Asante, Farallon, Dayna)</li>
+                <li>Requires Open Transport or MacTCP for TCP/IP</li>
+                <li>EtherTalk for AppleTalk-over-Ethernet</li>
+                <li>Popular: Asante MacCon SE/30 (still widely available)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: SOFTWARE
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-software">
+
+    <div class="section-title">Mac OS Compatibility</div>
+    <table class="spec-table">
+        <tr><th>System Version</th><th>Year</th><th>Notes</th></tr>
+        <tr><td class="value">System 6.0.4</td><td class="mono">1989</td><td class="value">Minimum version; initial SE/30 release</td></tr>
+        <tr><td class="value">System 6.0.5 – 6.0.8</td><td class="mono">1989–1991</td><td class="value">Stable 6.x releases; very fast on SE/30</td></tr>
+        <tr><td class="value">System 7.0</td><td class="mono">1991</td><td class="value">Virtual memory, TrueType fonts, multitasking, aliases</td></tr>
+        <tr><td class="value">System 7.1</td><td class="mono">1992</td><td class="value">Font/DA Mover replaced; Fonts folder; System enabler model</td></tr>
+        <tr><td class="value">System 7.5 – 7.5.5</td><td class="mono">1994–1996</td><td class="value">Maximum supported; Drag-and-drop, Desktop Printer, networking improvements</td></tr>
+        <tr><td class="value">A/UX 3.x</td><td class="mono">1992–1995</td><td class="value">Apple's UNIX (based on AT&amp;T SVR2.2); requires 4 MB RAM + 80 MB HDD</td></tr>
+    </table>
+
+    <div class="info-box warn">
+        <strong>⚠ System 7.6+ Not Supported</strong>
+        System 7.6 dropped support for 68030 Macs without a 68040 accelerator. System 7.5.5 with all patches applied is the practical maximum for an unmodified SE/30.
+    </div>
+
+    <div class="section-title">Key System Architecture</div>
+    <div class="two-col">
+        <div>
+            <h3>Mac Toolbox (ROM)</h3>
+            <p>The Macintosh Toolbox is Apple's OS API — roughly 50,000 lines of 68000 assembly burned into 256 KB of ROM. Programs call ROM routines via A-line traps (instructions $A000–$AFFF).</p>
+            <ul>
+                <li><strong>QuickDraw</strong> — 2D graphics primitives</li>
+                <li><strong>Event Manager</strong> — Mouse, keyboard, disk events</li>
+                <li><strong>Window Manager</strong> — Overlapping windows</li>
+                <li><strong>Menu Manager</strong> — Menus and menu bar</li>
+                <li><strong>Dialog Manager</strong> — Dialogs and alerts</li>
+                <li><strong>Memory Manager</strong> — Heap zones, handles</li>
+                <li><strong>Resource Manager</strong> — Resource forks</li>
+                <li><strong>File Manager</strong> — HFS file system access</li>
+            </ul>
+        </div>
+        <div>
+            <h3>A-Line Trap Mechanism</h3>
+            <p>All Toolbox and OS calls use "A-line" traps — 68000 instructions with opcodes $Axxx that cause a privilege exception, handled by the ROM dispatcher.</p>
+            <div class="code-block" style="margin:0">
+<span class="comment">; Trap format: $Axxx</span>
+<span class="comment">; Toolbox:  $A800–$AFFF</span>
+<span class="comment">; OS:       $A000–$A7FF</span>
+
+<span class="instr">_NewPtr</span>    <span class="comment">; = $A11E</span>
+<span class="instr">_DisposPtr</span> <span class="comment">; = $A01F</span>
+<span class="instr">_SysBeep</span>   <span class="comment">; = $A9C8</span>
+<span class="instr">_GetResource</span> <span class="comment">; = $A9A0</span>
+<span class="instr">_Gestalt</span>   <span class="comment">; = $A1AD</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Gestalt Manager — System Feature Queries</div>
+    <p>The Gestalt Manager (introduced System 6.0.4) provides a standard API for querying hardware and software capabilities. Use it instead of hardcoded address sniffing.</p>
+    <div class="code-block">
+<span class="comment">; Gestalt call example (68030 assembly)</span>
+<span class="comment">; D0 = selector code, A0 = pointer to result (OSType → long)</span>
+
+         <span class="instr">MOVE.L</span>  <span class="num">#'proc'</span>,<span class="reg">D0</span>     <span class="comment">; gestaltProcessorType selector</span>
+         <span class="instr">_Gestalt</span>                <span class="comment">; A-line trap — calls ROM</span>
+         <span class="comment">; A0 now points to response: gestalt68030 = 4</span>
+
+<span class="comment">; Common Gestalt selectors:</span>
+<span class="label">'proc'</span>  <span class="comment">gestaltProcessorType  — 4 = 68030</span>
+<span class="label">'fpu '</span>  <span class="comment">gestaltFPUType        — 3 = 68882</span>
+<span class="label">'ram '</span>  <span class="comment">gestaltPhysicalRAMSize — bytes of RAM</span>
+<span class="label">'mach'</span>  <span class="comment">gestaltMachineType    — 9 = SE/30</span>
+<span class="label">'sysv'</span>  <span class="comment">gestaltSystemVersion  — e.g. $0755 = 7.5.5</span>
+<span class="label">'vm  '</span>  <span class="comment">gestaltVMAttr         — virtual memory status</span>
+    </div>
+
+    <div class="section-title">Gestalt Machine Type Constants</div>
+    <table class="spec-table">
+        <tr><th>gestaltMachineType</th><th>Value</th><th>Machine</th></tr>
+        <tr><td class="mono">gestaltMac128K</td><td class="mono">1</td><td class="value">Macintosh 128K</td></tr>
+        <tr><td class="mono">gestaltMac512K</td><td class="mono">2</td><td class="value">Macintosh 512K</td></tr>
+        <tr><td class="mono">gestaltMacPlus</td><td class="mono">4</td><td class="value">Macintosh Plus</td></tr>
+        <tr><td class="mono">gestaltMacSE</td><td class="mono">5</td><td class="value">Macintosh SE</td></tr>
+        <tr><td class="mono">gestaltMacII</td><td class="mono">6</td><td class="value">Macintosh II</td></tr>
+        <tr><td class="mono">gestaltMacSE030</td><td class="mono">9</td><td class="value">Macintosh SE/30 ← This machine</td></tr>
+        <tr><td class="mono">gestaltMacIIci</td><td class="mono">11</td><td class="value">Macintosh IIci</td></tr>
+        <tr><td class="mono">gestaltMacIIfx</td><td class="mono">13</td><td class="value">Macintosh IIfx</td></tr>
+    </table>
+
+    <div class="section-title">Classic Mac Programming — Hello World</div>
+    <div class="code-block">
+<span class="comment">; Macintosh SE/30 — Minimal 68030 Program</span>
+<span class="comment">; Displays a window with "Hello, World!" using Toolbox</span>
+
+         <span class="instr">INCLUDE</span>  <span class="label">'Traps.a'</span>           <span class="comment">; A-line trap definitions</span>
+         <span class="instr">INCLUDE</span>  <span class="label">'QuickDraw.a'</span>       <span class="comment">; QuickDraw structures</span>
+
+         <span class="instr">SECTION</span>  <span class="num">1</span>
+
+<span class="label">Start</span>    <span class="instr">PEA</span>     QuickDraw           <span class="comment">; Init QuickDraw global storage</span>
+         <span class="instr">_InitGraf</span>
+         <span class="instr">_InitFonts</span>
+         <span class="instr">_InitWindows</span>
+         <span class="instr">_InitMenus</span>
+         <span class="instr">_TEInit</span>
+         <span class="instr">_InitDialogs</span>         <span class="num">#0</span>
+         <span class="instr">_InitCursor</span>
+
+         <span class="instr">PEA</span>     HelloRect            <span class="comment">; Open a window</span>
+         <span class="instr">MOVE.L</span>  <span class="num">#$00000000</span>,<span class="reg">-(A7)</span>
+         <span class="instr">MOVE.W</span>  <span class="num">#documentProc</span>,<span class="reg">-(A7)</span>
+         <span class="instr">MOVE.W</span>  <span class="num">#-1</span>,<span class="reg">-(A7)</span>             <span class="comment">; Visible</span>
+         <span class="instr">_NewWindow</span>
+         <span class="instr">MOVE.L</span>  <span class="reg">A0</span>,<span class="reg">-(A7)</span>
+         <span class="instr">_SetPort</span>
+
+         <span class="instr">MOVE.W</span>  <span class="num">#50</span>,<span class="reg">-(A7)</span>
+         <span class="instr">MOVE.W</span>  <span class="num">#100</span>,<span class="reg">-(A7)</span>
+         <span class="instr">_MoveTo</span>
+         <span class="instr">PEA</span>     HelloStr
+         <span class="instr">_DrawString</span>             <span class="comment">; Draw Pascal string</span>
+<span class="label">.loop</span>    <span class="instr">BRA</span>     <span class="label">.loop</span>              <span class="comment">; Spin (real app uses event loop)</span>
+
+<span class="label">HelloRect</span> <span class="instr">DC.W</span>   <span class="num">50,60,200,380</span>       <span class="comment">; top,left,bottom,right</span>
+<span class="label">HelloStr</span>  <span class="instr">DC.B</span>   <span class="num">13</span>,<span class="label">'Hello, World!'</span>   <span class="comment">; Pascal string (length + data)</span>
+<span class="label">QuickDraw</span> <span class="instr">DS.B</span>   <span class="num">206</span>                <span class="comment">; QuickDraw globals storage</span>
+    </div>
+
+</div>
+
+<!-- ████████████████████████████████████████████████████
+     TAB: MODERN
+████████████████████████████████████████████████████ -->
+<div class="tab-content" id="tab-modern">
+
+    <div class="section-title">Emulation</div>
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-title">Mini vMac</div>
+            <div class="card-value" style="font-size:1.1rem">Best for SE/30</div>
+            <div class="card-sub">Compact, cycle-accurate 68030 emulation. Free. Requires a real SE/30 ROM dump. Supports System 6 and 7. Cross-platform (Windows, Mac, Linux, iOS, Android).</div>
+        </div>
+        <div class="card">
+            <div class="card-title">Basilisk II</div>
+            <div class="card-value" style="font-size:1.1rem">Versatile</div>
+            <div class="card-sub">Emulates Mac II / Mac IIci-class hardware. Good System 7 compatibility. Supports networking, extended desktop. Requires ROM dump.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">SheepShaver</div>
+            <div class="card-value" style="font-size:1.1rem">PPC Macs</div>
+            <div class="card-sub">PowerPC Mac emulation (not SE/30 class). Useful for Mac OS 8–9 software. Note: SE/30 software requires 68k emulation.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">MAME</div>
+            <div class="card-value" style="font-size:1.1rem">Accurate</div>
+            <div class="card-sub">MAME's mac driver supports SE/30 emulation with high accuracy. Primarily a preservation/research tool. Slower than Mini vMac.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">macemu (macintosh.js)</div>
+            <div class="card-value" style="font-size:1.1rem">Browser-based</div>
+            <div class="card-sub">Basilisk II compiled to WebAssembly. Run System 7 in a browser tab. Great for quick access without installation.</div>
+        </div>
+        <div class="card">
+            <div class="card-title">VMac for iOS</div>
+            <div class="card-value" style="font-size:1.1rem">Mobile</div>
+            <div class="card-sub">Mini vMac port for iPhone/iPad. Surprisingly usable with mouse emulation via touch.</div>
+        </div>
+    </div>
+
+    <div class="info-box warn">
+        <strong>⚠ ROM Requirements</strong>
+        All SE/30 emulators require a ROM image dumped from a real SE/30 (or obtained through other means). The SE/30 ROM checksum is <span class="inline-code">$36B8A5BF</span>. Mini vMac's importer tool can extract it from a running physical Mac.
+    </div>
+
+    <div class="section-title">Modern Hardware Mods & Upgrades</div>
+    <table class="spec-table">
+        <tr><th>Mod / Product</th><th>Description</th></tr>
+        <tr>
+            <td class="value">BlueSCSI / ZuluSCSI</td>
+            <td class="value">Replace internal SCSI HDD with SD card. Highly recommended — silent, fast, reliable.</td>
+        </tr>
+        <tr>
+            <td class="value">MODE32 (Apple, free)</td>
+            <td class="value">INIT that patches the "32-bit dirty" ROM to enable >8 MB RAM access. Essential for 16–128 MB configs.</td>
+        </tr>
+        <tr>
+            <td class="value">ROMINATOR II</td>
+            <td class="value">Replacement ROM board (Flash-based) with enhanced features, faster boot, CD-ROM support, and networking built-in.</td>
+        </tr>
+        <tr>
+            <td class="value">68040 Accelerator (Daystar Turbo 040)</td>
+            <td class="value">Drop-in 68040/68LC040 upgrade. Speeds up to 40 MHz. Transforms SE/30 into IIfx-class performance. Requires PDS slot.</td>
+        </tr>
+        <tr>
+            <td class="value">Micron Xceed Color 30HR</td>
+            <td class="value">PDS card adding external color video output. Allows connection to a VGA monitor alongside the internal CRT.</td>
+        </tr>
+        <tr>
+            <td class="value">Asante MacCon SE/30</td>
+            <td class="value">10BaseT ethernet via PDS. Best supported by Mac OS. Allows file sharing over modern networks.</td>
+        </tr>
+        <tr>
+            <td class="value">RAM Upgrade (128 MB)</td>
+            <td class="value">8× 16 MB 30-pin SIMMs + MODE32. 80ns or faster required. Transforms usability under System 7 multitasking.</td>
+        </tr>
+        <tr>
+            <td class="value">Capacitor Recap</td>
+            <td class="value">Replace all SMD electrolytic caps on logic board and analog board. Critical — leaking caps cause catastrophic board damage.</td>
+        </tr>
+        <tr>
+            <td class="value">CRT Yoke Adjustment</td>
+            <td class="value">Fine-tune horizontal/vertical geometry and brightness via analog board pots. Common after 30+ years of drift.</td>
+        </tr>
+        <tr>
+            <td class="value">PowerBook Battery Swap</td>
+            <td class="value">Replace the leaking PRAM battery (3.6V 1/2-AA Tadiran) before it destroys ROM socket traces.</td>
+        </tr>
+    </table>
+
+    <div class="section-title">⚠ Known Failure Modes</div>
+    <div class="info-box warn">
+        <strong>Capacitor Plague — Priority #1</strong>
+        The SE/30 logic board uses cheap SMD electrolytic capacitors that universally fail after 25–35 years, leaking corrosive electrolyte that eats PCB traces and pads. Signs: no video, striped/corrupted display, random crashes, no boot chime. Repair requires full cap recap (47 caps, mostly 10µF 16V and 47µF 16V SMD).
+    </div>
+    <div class="info-box warn">
+        <strong>PRAM Battery Corrosion</strong>
+        The 3.6V lithium PRAM battery leaks and corrodes the logic board. Remove immediately if leaking. Replace with a compatible 1/2-AA 3.6V lithium cell with proper leads.
+    </div>
+    <div class="info-box">
+        <strong>ℹ Simasimac / Checkerboard Display</strong>
+        A checkerboard pattern on boot ("simasimac") indicates RAM issues — either bad SIMMs, faulty slots, or cap leak damage to RAM traces. Test with known-good SIMMs first.
+    </div>
+
+    <div class="section-title">🛒 PCBWay — SE/30 Projects</div>
+    <p>PCBWay hosts community-shared PCB projects that can be ordered directly for fabrication. The following are relevant to the Macintosh SE/30:</p>
+
+    <div class="card-grid card-grid-2">
+        <div class="card card-accent">
+            <div class="card-title">PCBWay · BOLLE</div>
+            <div class="card-value" style="font-size:1.1rem">SE/30 Logic Board Recreation</div>
+            <div class="card-sub" style="margin-top:0.6rem; line-height:1.6">
+                A from-scratch redesign of the SE/30 motherboard using the original Apple schematics — not a trace-copy, but a fully re-routed 4-layer PCB.
+                Reduces cost vs Apple's original 6-layer design while being functionally identical.
+                PALs (video, clock, RAM-signalling) fully reverse-engineered; JEDEC files provided for GAL16V8 / PALCE16V8.
+                RTC upgraded to CR2032 holder. Booted on first try after assembly.
+                <br><br>
+                <strong style="color:#aaa">License:</strong> CC BY-NC-SA (non-commercial)<br>
+                <strong style="color:#aaa">GitHub:</strong> github.com/TheRealBolle/SE30<br>
+                <strong style="color:#aaa">PCBWay:</strong> <a href="https://www.pcbway.com/project/shareproject/Apple_Macintosh_SE_30_Motherboard_78143494.html" target="_blank">pcbway.com/project/shareproject/Apple_Macintosh_SE_30_Motherboard…</a>
+            </div>
+        </div>
+        <div class="card card-accent">
+            <div class="card-title">PCBWay · Shared Projects Tag: Apple</div>
+            <div class="card-value" style="font-size:1.1rem">More Apple / Mac PCBs</div>
+            <div class="card-sub" style="margin-top:0.6rem; line-height:1.6">
+                The PCBWay community project library includes additional Mac-related boards beyond the SE/30 logic board. Notable related projects:
+                <br><br>
+                <strong style="color:#aaa">Macintosh Classic (II) Analog Board</strong> — tested recreation of the analog board (compatible with SE/30 chassis)<br>
+                <strong style="color:#aaa">MacPlus-Reloaded</strong> — 1:1 Mac Plus motherboard for machines needing new boards<br>
+                <strong style="color:#aaa">ITXPlus</strong> — ITX-form Mac Plus clone; no original parts required<br>
+                <br>
+                <strong style="color:#aaa">PCBWay Apple tag:</strong> <a href="https://www.pcbway.com/project/shareproject/?tag=apple" target="_blank">pcbway.com/project/shareproject/?tag=apple</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-box tip">
+        <strong>💡 Ordering from PCBWay Shared Projects</strong>
+        Click "Order" on any shared project page to send the gerber files directly to PCBWay for fabrication. Specify board thickness (1.6 mm standard), surface finish (ENIG recommended for fine-pitch pads), and colour. For the SE/30 logic board, select 4-layer stackup. Typical lead time 5–7 days; you still need to source and solder all components yourself.
+    </div>
+
+    <div class="section-title">🛒 Tindie — SE/30 Hardware Products</div>
+    <p>Tindie is the primary marketplace for indie-made vintage Mac hardware. Multiple sellers offer SE/30-specific products — from power supply modernisations to ROM upgrades.</p>
+
+    <h3>Power Supply Replacements (TT Design)</h3>
+    <p>TT Design (Silicon Valley, USA) makes the most comprehensive range of SE/30 PSU replacement boards. All are drop-in replacements that fit inside the original Sony/Apple/ASTEC PSU enclosure.</p>
+
+    <table class="spec-table">
+        <tr><th>Product</th><th>Type</th><th>Notes</th><th>Tindie Link</th></tr>
+        <tr>
+            <td class="value">DIY SE/30 & SE AC-DC PSU Board</td>
+            <td class="mono">Bare PCB</td>
+            <td class="value">Build your own with chosen power modules. Bench-tested with 68040 accelerator + Ethernet + SCSI emulator. Supports Apple, Sony, and ASTEC enclosures. Optional AUX 5V output for heavily upgraded machines.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/diy-macintosh-se30-se-ac-dc-power-supply-board/" target="_blank">tindie.com/…/diy-macintosh-se30-se-ac-dc…</a></td>
+        </tr>
+        <tr>
+            <td class="value">Assembled SE/30 & SE PSU Board</td>
+            <td class="mono">Assembled</td>
+            <td class="value">No soldering required. Hand-assembled and tested. Supports Apple (Hitachi), Sony, and ASTEC enclosures. External fuse for safety. Compatible with all three original PSU types.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/macintosh-se30-se-assembled-power-supply-board/" target="_blank">tindie.com/…/macintosh-se30-se-assembled…</a></td>
+        </tr>
+        <tr>
+            <td class="value">DIY Pico ATX PSU Board</td>
+            <td class="mono">Bare PCB</td>
+            <td class="value">Lower cost option. Accepts 20-pin or 24-pin Pico ATX PSU. Designed for RGEEK 20-pin 90W Pico ATX. LED power indicator footprints for transparent SE cases.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/diy-macintosh-se30-se-pico-power-supply-board/" target="_blank">tindie.com/…/diy-macintosh-se30-se-pico…</a></td>
+        </tr>
+        <tr>
+            <td class="value">Pico ATX PSU (Assembled)</td>
+            <td class="mono">Assembled</td>
+            <td class="value">Fully assembled Pico ATX-based replacement. No soldering required. 12V DC power brick input. Designed and hand-assembled in California.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/macintosh-mac-se30-se-pico-atx-power-supply/" target="_blank">tindie.com/…/macintosh-mac-se30-se-pico-atx…</a></td>
+        </tr>
+        <tr>
+            <td class="value">4XDC Special Edition PSU</td>
+            <td class="mono">Assembled · Flagship</td>
+            <td class="value">Top-of-the-range design with <em>quad separate DC power modules</em> — each voltage rail (+5V, +12V sweep, +12V disk, −12V) has its own converter. Minimises crosstalk between rails. Recommended for machines with Micron Xceed video board or 68040 accelerators.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/4xdc-apple-macintosh-se30-se-power-supply-psu/" target="_blank">tindie.com/…/4xdc-apple-macintosh-se30-se…</a></td>
+        </tr>
+    </table>
+
+    <h3>Power Supply (Other Sellers)</h3>
+    <table class="spec-table">
+        <tr><th>Product</th><th>Seller</th><th>Notes</th><th>Tindie Link</th></tr>
+        <tr>
+            <td class="value">PicoPSU Adaptor for SE & SE/30</td>
+            <td class="mono">dekuNukem (UK)</td>
+            <td class="value">Low-cost option. Replaces original PSU board; uses standard 12V power brick. Simple, reliable solution for PSU failure.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/dekunukem/picopsu-adaptor-for-macintosh-se-se30/" target="_blank">tindie.com/…/picopsu-adaptor-for-macintosh…</a></td>
+        </tr>
+    </table>
+
+    <h3>ROM Upgrades</h3>
+    <table class="spec-table">
+        <tr><th>Product</th><th>Seller</th><th>Description</th><th>Tindie Link</th></tr>
+        <tr>
+            <td class="value">MACSIMM — Flash ROM SIMM</td>
+            <td class="mono">GGLABS (USA)</td>
+            <td class="value">Flash-based replacement for the SE/30 ROM SIMM. Makes the machine <strong>32-bit clean</strong> (installs IIsi ROM), enabling >8 MB RAM without MODE32 extension. 1.5 MB bootable ROM disk (2 MB version). Re-flashable with any 5V PLCC-32 flash. Free flash service available on request.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/gglabs/macsimm-mac-se30-iisi-iifx-flash-rom-simm/" target="_blank">tindie.com/…/macsimm-mac-se30-iisi-iifx…</a></td>
+        </tr>
+        <tr>
+            <td class="value">GW4402B — 8 MB ROM SIMM</td>
+            <td class="mono">Garrett's Workshop</td>
+            <td class="value">64-pin ROM SIMM preprogrammed with multiple ROM images: custom 32-bit clean ROM, IIx ROM, IIsi ROM. Switchable via on-board switch. ROM disk includes System 7.1 and System 6 images — boots in ~10 seconds. 16 MB total capacity. Compatible with CayMac ROMmate programmer for reflashing.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/garrettswrkshp/gw4402b-8mb-rom-simm-for-mac-ii-series-and-se30/" target="_blank">tindie.com/…/gw4402b-8mb-rom-simm-for…</a></td>
+        </tr>
+    </table>
+
+    <div class="info-box tip">
+        <strong>💡 32-bit Clean ROM — Why It Matters</strong>
+        The stock SE/30 ROM is "32-bit dirty" — it limits usable RAM to 8 MB without a software patch (MODE32). Installing a MACSIMM or GW4402B with a 32-bit clean ROM image eliminates this limitation entirely at the hardware level, and also speeds up boot time. It's one of the best single upgrades for an SE/30 running more than 8 MB RAM.
+    </div>
+
+    <h3>Peripherals & Input</h3>
+    <table class="spec-table">
+        <tr><th>Product</th><th>Seller</th><th>Description</th><th>Tindie Link</th></tr>
+        <tr>
+            <td class="value">ADB Optical Mouse Retro Board</td>
+            <td class="mono">TT Design (USA)</td>
+            <td class="value">Replacement board for the classic ADB wedge ball mouse that adds an optical sensor. Plugs into original ADB port — not USB. Tested with SE/30, IIci, Apple IIGS, Quadra 800, and NeXTStation. Native 68k Mac app available for configuring sensitivity. A great way to keep the original aesthetic while ditching the ball mechanism.</td>
+            <td class="mono"><a href="https://www.tindie.com/products/ttdesign/apple-desktop-bus-adb-optical-mouse-retro-board/" target="_blank">tindie.com/…/apple-desktop-bus-adb-optical…</a></td>
+        </tr>
+    </table>
+
+    <div class="section-title">Community & Resources</div>
+    <div class="pill-list">
+        <span class="pill">68kMLA.org</span>
+        <span class="pill">MacintoshRepository.org</span>
+        <span class="pill">r/VintageApple</span>
+        <span class="pill">BigMesquiteLake.com</span>
+        <span class="pill">Apple Orchard (forum)</span>
+        <span class="pill">Mac512.com</span>
+        <span class="pill">Macintosh Garden</span>
+        <span class="pill">68k.news</span>
+        <span class="pill">Retromaccast Podcast</span>
+        <span class="pill">Low End Mac</span>
+        <span class="pill">SE/30 Developer Notes (Apple)</span>
+        <span class="pill">Inside Macintosh (Volume I–V)</span>
+    </div>
+
+    <table class="spec-table">
+        <tr><th>Resource</th><th>URL</th><th>Notes</th></tr>
+        <tr><td class="value">68kMLA</td><td class="mono">68kmla.org/bb/</td><td class="value">Best forum for compact Mac repair, mods, and discussion</td></tr>
+        <tr><td class="value">Macintosh Repository</td><td class="mono">macintoshrepository.org</td><td class="value">Software archive — System software, apps, games</td></tr>
+        <tr><td class="value">Inside Macintosh</td><td class="mono">developer.apple.com/library/archive</td><td class="value">Official Apple developer documentation (all volumes)</td></tr>
+        <tr><td class="value">Mini vMac</td><td class="mono">gryphel.com/c/minivmac</td><td class="value">Best 68030 Mac emulator</td></tr>
+        <tr><td class="value">BlueSCSI</td><td class="mono">github.com/BlueSCSI/BlueSCSI-v2</td><td class="value">Open source SCSI SD card emulator</td></tr>
+        <tr><td class="value">ZuluSCSI</td><td class="mono">zuluscsi.com</td><td class="value">Commercial SCSI SD emulator</td></tr>
+        <tr><td class="value">MacGUI Vault</td><td class="mono">macgui.com/downloads</td><td class="value">Old Mac software downloads</td></tr>
+        <tr><td class="value">ROMINATOR II</td><td class="mono">synacoretech.com</td><td class="value">Enhanced ROM replacement</td></tr>
+    </table>
+
+</div>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="chipModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="chipModalTitle">Chip Details</div>
+            <button class="modal-close" id="chipModalClose">✕</button>
+        </div>
+        <div class="modal-body" id="chipModalBody"></div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<footer class="footer">
+    <div>Macintosh SE/30 Reference Guide — Keyboard shortcuts: <kbd>/</kbd> search &nbsp;·&nbsp; <kbd>1</kbd>–<kbd>0</kbd> tabs &nbsp;·&nbsp; <kbd>Esc</kbd> close modal</div>
+    <div>☺ Happy Mac</div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+// ─── Tab Navigation ───────────────────────────────────
+const tabs = document.querySelectorAll('.nav-tab');
+const contents = document.querySelectorAll('.tab-content');
+
+function switchTab(tabId) {
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+    const tab = document.querySelector(`[data-tab="${tabId}"]`);
+    const content = document.getElementById(`tab-${tabId}`);
+    if (tab) tab.classList.add('active');
+    if (content) content.classList.add('active');
+}
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+});
+
+// ─── Keyboard navigation ────────────────────────────
+const tabIds = ['overview','cpu','memory','chips','video','io','storage','expansion','software','modern'];
+document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === '/') { e.preventDefault(); document.getElementById('searchInput').focus(); }
+    if (e.key === 'Escape') { closeModal(); document.getElementById('searchInput').blur(); }
+    if (e.key >= '1' && e.key <= '9') switchTab(tabIds[parseInt(e.key)-1]);
+    if (e.key === '0') switchTab(tabIds[9]);
+});
+
+// ─── Search ───────────────────────────────────────────
+const searchInput = document.getElementById('searchInput');
+let searchTimeout;
+
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        const q = searchInput.value.trim().toLowerCase();
+        clearHighlights();
+        if (q.length < 2) return;
+        highlightText(q);
+    }, 250);
+});
+
+function clearHighlights() {
+    document.querySelectorAll('.highlight-match').forEach(el => {
+        el.outerHTML = el.textContent;
+    });
+}
+
+function highlightText(q) {
+    const walker = document.createTreeWalker(document.querySelector('.main'), NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    let node;
+    while ((node = walker.nextNode())) nodes.push(node);
+    nodes.forEach(n => {
+        if (!n.textContent.toLowerCase().includes(q)) return;
+        const span = document.createElement('span');
+        span.innerHTML = n.textContent.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'),
+            m => `<span class="highlight-match">${m}</span>`);
+        n.replaceWith(...span.childNodes);
+    });
+}
+
+// ─── Chip Modal ───────────────────────────────────────
+const chipData = {
+    bbu: {
+        title: 'BBU — Bob Bailey Unit',
+        body: `<p>The BBU is Apple's custom gate array ASIC designed by engineer Bob Bailey. It is the central bus controller for the SE/30.</p>
+        <h3>Functions</h3><ul>
+        <li>Bus arbitration between 68030 and video/DMA</li>
+        <li>DRAM refresh controller (15.6 µs refresh cycle)</li>
+        <li>Video address generation and timing (sync signals for CRT)</li>
+        <li>Address decoding for I/O space ($50xxxxxx)</li>
+        <li>SCSI DMA controller (pseudo-DMA via VIA2)</li>
+        <li>ROM enable logic</li></ul>
+        <p>The BBU is not separately documented by Apple and is not user-accessible.</p>`
+    },
+    via1: {
+        title: 'VIA1 — MOS 6522 Versatile Interface Adapter',
+        body: `<p>VIA1 is a standard MOS 6522 chip used for miscellaneous I/O. Mapped to $50000000.</p>
+        <h3>Port A Bits</h3><ul>
+        <li>Bit 7: SCC Wait/Request (input)</li>
+        <li>Bit 6: ADB State Input 1</li>
+        <li>Bit 5: ADB State Input 0</li>
+        <li>Bit 4: ADB State Output</li>
+        <li>Bit 3: ADB State 3</li>
+        <li>Bit 2: RdRTCData (read clock data)</li>
+        <li>Bit 1: RdRTCClk (read clock clock)</li>
+        <li>Bit 0: One-Second Interrupt</li></ul>
+        <h3>Port B Bits</h3><ul>
+        <li>Bit 7: Sound/PWM Enable</li>
+        <li>Bit 6: Drive Select (0=external, 1=internal)</li>
+        <li>Bit 5: Drive 2/1 Select</li>
+        <li>Bit 4: SCSI DRQ</li>
+        <li>Bit 3: RdWrRTCData</li>
+        <li>Bit 2: RdRTCClk</li>
+        <li>Bit 1: WrRTCClk</li>
+        <li>Bit 0: Sound Enable</li></ul>`
+    },
+    via2: {
+        title: 'VIA2 — MOS 6522 Versatile Interface Adapter',
+        body: `<p>VIA2 is mapped to $50002000 and handles expansion slot interrupts and other system functions.</p>
+        <h3>Port A Bits</h3><ul>
+        <li>Bit 7: SCC A Interrupt Pending</li>
+        <li>Bit 6: SCC B Interrupt Pending</li>
+        <li>Bit 5: Slot $E Interrupt Pending</li>
+        <li>Bits 4–0: Slot interrupts ($9–$D)</li></ul>
+        <h3>Port B Bits</h3><ul>
+        <li>Bit 7: SCSI DRQ</li>
+        <li>Bit 6: SCSI IRQ</li>
+        <li>Bit 5: Floppy Drive (SWIM) IRQ</li>
+        <li>Bit 4: Audio Interrupt</li>
+        <li>Bit 3: Video Page</li>
+        <li>Bit 2: Slot $E Power</li>
+        <li>Bit 1-0: Power control</li></ul>`
+    },
+    scc: {
+        title: 'SCC — Zilog Z8530 Serial Communications Controller',
+        body: `<p>The Z8530 provides two independent serial channels — Channel A (Printer Port) and Channel B (Modem Port). Each supports RS-422, RS-232, SDLC, and synchronous protocols.</p>
+        <h3>Key Features</h3><ul>
+        <li>Two independent full-duplex channels</li>
+        <li>Baud rates from 50 bps to 1 Mbps</li>
+        <li>On-chip baud rate generator (16× clock)</li>
+        <li>SDLC/HDLC support for AppleTalk</li>
+        <li>DMA-compatible (REQ/ACK)</li>
+        <li>CRC generation and checking</li></ul>
+        <h3>LocalTalk</h3>
+        <p>The SCC's SDLC mode and RS-422 differential signaling enable LocalTalk — Apple's proprietary 230.4 kbps networking protocol. Channel A is used for Printer port LocalTalk by default.</p>`
+    },
+    scsi: {
+        title: 'NCR 5380 — SCSI Controller',
+        body: `<p>The NCR 5380 is a classic SCSI-1 controller chip. In the SE/30, it is used in "pseudo-DMA" mode via VIA2 rather than true DMA transfers.</p>
+        <h3>Limitations of Pseudo-DMA</h3><ul>
+        <li>Data transfers are CPU-assisted (not bus-master DMA)</li>
+        <li>Practical throughput: ~1.25 MB/s (much less than SCSI-1's 5 MB/s max)</li>
+        <li>CPU is tied up during disk reads</li></ul>
+        <h3>Supported Commands</h3>
+        <p>Full SCSI-1 command set: INQUIRY, READ/WRITE (6 and 10-byte), REQUEST SENSE, TEST UNIT READY, FORMAT UNIT, etc.</p>
+        <h3>External SCSI</h3>
+        <p>The DB-25 external SCSI port is wired to the same 5380 bus as the internal HDD. Up to 7 external devices can be chained (IDs 1–6).</p>`
+    },
+    asc: {
+        title: 'ASC — Apple Sound Chip',
+        body: `<p>The ASC (344S0063) is Apple's first dedicated sound chip, providing significant improvement over the PWM buzzer audio of the Mac 128K/512K/Plus.</p>
+        <h3>Sound Modes</h3><ul>
+        <li><strong>Wavetable mode</strong>: 4 channels, each with a 512-byte wave table. Frequency and amplitude per channel. Used for music synthesis.</li>
+        <li><strong>FIFO (PCM) mode</strong>: Streams 8-bit unsigned PCM samples from RAM. Used for speech, sound effects.</li></ul>
+        <h3>Sample Rate</h3>
+        <p>22.257 kHz (approximately 22 kHz). The Apple II-compatible 8-bit unsigned format. Mono output only (internal speaker + output jack share the same mix).</p>
+        <h3>Sound Manager</h3>
+        <p>Use the Mac OS Sound Manager rather than direct ASC access. The Sound Manager handles mixing, rate conversion, and routes to the correct hardware.</p>`
+    },
+    swim: {
+        title: 'SWIM — Super Woz Integrated Machine',
+        body: `<p>The SWIM chip (344S0022) is the third generation of Steve Wozniak's famous disk controller design, combining GCR and MFM floppy support in a single chip.</p>
+        <h3>Supported Formats</h3><ul>
+        <li>400K Apple GCR (single-sided, variable speed)</li>
+        <li>800K Apple GCR (double-sided, variable speed)</li>
+        <li>720K IBM MFM (requires SuperDrive mechanism)</li>
+        <li>1.44 MB IBM MFM HD (requires SuperDrive mechanism)</li></ul>
+        <h3>Variable Speed Motor</h3>
+        <p>Apple's GCR format uses a variable-speed motor (300–600 RPM) that spins faster for inner tracks. This allows more data per disk than standard MFM at constant speed. The SWIM chip manages motor speed via PWM output to the drive mechanism.</p>`
+    },
+    rtc: {
+        title: 'RTC — Real-Time Clock (343-0040)',
+        body: `<p>The RTC chip keeps track of time even when the Mac is powered off, using a small 3.6V lithium battery (PRAM battery). It also provides 256 bytes of battery-backed "Parameter RAM" (PRAM).</p>
+        <h3>PRAM Contents (typical)</h3><ul>
+        <li>Mouse speed and double-click time</li>
+        <li>Menu blink count</li>
+        <li>Startup volume and device</li>
+        <li>Serial port configuration</li>
+        <li>AppleTalk on/off</li>
+        <li>Desktop pattern and color</li></ul>
+        <h3>Battery Note</h3>
+        <p>The PRAM battery is a 1/2-AA size 3.6V lithium cell (Tadiran TL-5902 or equivalent). It commonly leaks and corrodes the logic board. Replace immediately if showing signs of bulging or leakage. PRAM can be reset by holding <kbd>⌘</kbd><kbd>⌥</kbd><kbd>P</kbd><kbd>R</kbd> on startup.</p>`
+    }
+};
+
+function openChipModal(chipId) {
+    const data = chipData[chipId];
+    if (!data) return;
+    document.getElementById('chipModalTitle').textContent = data.title;
+    document.getElementById('chipModalBody').innerHTML = data.body;
+    document.getElementById('chipModal').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('chipModal').classList.remove('open');
+}
+
+document.querySelectorAll('[data-chip]').forEach(card => {
+    card.addEventListener('click', () => openChipModal(card.dataset.chip));
+});
+
+document.getElementById('chipModalClose').addEventListener('click', closeModal);
+document.getElementById('chipModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('chipModal')) closeModal();
+});
+
+// ─── Memory Map row clicks ─────────────────────────
+const memDetails = {
+    'mem-ram': { title: 'RAM — Main System Memory', body: '<p>The SE/30 RAM occupies the bottom of the 68030 address space. In 24-bit mode (default without MODE32), only the lower 24 bits are used, limiting accessible RAM to 8 MB even if 128 MB is physically installed.</p><p>RAM is 30-pin SIMM, installed in 2 banks of 4 slots. Each bank\'s 4 SIMMs must be identical.</p>' },
+    'mem-rom': { title: 'ROM — 256 KB Toolbox ROM', body: '<p>The SE/30 ROM (v2.0, checksum $36B8A5BF) contains the complete Mac Toolbox: QuickDraw, Event Manager, Window Manager, File Manager, Sound Manager, and much more. It is mapped at $40000000 and mirrored at $F8000000 (legacy 24-bit space).</p><p>The ROM is "32-bit dirty" — code uses non-zero upper address bits, incompatible with >8 MB RAM without MODE32.</p>' },
+    'mem-via1': { title: 'VIA1 — $50000000', body: '<p>VIA1 registers are spaced 0x200 bytes apart (only A2–A12 decoded). See the Chips tab for full register map.</p>' },
+    'mem-via2': { title: 'VIA2 — $50002000', body: '<p>VIA2 handles slot interrupts and SCSI signaling. Same 6522 register layout as VIA1 but different bit assignments.</p>' },
+    'mem-scsi': { title: 'SCSI — NCR 5380 at $50010000', body: '<p>8 registers at 512-byte intervals. See Chips tab for full register definitions.</p>' },
+    'mem-asc': { title: 'ASC — Apple Sound Chip at $50014000', body: '<p>The ASC has an 8 KB register/wavetable space. The lower 4 KB contains the wavetable RAM (4 × 512 bytes). The upper 4 KB has control registers at fixed offsets.</p>' },
+    'mem-swim': { title: 'SWIM — Floppy Controller at $50016000', body: '<p>SWIM registers control floppy motor speed, head select, read/write, and format detection. Accessed via the IWM-compatible register set plus SWIM-specific extensions.</p>' },
+    'mem-pds': { title: 'PDS Slot — $60000000–$6FFFFFFF', body: '<p>256 MB of address space reserved for the Processor Direct Slot. Cards can map registers, ROM, and DMA buffers anywhere in this range. The slot space is accessed at full CPU bus speed with no wait states for fast cards.</p>' },
+    'mem-video': { title: 'Video Frame Buffer — $FA700000', body: '<p>The 512×342 monochrome frame buffer is located at $FA700000 (exact location may vary slightly between hardware revisions; use the Gestalt or low-memory global ScrnBase at $0824 for the actual address).</p><p>Size: 21,888 bytes (512×342÷8). Each bit corresponds to one pixel; bit 7 of byte 0 = pixel (0,0).</p>' }
+};
+
+document.querySelectorAll('[data-modal]').forEach(row => {
+    row.addEventListener('click', () => {
+        const data = memDetails[row.dataset.modal];
+        if (!data) return;
+        document.getElementById('chipModalTitle').textContent = data.title;
+        document.getElementById('chipModalBody').innerHTML = data.body;
+        document.getElementById('chipModal').classList.add('open');
+    });
+});
+
+// ─── Animate spec bars on tab switch ──────────────
+function animateBars() {
+    document.querySelectorAll('.spec-bar-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w; }, 50);
+    });
+}
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', animateBars);
+});
+setTimeout(animateBars, 100);
+
+</script>
+</body>
+</html>
