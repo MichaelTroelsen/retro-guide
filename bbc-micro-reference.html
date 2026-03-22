@@ -499,74 +499,133 @@
                 color: black !important;
             }
         }
+
+        /* ── BBC TAB NAVIGATION ── */
+        .bbc-nav-tabs {
+            background: #111;
+            border-top: 1px solid rgba(211,47,47,0.4);
+            padding: 0 1rem;
+            display: flex;
+            gap: 2px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .bbc-nav-tabs::-webkit-scrollbar { display: none; }
+
+        .bbc-tab {
+            padding: 0.7rem 1.1rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: rgba(255,255,255,0.45);
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .bbc-tab:hover {
+            color: rgba(255,255,255,0.85);
+            background: rgba(211,47,47,0.1);
+        }
+        .bbc-tab.active {
+            color: #fff;
+            border-bottom-color: var(--primary-color);
+            background: rgba(211,47,47,0.15);
+        }
+
+        /* ── BBC SEARCH BAR ── */
+        .bbc-search-bar {
+            background: #1a1a1a;
+            padding: 7px 1.5rem;
+            border-bottom: 1px solid rgba(211,47,47,0.25);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bbc-search-wrap { position: relative; flex: 1; max-width: 480px; }
+        .bbc-search-icon {
+            position: absolute; left: 10px; top: 50%;
+            transform: translateY(-50%);
+            color: #666; font-size: 13px; pointer-events: none;
+        }
+        #bbcSearchInput {
+            width: 100%;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(211,47,47,0.35);
+            border-radius: 20px;
+            padding: 6px 12px 6px 30px;
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        #bbcSearchInput:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(211,47,47,0.3);
+        }
+        #bbcSearchInput::placeholder { color: #555; }
+        .bbc-search-hint { font-size: 0.75rem; color: #555; white-space: nowrap; }
+        .bbc-hl { background: rgba(211,47,47,0.35); border-radius: 2px; padding: 0 1px; }
+
+        /* ── BBC TAB SECTIONS ── */
+        .bbc-section { display: none; }
+        .bbc-section.active { display: block; }
+
+        /* ── OVERRIDE old header/wrapper ── */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #b71c1c 100%);
+            padding: 1.2rem 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .header p { font-size: 0.9rem; opacity: 0.85; margin-bottom: 0.6rem; }
+        .header .image-notice { display: none; }
+        .main-wrapper { max-width: 100%; margin: 0; padding: 0; }
+        .content-area { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🖥️ BBC Micro Reference Guide <span style="font-size: 0.5em; opacity: 0.8;">v1.8.5</span></h1>
         <p>Complete documentation for BBC Micro Model A, Model B, and Master Series</p>
-        <div style="background-color: rgba(255, 152, 0, 0.2); padding: 1rem; margin-top: 1rem; border-radius: 8px; border-left: 4px solid var(--warning-color);">
-            <strong>📷 About Images:</strong> This documentation includes detailed image placeholders showing what photos/diagrams should be added. 
-            Find actual BBC Micro images at: 
-            <a href="https://www.computinghistory.org.uk/" style="color: var(--accent-color);">Computing History Museum</a>, 
-            <a href="http://www.bbcmicro.co.uk/" style="color: var(--accent-color);">BBCMicro.co.uk</a>, 
-            <a href="https://www.ngretroworkshop.co.uk/" style="color: var(--accent-color);">Nigel's Retro Workshop</a>, or take your own!
+        <!-- TAB NAV -->
+        <nav class="bbc-nav-tabs">
+            <button class="bbc-tab active" onclick="bbcShow('overview',this)">📖 Overview</button>
+            <button class="bbc-tab" onclick="bbcShow('history',this)">📜 History</button>
+            <button class="bbc-tab" onclick="bbcShow('specifications',this)">⚙️ Specs</button>
+            <button class="bbc-tab" onclick="bbcShow('programming',this)">💻 Programming</button>
+            <button class="bbc-tab" onclick="bbcShow('hardware',this)">🔧 Hardware</button>
+            <button class="bbc-tab" onclick="bbcShow('peripherals',this)">🖨️ Peripherals</button>
+            <button class="bbc-tab" onclick="bbcShow('software',this)">💾 Software</button>
+            <button class="bbc-tab" onclick="bbcShow('quick-ref',this)">⚡ Quick Ref</button>
+            <button class="bbc-tab" onclick="bbcShow('resources',this)">🌐 Resources</button>
+        </nav>
+        <!-- SEARCH BAR -->
+        <div class="bbc-search-bar">
+            <div class="bbc-search-wrap">
+                <span class="bbc-search-icon">🔍</span>
+                <input type="text" id="bbcSearchInput" placeholder="Search the guide… (press / to focus)" autocomplete="off">
+            </div>
+            <span class="bbc-search-hint">/ to focus · Esc to clear</span>
         </div>
     </div>
 
     <div class="main-wrapper">
         <div class="content-area">
         
-        <!-- Table of Contents -->
-        <div class="card" style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%); color: white; position: sticky; top: 0; z-index: 100; padding: 0.75rem 1.5rem;">
-            <!-- Main Navigation -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; align-items: center; margin-bottom: 0.5rem;">
-                <a href="#overview" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">📖 Overview</a>
-                <a href="#history" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">📜 History</a>
-                <a href="#specifications" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">⚙️ Specs</a>
-                <a href="#programming" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">💻 Programming</a>
-                <a href="#hardware" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">🔧 Hardware</a>
-                <a href="#diagnostics" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,87,34,0.3); border-radius: 4px; font-size: 0.85rem; white-space: nowrap; border: 1px solid rgba(255,87,34,0.5);">🔬 Diagnostics</a>
-                <a href="#peripherals" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">🖨️ Peripherals</a>
-                <a href="#software" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">💾 Software</a>
-                <a href="#quick-ref" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">⚡ Quick Ref</a>
-                <a href="#resources" style="color: white; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 0.85rem; white-space: nowrap;">🌐 Resources</a>
-            </div>
-            
-            <!-- Hardware & Tech Quick Links -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.5rem; margin-bottom: 0.4rem;">
-                <span style="font-size: 0.7rem; opacity: 0.6; margin-right: 0.3rem;">Hardware:</span>
-                <a href="#modern-hardware" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">Upgrades</a>
-                <a href="#diy-projects" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">DIY</a>
-                <a href="#videonula" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">VideoNuLA</a>
-                <a href="#repairs" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(76,175,80,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(76,175,80,0.4);">🆕 Repairs</a>
-                <span style="font-size: 0.7rem; opacity: 0.6; margin-left: 0.5rem; margin-right: 0.3rem;">Programming:</span>
-                <a href="#memory-map" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(156,39,176,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(156,39,176,0.4);">🆕 Memory</a>
-                <a href="#vdu-commands" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(156,39,176,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(156,39,176,0.4);">🆕 VDU</a>
-                <a href="#graphics" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(76,175,80,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(76,175,80,0.4);">🆕 Graphics</a>
-                <a href="#mode7" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,193,7,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(255,193,7,0.4);">🆕 MODE 7</a>
-                <a href="#osbyte" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(156,39,176,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(156,39,176,0.4);">🆕 OSBYTE</a>
-                <a href="#optimization" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,152,0,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(255,152,0,0.4);">🆕 Optimize</a>
-                <a href="#game-dev" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(33,150,243,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(33,150,243,0.4);">🆕 Games</a>
-            </div>
-            
-            <!-- Resources Quick Links -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.4rem;">
-                <span style="font-size: 0.7rem; opacity: 0.6; margin-right: 0.3rem;">Resources:</span>
-                <a href="#community" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">Community</a>
-                <a href="#emulators" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(33,150,243,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(33,150,243,0.4);">🆕 Emulators</a>
-                <a href="#disk-formats" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,152,0,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(255,152,0,0.4);">🆕 Disk Formats</a>
-                <a href="#keyboard" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(76,175,80,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(76,175,80,0.4);">🆕 Keyboard</a>
-                <a href="#shadow-ram" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(156,39,176,0.25); border-radius: 3px; font-size: 0.72rem; white-space: nowrap; border: 1px solid rgba(156,39,176,0.4);">🆕 Shadow RAM</a>
-                <a href="#suppliers" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">Suppliers</a>
-                <a href="#youtube" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">Videos</a>
-                <a href="#fpga" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">FPGA</a>
-                <a href="#where-to-buy" style="color: white; text-decoration: none; padding: 0.25rem 0.5rem; background: rgba(255,255,255,0.12); border-radius: 3px; font-size: 0.72rem; white-space: nowrap;">Where to Buy</a>
-            </div>
-        </div>
-
         <!-- Overview -->
-        <div id="overview" >
+        <div class="bbc-section active" id="bbc-tab-overview">
+        <div id="overview">
             <div class="card">
                 <h2>About the BBC Micro</h2>
                 <p>The BBC Micro was a series of microcomputers designed and built by Acorn Computers for the BBC Computer Literacy Project. First released in December 1981, it became one of the most successful British computers of the 1980s, particularly dominating the UK education market.</p>
@@ -805,7 +864,9 @@ Dec 1981 - BBC Micro Model A & B launch (£235/£399)
         </div>
 
         <!-- History Tab -->
-        <div id="history" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-history">
+        <div id="history">
             <div class="card">
 
                 <h3>Educational Revolution</h3>
@@ -1010,7 +1071,9 @@ Dec 1981 - BBC Micro Model A & B launch (£235/£399)
         </div>
 
         <!-- Specifications Tab -->
-        <div id="specifications" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-specifications">
+        <div id="specifications">
             <div class="card">
                 <h2>BBC Micro Model B - Detailed Specifications</h2>
                 <p>The Model B was the most popular variant and became the de facto standard.</p>
@@ -1303,7 +1366,9 @@ Dec 1981 - BBC Micro Model A & B launch (£235/£399)
         </div>
 
         <!-- Programming Tab -->
-        <div id="programming" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-programming">
+        <div id="programming">
             <div class="card">
                 <h2>BBC BASIC Programming</h2>
                 <p>BBC BASIC was one of the most advanced BASIC dialects of its time, featuring structured programming commands, inline assembly, and powerful graphics and sound capabilities.</p>
@@ -4671,7 +4736,9 @@ FOR I%=1 TO 100: S$(I%)=STR$(I%): NEXT</pre>
         </div>
 
         <!-- Hardware & Mods Tab -->
-        <div id="hardware" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-hardware">
+        <div id="hardware">
             <div class="card">
                 <h2 id="modern-hardware">Modern Hardware Addons & Upgrades</h2>
                 <p>Modern solutions breathe new life into vintage BBC Micros with SD storage, HDMI output, WiFi, and more.</p>
@@ -7078,7 +7145,9 @@ Use 10kΩ resistor to ground for proper impedance</pre>
         </div>
 
         <!-- Peripherals Tab -->
-        <div id="peripherals" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-peripherals">
+        <div id="peripherals">
             <div class="card">
                 <h2>Official BBC Micro Peripherals</h2>
 
@@ -7720,7 +7789,9 @@ REM Log off
         </div>
 
         <!-- Software Tab -->
-        <div id="software" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-software">
+        <div id="software">
             <div class="card">
                 <h2>Operating Systems & Languages</h2>
 
@@ -8083,7 +8154,9 @@ beebem output.ssd</pre>
         </div>
 
         <!-- Quick Reference Tab -->
-        <div id="quick-ref" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-quick-ref">
+        <div id="quick-ref">
             <div class="card">
                 <h2>⚡ Quick Reference & Cheat Sheet</h2>
                 <p>Essential commands, memory maps, and quick troubleshooting guide.</p>
@@ -8700,7 +8773,9 @@ OLD           - Recover deleted program in memory</pre>
         </div>
 
         <!-- Resources Tab -->
-        <div id="resources" >
+        </div><!-- /bbc-section -->
+        <div class="bbc-section" id="bbc-tab-resources">
+        <div id="resources">
             <div class="card">
                 <h2 id="community">Community & Documentation</h2>
 
@@ -14272,6 +14347,7 @@ REM          &amp;888 = medium gray
                 </div>
             </div>
         </div>
+        </div><!-- /bbc-section -->
         </div>
         <!-- End content-area -->
 
@@ -14286,40 +14362,94 @@ REM          &amp;888 = medium gray
     </div>
 
 <script>
+function bbcShow(id, btn) {
+    document.querySelectorAll('.bbc-section').forEach(function(s){ s.classList.remove('active'); });
+    document.querySelectorAll('.bbc-tab').forEach(function(b){ b.classList.remove('active'); });
+    var sec = document.getElementById('bbc-tab-' + id);
+    if (sec) sec.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function copyCode(btn) {
     var block = btn.closest('.code-block');
     var pre = block ? block.querySelector('pre') : null;
     var text = pre ? pre.innerText : '';
     if (!text && block) {
         text = Array.from(block.childNodes)
-            .filter(function(n) { return n !== btn; })
-            .map(function(n) { return n.textContent || ''; })
+            .filter(function(n){ return n !== btn; })
+            .map(function(n){ return n.textContent || ''; })
             .join('').trim();
     }
-    navigator.clipboard.writeText(text).then(function() {
-        var orig = btn.textContent;
-        btn.textContent = '✓ Copied!';
-        btn.style.backgroundColor = '#2e7d32';
-        btn.style.color = '#fff';
-        setTimeout(function() {
-            btn.textContent = orig;
-            btn.style.backgroundColor = '';
-            btn.style.color = '';
-        }, 1800);
-    }).catch(function() {
+    navigator.clipboard.writeText(text).then(function(){
+        var o = btn.textContent; btn.textContent = '✓ Copied!';
+        btn.style.background = '#2e7d32'; btn.style.color = '#fff';
+        setTimeout(function(){ btn.textContent = o; btn.style.background=''; btn.style.color=''; }, 1800);
+    }).catch(function(){
         var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
+        ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
         document.body.removeChild(ta);
-        var orig = btn.textContent;
         btn.textContent = '✓ Copied!';
-        setTimeout(function() { btn.textContent = orig; }, 1800);
+        setTimeout(function(){ btn.textContent = 'Copy'; }, 1800);
     });
 }
+
+(function(){
+    var inp = document.getElementById('bbcSearchInput');
+    if (!inp) return;
+    var timer;
+    function clearHL(){
+        document.querySelectorAll('.bbc-hl').forEach(function(el){
+            el.parentNode.replaceChild(document.createTextNode(el.textContent), el);
+        });
+    }
+    function doSearch(q){
+        clearHL();
+        if (!q || q.length < 2) return;
+        var re = new RegExp(q.replace(/[-[\]{}()*+?.,\^$|#\s]/g, '\$&'), 'gi');
+        var root = document.querySelector('.bbc-section.active') || document.body;
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var nodes=[]; var n;
+        while((n=walker.nextNode())){
+            if(!n.textContent.toLowerCase().includes(q.toLowerCase())) continue;
+            var t=n.parentNode&&n.parentNode.tagName;
+            if(['SCRIPT','STYLE','INPUT','BUTTON'].indexOf(t)>-1) continue;
+            nodes.push(n);
+        }
+        var first=null;
+        nodes.forEach(function(node){
+            var frag=document.createDocumentFragment();
+            var parts=node.textContent.split(re);
+            var hits=node.textContent.match(re)||[];
+            parts.forEach(function(p,i){
+                frag.appendChild(document.createTextNode(p));
+                if(i<hits.length){
+                    var sp=document.createElement('span');
+                    sp.className='bbc-hl'; sp.textContent=hits[i];
+                    if(!first) first=sp;
+                    frag.appendChild(sp);
+                }
+            });
+            node.parentNode.replaceChild(frag,node);
+        });
+        if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    inp.addEventListener('input',function(){ clearTimeout(timer); timer=setTimeout(function(){ doSearch(inp.value.trim()); },300); });
+    document.addEventListener('keydown',function(e){
+        if(e.target.tagName==='INPUT'){
+            if(e.key==='Escape'){ clearHL(); inp.value=''; inp.blur(); }
+            return;
+        }
+        var ids=['overview','history','specifications','programming','hardware','peripherals','software','quick-ref','resources'];
+        var btns=document.querySelectorAll('.bbc-tab');
+        if(e.key>='1'&&e.key<='9'){
+            var idx=parseInt(e.key)-1;
+            if(idx<ids.length) bbcShow(ids[idx], btns[idx]);
+        }
+        if(e.key==='/'){e.preventDefault(); inp.focus();}
+    });
+})();
 </script>
 </body>
 </html>
