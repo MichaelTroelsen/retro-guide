@@ -945,6 +945,17 @@
     .model-cards { grid-template-columns: 1fr; }
     .quick-grid { grid-template-columns: 1fr; }
   }
+
+  .cpc-code-wrap { position: relative; margin: 10px 0; }
+  .cpc-copy-btn {
+    position: absolute; top: 6px; right: 6px;
+    background: #1a38c0; color: #ffe000;
+    border: 1px solid #2448d8; border-radius: 3px;
+    padding: 3px 10px; font-family: 'Share Tech Mono', monospace;
+    font-size: 11px; cursor: pointer; transition: background 0.2s;
+    z-index: 2; line-height: 1.4;
+  }
+  .cpc-copy-btn:hover { background: #2448d8; }
 </style>
 </head>
 <body>
@@ -1302,18 +1313,18 @@
   </table></div>
 
   <h3>MODE 0 Pixel Encoding (4 bpp — 2 pixels/byte)</h3>
-  <pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
 ; Left pixel  = b7 b3 b5 b1  (→ pen bits 3,2,1,0)
-; Right pixel = b6 b2 b4 b0  (→ pen bits 3,2,1,0)</span></pre>
+; Right pixel = b6 b2 b4 b0  (→ pen bits 3,2,1,0)</span></pre></div>
 
   <h3>MODE 1 Pixel Encoding (2 bpp — 4 pixels/byte)</h3>
-  <pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Byte:  b7  b6  b5  b4  b3  b2  b1  b0
 ; Pixel 0 = b7 b3     Pixel 1 = b6 b2
-; Pixel 2 = b5 b1     Pixel 3 = b4 b0</span></pre>
+; Pixel 2 = b5 b1     Pixel 3 = b4 b0</span></pre></div>
 
   <h3>Screen RAM Address Calculation</h3>
   <p>The CPC uses an <strong style="color:var(--cpc-orange)">interleaved raster layout</strong> — consecutive bytes do NOT go to consecutive scan lines. Character rows are interleaved across 8 scan lines.</p>
-  <pre><span class="comment">; Screen address for (X_byte, Y) with base &amp;C000:</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Screen address for (X_byte, Y) with base &amp;C000:</span>
 <span class="comment">; Address = &amp;C000 + (char_row × 80) + (scan_line × 2048) + X_byte</span>
 <span class="comment">; Where: char_row = Y / 8,  scan_line = Y MOD 8</span>
 
@@ -1331,7 +1342,7 @@
     <span class="instr">RRCA</span>
     <span class="instr">RRCA</span>              <span class="comment">; ÷ 8 then × 80 = × 10</span>
     <span class="instr">ADD</span> A, <span class="number">80</span>        <span class="comment">; Actually multiply properly...</span>
-    <span class="instr">LD</span>  L, A          <span class="comment">; HL = screen address</span></pre>
+    <span class="instr">LD</span>  L, A          <span class="comment">; HL = screen address</span></pre></div>
 
   <div class="info-box note"><strong>Graphics Coordinate System</strong>BASIC graphics always use a 640×400 coordinate system regardless of MODE. In MODE 0 each physical pixel = 4×2 units; in MODE 1 = 2×2 units; in MODE 2 = 1×2 units.</div>
 </section>
@@ -1424,19 +1435,19 @@
   </div>
 
   <h3>Setting Palette in Assembly</h3>
-  <pre><span class="comment">; Set pen 1 to hardware colour 6 (Cyan)</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Set pen 1 to hardware colour 6 (Cyan)</span>
 <span class="comment">; Step 1: Select pen  (write %01xxxxxx to port &amp;7F)</span>
     <span class="instr">LD</span>  A, <span class="number">&amp;41</span>         <span class="comment">; %01 000001 = pen 1</span>
     <span class="instr">LD</span>  BC, <span class="number">&amp;7F00</span>
     <span class="instr">OUT</span> (C), A
 <span class="comment">; Step 2: Set colour (write %00xxxxx to port &amp;7F)</span>
     <span class="instr">LD</span>  A, <span class="number">&amp;06</span>         <span class="comment">; Hardware colour 6 = Cyan</span>
-    <span class="instr">OUT</span> (C), A</pre>
+    <span class="instr">OUT</span> (C), A</pre></div>
 
-  <pre><span class="comment">; BASIC equivalent:</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; BASIC equivalent:</span>
 INK 1, 6         <span class="comment">: REM pen 1 = hardware colour 6 (cyan)</span>
 INK 0, 16        <span class="comment">: REM pen 0 = hardware colour 16 (black)</span>
-BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange)</span></pre>
+BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange)</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1470,18 +1481,18 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
   </table></div>
 
   <h3>Mixer Register (R7) Bit Map</h3>
-  <pre>Bit:   7    6    5    4    3    2    1    0
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>Bit:   7    6    5    4    3    2    1    0
        IOB  IOA  /NC  /NB  /NA  /TC  /TB  /TA
               ← noise enable → ← tone enable →
-       0 = channel ENABLED (active low)</pre>
+       0 = channel ENABLED (active low)</pre></div>
 
   <h3>Tone Frequency Formula</h3>
-  <pre><span class="comment">; Frequency (Hz) = AY_Clock / (16 × Tone_Period)
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Frequency (Hz) = AY_Clock / (16 × Tone_Period)
 ; AY_Clock = 1,000,000 Hz (1 MHz)
 ;
 ; Middle C (261.63 Hz):
 ;   TP = 1,000,000 / (16 × 261.63) ≈ 239  = &amp;EF
-;   R0 = &amp;EF,  R1 = &amp;00</span></pre>
+;   R0 = &amp;EF,  R1 = &amp;00</span></pre></div>
 
   <h3>Note Period Table</h3>
   <div class="table-wrap"><table class="note-period">
@@ -1499,7 +1510,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
   </table></div>
 
   <h3>Writing to AY Registers (Assembly)</h3>
-  <pre><span class="label">AY_WRITE:</span>       <span class="comment">; B = register number, C = value</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="label">AY_WRITE:</span>       <span class="comment">; B = register number, C = value</span>
     <span class="instr">LD</span>  A, B
     <span class="instr">OUT</span> (<span class="number">&amp;F4</span>), A   <span class="comment">; PPI Port A = register number</span>
     <span class="instr">LD</span>  A, <span class="number">&amp;C0</span>     <span class="comment">; BDIR=1, BC1=1 → Latch address</span>
@@ -1512,7 +1523,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
     <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
     <span class="instr">LD</span>  A, <span class="number">&amp;40</span>     <span class="comment">; Inactive</span>
     <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
-    <span class="instr">RET</span></pre>
+    <span class="instr">RET</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1602,7 +1613,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
   <p>The Gate Array fires an interrupt every <strong style="color:var(--cpc-yellow)">52 scan lines</strong> = 6× per frame at 50 Hz = <strong style="color:var(--cpc-yellow)">300 Hz</strong>. The firmware uses this for the system clock, keyboard scanning, SOUND queue management, and AFTER/EVERY BASIC timers.</p>
 
   <h3>Adding a Timer Interrupt (Firmware)</h3>
-  <pre><span class="comment">; KL ADD TICKER at &amp;BC0E — fires custom routine at regular intervals
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; KL ADD TICKER at &amp;BC0E — fires custom routine at regular intervals
 ; Ticker block: 2 bytes countdown, 2 bytes reload, 2 bytes routine address</span>
 
 <span class="label">ticker_block:</span>
@@ -1625,7 +1636,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
     <span class="instr">IN</span>  A, (<span class="number">&amp;F5</span>)       <span class="comment">; Read PPI Port B</span>
     <span class="instr">AND</span> <span class="number">&amp;80</span>            <span class="comment">; Bit 7 = VSYNC</span>
     <span class="instr">JR</span>  Z, wait_vsync
-    <span class="instr">RET</span></pre>
+    <span class="instr">RET</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1651,7 +1662,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
   </table></div>
 
   <h3>Reading Keyboard in Assembly</h3>
-  <pre><span class="comment">; Read keyboard row and check for keypress
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; Read keyboard row and check for keypress
 ; PPI Port C lower nibble → row select
 ; AY Port A (R14) → column bits (0 = pressed)</span>
 
@@ -1667,7 +1678,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
     <span class="instr">OUT</span> (<span class="number">&amp;F6</span>), A
     <span class="instr">IN</span>  A, (<span class="number">&amp;F4</span>)   <span class="comment">; Read column bits</span>
     <span class="instr">CPL</span>             <span class="comment">; Invert (1 = pressed)</span>
-    <span class="instr">RET</span></pre>
+    <span class="instr">RET</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1701,7 +1712,7 @@ BORDER 14        <span class="comment">: REM border = hardware colour 14 (orange
   </table></div>
 
   <h3>Sound Commands</h3>
-  <pre>SOUND ch, period [, dur [, vol [, venv [, tenv [, noise]]]]]
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>SOUND ch, period [, dur [, vol [, venv [, tenv [, noise]]]]]
 <span class="comment">; ch: 1=A, 2=B, 4=C  (bitmask — 7=all three)
 ; period: tone period 0-4095
 ; dur: duration in 1/100ths second
@@ -1711,26 +1722,26 @@ SOUND <span class="number">1</span>, <span class="number">239</span>, <span clas
 SOUND <span class="number">7</span>, <span class="number">239</span>, <span class="number">50</span>        <span class="comment">: REM All three channels simultaneously</span>
 PLAY <span class="string">"CDEGAEC"</span>           <span class="comment">: REM MML music string</span>
 ENV  <span class="number">1</span>, <span class="number">5</span>, -1, <span class="number">16</span>       <span class="comment">: REM Define volume envelope</span>
-ENT  <span class="number">1</span>, <span class="number">100</span>, <span class="number">2</span>, <span class="number">8</span>       <span class="comment">: REM Define tone envelope</span></pre>
+ENT  <span class="number">1</span>, <span class="number">100</span>, <span class="number">2</span>, <span class="number">8</span>       <span class="comment">: REM Define tone envelope</span></pre></div>
 
   <h3>Timing &amp; Interrupts</h3>
-  <pre>AFTER <span class="number">300</span> GOSUB <span class="number">1000</span>        <span class="comment">: REM Call line 1000 after 1 second</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>AFTER <span class="number">300</span> GOSUB <span class="number">1000</span>        <span class="comment">: REM Call line 1000 after 1 second</span>
 EVERY <span class="number">150</span> GOSUB <span class="number">2000</span>        <span class="comment">: REM Call line 2000 every 0.5 seconds</span>
 AFTER <span class="number">0</span>, <span class="number">1</span> STOP            <span class="comment">: REM Cancel timer 1</span>
-PRINT TIME                   <span class="comment">: REM System time in 1/300ths seconds</span></pre>
+PRINT TIME                   <span class="comment">: REM System time in 1/300ths seconds</span></pre></div>
 
   <h3>Machine Code Integration</h3>
-  <pre>HIMEM = <span class="number">&amp;9FFF</span>              <span class="comment">: REM Protect &amp;A000-&amp;BFFF from BASIC</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>HIMEM = <span class="number">&amp;9FFF</span>              <span class="comment">: REM Protect &amp;A000-&amp;BFFF from BASIC</span>
 POKE <span class="number">&amp;4000</span>, <span class="number">&amp;C9</span>           <span class="comment">: REM Write RET at &amp;4000</span>
 CALL <span class="number">&amp;4000</span>                  <span class="comment">: REM Execute machine code routine</span>
-PEEK(<span class="number">&amp;4000</span>)                 <span class="comment">: REM Read byte from address</span></pre>
+PEEK(<span class="number">&amp;4000</span>)                 <span class="comment">: REM Read byte from address</span></pre></div>
 
   <h3>File I/O</h3>
-  <pre>LOAD <span class="string">"prog"</span>                <span class="comment">: REM Load BASIC program</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>LOAD <span class="string">"prog"</span>                <span class="comment">: REM Load BASIC program</span>
 SAVE <span class="string">"prog"</span>                <span class="comment">: REM Save BASIC program</span>
 LOAD <span class="string">"data.bin"</span>, <span class="number">&amp;4000</span>    <span class="comment">: REM Load binary to &amp;4000</span>
 SAVE <span class="string">"code.bin"</span>, B, <span class="number">&amp;4000</span>, <span class="number">&amp;2000</span>  <span class="comment">: REM Save 8KB binary from &amp;4000</span>
-RUN <span class="string">"game"</span>                 <span class="comment">: REM Load and run</span></pre>
+RUN <span class="string">"game"</span>                 <span class="comment">: REM Load and run</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1807,7 +1818,7 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
   <div class="section-header"><span class="section-num">18</span><h2>Z80 Assembly — Common Patterns</h2></div>
 
   <h3>Hello World</h3>
-  <pre><span class="instr">ORG</span> <span class="number">&amp;4000</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="instr">ORG</span> <span class="number">&amp;4000</span>
 
 <span class="label">start:</span>
     <span class="instr">LD</span>  HL, hello_str   <span class="comment">; Point to string</span>
@@ -1816,16 +1827,16 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     <span class="instr">RET</span>
 
 <span class="label">hello_str:</span>  <span class="instr">DEFM</span> <span class="string">"Hello, Amstrad CPC!"</span>
-<span class="label">hello_len</span>   <span class="instr">EQU</span>  $ - hello_str</pre>
+<span class="label">hello_len</span>   <span class="instr">EQU</span>  $ - hello_str</pre></div>
 
   <h3>Block Move (LDIR)</h3>
-  <pre><span class="instr">LD</span>  HL, source      <span class="comment">; Source address</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="instr">LD</span>  HL, source      <span class="comment">; Source address</span>
 <span class="instr">LD</span>  DE, dest        <span class="comment">; Destination address</span>
 <span class="instr">LD</span>  BC, <span class="number">4096</span>        <span class="comment">; Byte count</span>
-<span class="instr">LDIR</span>                <span class="comment">; Copy 4KB — hardware accelerated!</span></pre>
+<span class="instr">LDIR</span>                <span class="comment">; Copy 4KB — hardware accelerated!</span></pre></div>
 
   <h3>Hardware Scroll</h3>
-  <pre><span class="label">SCROLL_RIGHT:</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="label">SCROLL_RIGHT:</span>
     <span class="instr">LD</span>  BC, <span class="number">&amp;BC0D</span>       <span class="comment">; Select CRTC register 13 (offset low)</span>
     <span class="instr">OUT</span> (C), B
     <span class="instr">LD</span>  A, (scroll_lo)
@@ -1834,10 +1845,10 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     <span class="instr">LD</span>  B, <span class="number">&amp;BD</span>
     <span class="instr">OUT</span> (C), A          <span class="comment">; Write new offset (2 pixels right in MODE 1)</span>
     <span class="instr">RET</span>
-<span class="label">scroll_lo:</span> <span class="instr">DEFB</span> <span class="number">0</span></pre>
+<span class="label">scroll_lo:</span> <span class="instr">DEFB</span> <span class="number">0</span></pre></div>
 
   <h3>Play Three-Voice Chord</h3>
-  <pre><span class="comment">; C major chord: C(239), E(190), G(159) in octave 4</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre><span class="comment">; C major chord: C(239), E(190), G(159) in octave 4</span>
 <span class="label">PLAY_CHORD:</span>
     <span class="instr">LD</span>  B, <span class="number">0</span>  : <span class="instr">LD</span>  C, <span class="number">239</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R0: Ch A low</span>
     <span class="instr">LD</span>  B, <span class="number">1</span>  : <span class="instr">LD</span>  C, <span class="number">0</span>   : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; R1: Ch A high</span>
@@ -1849,7 +1860,7 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
     <span class="instr">LD</span>  B, <span class="number">9</span>  : <span class="instr">LD</span>  C, <span class="number">12</span>  : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Volume B = 12</span>
     <span class="instr">LD</span>  B, <span class="number">10</span> : <span class="instr">LD</span>  C, <span class="number">12</span>  : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Volume C = 12</span>
     <span class="instr">LD</span>  B, <span class="number">7</span>  : <span class="instr">LD</span>  C, <span class="number">&amp;F8</span> : <span class="instr">CALL</span> AY_WRITE  <span class="comment">; Mixer: all tones on</span>
-    <span class="instr">RET</span></pre>
+    <span class="instr">RET</span></pre></div>
 </section>
 
 <!-- ═══════════════════════════════════════════
@@ -1939,14 +1950,14 @@ RUN <span class="string">"game"</span>                 <span class="comment">: R
   </table></div>
 
   <h3>RSX Commands</h3>
-  <pre>|CAT                    <span class="comment">; Directory listing</span>
+  <div class="cpc-code-wrap"><button class="cpc-copy-btn" onclick="cpcCopy(this)">⎘ Copy</button><pre>|CAT                    <span class="comment">; Directory listing</span>
 |ERA, <span class="string">"filename"</span>        <span class="comment">; Erase file</span>
 |REN, <span class="string">"newname"</span>, <span class="string">"old"</span>  <span class="comment">; Rename file</span>
 |DIR                    <span class="comment">; Detailed directory</span>
 |USER, n                <span class="comment">; Set user area (0–15)</span>
 |DRIVE, n               <span class="comment">; Select drive (0=A, 1=B)</span>
 |TAPE                   <span class="comment">; Switch to tape (464)</span>
-|DISC                   <span class="comment">; Switch to disc</span></pre>
+|DISC                   <span class="comment">; Switch to disc</span></pre></div>
 
   <h3>AMSDOS File Header (128 bytes)</h3>
   <div class="table-wrap"><table>
@@ -2189,5 +2200,23 @@ CALL &amp;4000</pre>
   · Sources: CPCWiki · Locomotive BASIC Manual · Amstrad Firmware Guide
 </footer>
 
+<script>
+function cpcCopy(btn) {
+    var pre = btn.parentElement.querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+        var o = btn.innerText; btn.innerText = '✓ Copied';
+        btn.style.background = '#0f6e0f';
+        setTimeout(function() { btn.innerText = o; btn.style.background = ''; }, 1800);
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.innerText = '✓ Copied';
+        setTimeout(function() { btn.innerText = '⎘ Copy'; }, 1800);
+    });
+}
+</script>
 </body>
 </html>
