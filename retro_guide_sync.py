@@ -126,10 +126,10 @@ def commit_files(filenames):
     if ok:
         print(f"\n  OK [{timestamp()}] Pushed: {msg}")
         for f in filenames:
-            print(f"    → {raw_url(f)}")
+            print(f"    -> {raw_url(f)}")
         print()
     else:
-        print(f"  [{timestamp()}] Push failed — check your GitHub credentials.")
+        print(f"  [{timestamp()}] Push failed - check your GitHub credentials.")
 
 
 def raw_url(filename):
@@ -172,7 +172,7 @@ def main():
         print("Run: git init && git remote add origin <your-github-repo-url>")
         sys.exit(1)
 
-    print(f"\n  Retro Guide Sync — watching {WATCH_DIR}")
+    print(f"\n  Retro Guide Sync - watching {WATCH_DIR}")
     print(f"  Tracking {len(TRACKED_FILES)} files, debounce {DEBOUNCE_SECONDS}s")
     print_urls()
     print("  Waiting for file saves... (Ctrl+C to stop)\n")
