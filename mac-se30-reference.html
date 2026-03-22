@@ -2138,6 +2138,27 @@
         <tr><td class="value">ROMINATOR II</td><td class="mono">synacoretech.com</td><td class="value">Enhanced ROM replacement</td></tr>
     </table>
 
+
+    <div class="section-title">📋 Version History</div>
+    <table class="spec-table">
+        <tr><th>Version</th><th>Date</th><th>Changes</th></tr>
+        <tr>
+            <td class="label" style="color:#7dd3fc">v2.1</td>
+            <td style="color:#888;white-space:nowrap">Mar 2026</td>
+            <td style="color:#aaa">Sticky header with tab navigation. Search bar scoped to active tab. Copy buttons on all 68030 assembly code blocks. Regex and null-guard JS fixes.</td>
+        </tr>
+        <tr>
+            <td class="label" style="color:#7dd3fc">v2.0</td>
+            <td style="color:#888;white-space:nowrap">Jan–Mar 2026</td>
+            <td style="color:#aaa">10-tab layout. Clickable chip cards with detail modals (BBU, VIA1/2, SCC, NCR5380, ASC, SWIM, RTC). Interactive memory map with colour-coded regions. PCBWay &amp; Tindie SE/30 hardware sections. Keyboard shortcuts 1–0.</td>
+        </tr>
+        <tr>
+            <td class="label">v1.0</td>
+            <td style="color:#888;white-space:nowrap">2025</td>
+            <td style="color:#aaa">Initial guide: Overview, CPU/FPU (68030/68882 registers), Memory Map, Video, I/O &amp; Ports, Storage, Expansion (PDS), Software (Mac OS/Toolbox), Modern hardware section.</td>
+        </tr>
+    </table>
+
 </div>
 
 </main>
@@ -2195,7 +2216,7 @@ document.addEventListener('keydown', e => {
 // ─── Search ───────────────────────────────────────────
 const searchInput = document.getElementById('searchInput');
 let searchTimeout;
-
+if (searchInput) {
 searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
@@ -2205,6 +2226,7 @@ searchInput.addEventListener('input', () => {
         highlightText(q);
     }, 250);
 });
+} // end searchInput guard
 
 function clearHighlights() {
     document.querySelectorAll('.highlight-match').forEach(el => {
@@ -2214,7 +2236,7 @@ function clearHighlights() {
 
 function highlightText(q) {
     const root = document.querySelector('.tab-content.active') || document.querySelector('.main');
-    const re = new RegExp(q.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+    const re = new RegExp(q.replace(/[.*+?^${}()|\[\]\\]/g, '\\$&'), 'gi');
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const nodes = [];
     let node;
