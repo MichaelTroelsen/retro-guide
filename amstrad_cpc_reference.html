@@ -2194,6 +2194,32 @@ SOUND 1,239,100,15
 CALL &amp;4000</pre>
     </div>
   </div>
+
+<!-- ═══ VERSION HISTORY ═══ -->
+<section id="version-history">
+  <div class="section-header"><span class="section-num">25</span><h2>Version History</h2></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong style="color:var(--basic-yellow)">v2.1</strong></td>
+        <td class="note" style="white-space:nowrap">March 2026</td>
+        <td class="note">Tab navigation + search bar added. All code blocks have copy buttons. Resources tab updated with BooBip, PCBWay, Tindie.</td>
+      </tr>
+      <tr>
+        <td><strong style="color:var(--basic-yellow)">v2.0</strong></td>
+        <td class="note" style="white-space:nowrap">March 2026</td>
+        <td class="note">9-tab navigation. 19 copy buttons on all assembly/BASIC code blocks. CPC-blue/yellow themed search bar. PCBWay community projects &amp; Tindie marketplace sections added.</td>
+      </tr>
+      <tr>
+        <td><strong>v1.0</strong></td>
+        <td class="note" style="white-space:nowrap">March 2026</td>
+        <td class="note">Initial guide: Z80A CPU reference, Gate Array 40010, CRTC 6845, AY-3-8912 sound, Locomotive BASIC, firmware calls, Z80 assembly, I/O port map, keyboard matrix, screen modes, colour palette, emulators, and resources.</td>
+      </tr>
+    </tbody>
+  </table></div>
+</section>
 </section>
 </div>
 
@@ -2259,7 +2285,7 @@ function cpcCopy(btn) {
     function doSearch(q) {
         clearHL();
         if (!q || q.length < 2) return;
-        var re = new RegExp(q.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'gi');
+        var re = new RegExp(q.replace(/[.*+?^${}()|\[\]\\]/g, '\\$&'), 'gi');
         var root = document.querySelector('.cpc-section.active') || document.body;
         var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
         var nodes = []; var n;
