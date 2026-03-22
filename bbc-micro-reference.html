@@ -592,12 +592,81 @@
         .header .image-notice { display: none; }
         .main-wrapper { max-width: 100%; margin: 0; padding: 0; }
         .content-area { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
+
+        /* ── LIGHT MODE ── */
+        body.light-mode {
+            --bg-dark: #f8f5f5;
+            --text-primary: #1a1a1a;
+        }
+        .light-mode .card, .light-mode [style*="var(--bg-card)"] { background: #f5f5f5 !important; }
+        body.light-mode pre, body.light-mode code { filter: invert(0.88) hue-rotate(180deg); }
+
+        /* ── THEME TOGGLE BUTTON ── */
+                #themeToggle {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white; padding: 5px 12px;
+            border-radius: 20px; cursor: pointer;
+            font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+        }
+        #themeToggle:hover { background: rgba(255,255,255,0.22); }
+
+        /* ── BBC CHIP CARDS ── */
+        .bbc-chip-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:0.7rem; margin:1rem 0 1.5rem; }
+        .bbc-chip-card { background:#2a2a2a; border:1px solid #3a3a3a; border-radius:8px; padding:1rem; cursor:pointer; transition:all 0.2s; position:relative; }
+        .bbc-chip-card:hover { border-color:var(--primary-color); transform:translateY(-2px); box-shadow:0 4px 16px rgba(211,47,47,0.2); }
+        .bbc-chip-ref { font-family:monospace; font-size:0.8rem; color:var(--primary-color); margin-bottom:0.2rem; }
+        .bbc-chip-name { font-size:0.9rem; font-weight:600; color:#e0e0e0; margin-bottom:0.3rem; }
+        .bbc-chip-role { font-size:0.78rem; color:#999; line-height:1.4; }
+        .bbc-chip-dot { position:absolute; top:0.7rem; right:0.7rem; width:8px; height:8px; border-radius:50%; }
+        /* ── BBC CHIP MODAL ── */
+        .bbc-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+        .bbc-modal-overlay.open { display:flex; }
+        .bbc-modal { background:#1e1e1e; border:1px solid #444; border-radius:12px; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; padding:1.5rem; position:relative; }
+        .bbc-modal-close { position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:#888; font-size:1.4rem; cursor:pointer; line-height:1; }
+        .bbc-modal-close:hover { color:#fff; }
+        .bbc-modal-ref { font-family:monospace; font-size:0.8rem; color:var(--primary-color); margin-bottom:0.3rem; }
+        .bbc-modal-title { font-size:1.1rem; font-weight:600; color:#fff; margin-bottom:1rem; }
+        .bbc-modal-body { font-size:0.87rem; color:#ccc; line-height:1.7; }
+        .bbc-modal-body h3 { color:#e0e0e0; font-size:0.9rem; margin:1rem 0 0.4rem; }
+        .bbc-modal-body ul { padding-left:1.2rem; }
+        .bbc-modal-body li { margin-bottom:0.2rem; }
+        .bbc-modal-body .warn { color:#ffb86c; }
+        .bbc-modal-body .good { color:#4caf50; }
+
+        /* ── SHARED MEMORY MAP STYLES ── */
+        .memmap-wrap { font-family: monospace; font-size: 0.82rem; margin: 1rem 0; }
+        .memmap-row {
+            display: grid; grid-template-columns: 120px 1fr 100px;
+            padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer; transition: background 0.15s; align-items: center;
+        }
+        .memmap-row:hover { filter: brightness(1.3); }
+        .memmap-row.selected { outline: 2px solid rgba(255,255,255,0.5); outline-offset:-2px; }
+        .memmap-addr { color: #7dd3fc; font-size: 0.78rem; }
+        .memmap-label { font-size: 0.82rem; }
+        .memmap-size { font-size: 0.72rem; text-align: right; opacity: 0.7; }
+        /* ── SHARED MEMORY MAP POPUP ── */
+        .mmap-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; padding: 1rem; }
+        .mmap-overlay.open { display: flex; }
+        .mmap-popup { background: #1a1a2e; border: 1px solid #4040e0; border-radius: 10px; max-width: 520px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 1.4rem; position: relative; }
+        .mmap-close { position: absolute; top: 0.9rem; right: 0.9rem; background: transparent; border: none; color: #888; font-size: 1.3rem; cursor: pointer; }
+        .mmap-close:hover { color: #fff; }
+        .mmap-addr-badge { font-family: monospace; font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 0.4rem; }
+        .mmap-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 0.8rem; }
+        .mmap-desc { font-size: 0.87rem; color: #bbb; line-height: 1.7; margin-bottom: 0.8rem; }
+        .mmap-regs { font-size: 0.82rem; }
+        .mmap-regs table { width: 100%; border-collapse: collapse; }
+        .mmap-regs th { color: #7dd3fc; text-align: left; padding: 3px 6px; border-bottom: 1px solid #333; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .mmap-regs td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #aaa; vertical-align: top; }
+        .mmap-regs td:first-child { font-family: monospace; color: #7dd3fc; white-space: nowrap; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🖥️ BBC Micro Reference Guide <span style="font-size: 0.5em; opacity: 0.8;">v1.8.5</span></h1>
         <p>Complete documentation for BBC Micro Model A, Model B, and Master Series</p>
+        <button id="themeToggle" onclick="toggleTheme()" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:inherit;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap;flex-shrink:0">☀️ Light</button>
         <!-- TAB NAV -->
         <nav class="bbc-nav-tabs">
             <button class="bbc-tab active" onclick="bbcShow('overview',this)">📖 Overview</button>
@@ -643,6 +712,89 @@
                     </p>
                 </div>
                 
+
+            <div class="card" style="margin-top:1.5rem">
+                <h3>🤔 Which BBC Micro Do You Have?</h3>
+                <p style="color:var(--text-secondary);margin-bottom:1rem">Answer 3 questions to identify your model and understand what it supports.</p>
+                <div id="bbcWizBody">
+                    <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.6rem" id="bbcWizProg">Step 1 of 3</div>
+                    <div style="font-weight:600;margin-bottom:0.8rem;color:var(--text-primary)" id="bbcWizQ"></div>
+                    <div id="bbcWizOpts" style="display:flex;flex-direction:column;gap:0.4rem"></div>
+                </div>
+                <div id="bbcWizResult" style="display:none;background:rgba(211,47,47,0.1);border:2px solid var(--primary-color);border-radius:8px;padding:1rem">
+                    <h4 style="color:var(--primary-color);margin-bottom:0.5rem" id="bbcWizModel"></h4>
+                    <div id="bbcWizBody2" style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6"></div>
+                    <button onclick="bbcWizReset()" style="margin-top:0.8rem;background:transparent;border:1px solid var(--secondary-color);color:var(--secondary-color);padding:4px 14px;border-radius:6px;cursor:pointer;font-size:0.8rem">← Start again</button>
+                </div>
+            </div>
+<style>
+.bbc-wiz-btn {
+    background: #2d2d2d; border: 1px solid #444; color: #e0e0e0;
+    padding: 0.6rem 1rem; border-radius: 6px; cursor: pointer;
+    text-align: left; font-size: 0.87rem; transition: all 0.15s; width: 100%;
+}
+.bbc-wiz-btn:hover { border-color: var(--primary-color); background: rgba(211,47,47,0.1); }
+</style>
+<script>
+const BBC_TREE = [
+    {q:'What is the main body colour of the keyboard/computer unit?', prog:'Step 1 of 3', opts:[
+        {label:'Beige / cream — with RED function keys', next:1},
+        {label:'Grey — flatter, wider design', next:'master'}
+    ]},
+    {q:'How much RAM does it have? (check label on base, or type *MEMHZ)', prog:'Step 2 of 3', opts:[
+        {label:'16 KB', next:'model_a'},
+        {label:'32 KB', next:2},
+        {label:'Not sure / other', next:2}
+    ]},
+    {q:'Does it have a numeric keypad on the right side?', prog:'Step 3 of 3', opts:[
+        {label:'No keypad — standard keyboard only', next:'model_b'},
+        {label:'Yes — has numeric keypad', next:'model_bplus'}
+    ]}
+];
+const BBC_RESULTS = {
+    model_a:{model:'BBC Micro Model A',
+        body:'<strong>RAM:</strong> 16 KB · <strong>Released:</strong> December 1981<br><strong>OS:</strong> BBC BASIC I / OS 0.1<br><strong>Ports:</strong> No analogue port, no User Port. Basic cassette and serial.<br><strong>Note:</strong> Many Model As were upgraded to Model B spec. Check the PCB issue number inside (Issue 1–3).<br><strong>Common fault:</strong> RAM failures — the 4116 chips are now 40+ years old.'},
+    model_b:{model:'BBC Micro Model B',
+        body:'<strong>RAM:</strong> 32 KB · <strong>Released:</strong> December 1981<br><strong>OS:</strong> BBC BASIC II · Various OS revisions (1.0–1.20)<br><strong>Ports:</strong> Analogue port, User Port, 1 MHz Bus, Tube, RGB, cassette, RS423.<br><strong>PCB Issues:</strong> Issue 1–7 (check inside lid). Issue 7 is the final and most reliable revision.<br><strong>Common faults:</strong> ULA failure (IC2/IC6), dead RAM, failed keyboard encoder IC.<br><strong>Upgrade path:</strong> Add Sideways RAM, ADFS ROM, or co-processor via Tube.'},
+    model_bplus:{model:'BBC Micro Model B+',
+        body:'<strong>RAM:</strong> 64 KB (32 KB main + 32 KB shadow) · <strong>Released:</strong> 1985<br><strong>OS:</strong> BBC BASIC II · OS 1.20<br><strong>Shadow RAM:</strong> Can be switched in to give programs full 32 KB in modes 0–6.<br><strong>Numeric keypad:</strong> Built in, right side.<br><strong>Note:</strong> Less common than Model B. The B+128 variant has 128 KB total RAM.'},
+    master:{model:'BBC Master 128',
+        body:'<strong>RAM:</strong> 128 KB (64 KB main + 64 KB MOS RAM) · <strong>Released:</strong> January 1986<br><strong>OS:</strong> MOS 3.20 · BBC BASIC IV<br><strong>ROM slots:</strong> 4 × 16 KB sideways ROM/RAM sockets.<br><strong>Built-in:</strong> ADFS, Edit, View, Terminal, and Commstar ROMs included.<br><strong>Variants:</strong> Master 128 (standard), Master Compact (separate keyboard), Master 512 (80186 co-processor).<br><strong>No DFS upgrade needed</strong> for Gotek — unlike Model B.'}
+};
+var bbcWizState = 0;
+function bbcWizRender() {
+    var node = BBC_TREE[bbcWizState];
+    document.getElementById("bbcWizProg").textContent = node.prog;
+    document.getElementById("bbcWizQ").textContent = node.q;
+    var opts = document.getElementById("bbcWizOpts");
+    opts.innerHTML = "";
+    node.opts.forEach(function(opt) {
+        var b = document.createElement("button");
+        b.className = "bbc-wiz-btn";
+        b.textContent = opt.label;
+        b.onclick = function() {
+            if (typeof opt.next === "string") {
+                document.getElementById("bbcWizBody").style.display = "none";
+                var r = BBC_RESULTS[opt.next];
+                document.getElementById("bbcWizModel").textContent = "✅ " + r.model;
+                document.getElementById("bbcWizBody2").innerHTML = r.body;
+                document.getElementById("bbcWizResult").style.display = "block";
+            } else {
+                bbcWizState = opt.next;
+                bbcWizRender();
+            }
+        };
+        opts.appendChild(b);
+    });
+}
+function bbcWizReset() {
+    bbcWizState = 0;
+    document.getElementById("bbcWizBody").style.display = "block";
+    document.getElementById("bbcWizResult").style.display = "none";
+    bbcWizRender();
+}
+document.addEventListener("DOMContentLoaded", bbcWizRender);
+</script>
                 <h3>Model History</h3>
                 
                 <div class="image-placeholder">
@@ -1074,6 +1226,28 @@ Dec 1981 - BBC Micro Model A & B launch (£235/£399)
         </div><!-- /bbc-section -->
         <div class="bbc-section" id="bbc-tab-specifications">
         <div id="specifications">
+
+            <div class="card" id="bbc-memmap">
+                <h2>🗺 BBC Micro — Interactive Memory Map</h2>
+                <p style="color:var(--text-secondary);margin-bottom:1rem">Click any region for detailed description and key register addresses. Layout shown for BBC Model B (32 KB RAM, OS 1.20).</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;font-size:0.75rem">
+                    <span style="background:rgba(59,130,246,0.3);padding:2px 8px;border-radius:3px">RAM</span>
+                    <span style="background:rgba(234,179,8,0.3);padding:2px 8px;border-radius:3px">ROM</span>
+                    <span style="background:rgba(239,68,68,0.3);padding:2px 8px;border-radius:3px">I/O</span>
+                    <span style="background:rgba(34,197,94,0.3);padding:2px 8px;border-radius:3px">Sideways</span>
+                </div>
+                <div class="memmap-wrap" id="bbcMmap"></div>
+            </div>
+            <div class="mmap-overlay" id="bbcMmapModal" onclick="if(event.target===this)bbcMmapClose()">
+                <div class="mmap-popup">
+                    <button class="mmap-close" onclick="bbcMmapClose()">✕</button>
+                    <div class="mmap-addr-badge" id="bbcMmapBadge"></div>
+                    <div class="mmap-title" id="bbcMmapTitle"></div>
+                    <div class="mmap-desc" id="bbcMmapDesc"></div>
+                    <div class="mmap-regs" id="bbcMmapRegs"></div>
+                </div>
+            </div>
+
             <div class="card">
                 <h2>BBC Micro Model B - Detailed Specifications</h2>
                 <p>The Model B was the most popular variant and became the de facto standard.</p>
@@ -4739,6 +4913,128 @@ FOR I%=1 TO 100: S$(I%)=STR$(I%): NEXT</pre>
         </div><!-- /bbc-section -->
         <div class="bbc-section" id="bbc-tab-hardware">
         <div id="hardware">
+
+            <div class="card" style="margin-top:1.5rem" id="bbc-chips">
+                <h2>🔌 BBC Micro — Main Chips (click for details)</h2>
+                <p style="color:var(--text-secondary);margin-bottom:1rem">The BBC Model B uses around 70 ICs. These are the ones most relevant to repair, upgrade, and understanding how the machine works. Click any chip for pinout, failure symptoms, and modern replacements.</p>
+                <div class="bbc-chip-grid">
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('cpu')">
+                        <div class="bbc-chip-dot" style="background:#7dd3fc"></div>
+                        <div class="bbc-chip-ref">IC1</div>
+                        <div class="bbc-chip-name">6502A CPU</div>
+                        <div class="bbc-chip-role">Main processor · 2 MHz · 40-pin DIP</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('serial_ula')">
+                        <div class="bbc-chip-dot" style="background:#f87171"></div>
+                        <div class="bbc-chip-ref">IC2</div>
+                        <div class="bbc-chip-name">Serial ULA</div>
+                        <div class="bbc-chip-role">Ferranti custom · serial, tape, clock gen</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('video_ula')">
+                        <div class="bbc-chip-dot" style="background:#f87171"></div>
+                        <div class="bbc-chip-ref">IC6</div>
+                        <div class="bbc-chip-name">Video ULA</div>
+                        <div class="bbc-chip-role">Ferranti custom · palette, video timing</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('crtc')">
+                        <div class="bbc-chip-dot" style="background:#a78bfa"></div>
+                        <div class="bbc-chip-ref">IC63</div>
+                        <div class="bbc-chip-name">MC6845 CRTC</div>
+                        <div class="bbc-chip-role">Video timing · scan line generator</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('sys_via')">
+                        <div class="bbc-chip-dot" style="background:#facc15"></div>
+                        <div class="bbc-chip-ref">IC32</div>
+                        <div class="bbc-chip-name">System VIA 6522</div>
+                        <div class="bbc-chip-role">Keyboard · sound · I/O · speech</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('usr_via')">
+                        <div class="bbc-chip-dot" style="background:#fdba74"></div>
+                        <div class="bbc-chip-ref">IC68</div>
+                        <div class="bbc-chip-name">User VIA 6522</div>
+                        <div class="bbc-chip-role">User Port · parallel printer · I/O</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('saa5050')">
+                        <div class="bbc-chip-dot" style="background:#86efac"></div>
+                        <div class="bbc-chip-ref">IC4</div>
+                        <div class="bbc-chip-name">SAA5050</div>
+                        <div class="bbc-chip-role">Teletext character generator · Mode 7</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('sound')">
+                        <div class="bbc-chip-dot" style="background:#34d399"></div>
+                        <div class="bbc-chip-ref">IC76</div>
+                        <div class="bbc-chip-name">SN76489</div>
+                        <div class="bbc-chip-role">3-channel sound + noise generator</div>
+                    </div>
+                    <div class="bbc-chip-card" onclick="bbcOpenChip('ram')">
+                        <div class="bbc-chip-dot" style="background:#fb923c"></div>
+                        <div class="bbc-chip-ref">IC19–34</div>
+                        <div class="bbc-chip-name">4816 DRAM ×16</div>
+                        <div class="bbc-chip-role">32 KB main RAM · 150 ns</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BBC Chip Modal -->
+            <div class="bbc-modal-overlay" id="bbcChipModal" onclick="if(event.target===this)bbcCloseChip()">
+                <div class="bbc-modal">
+                    <button class="bbc-modal-close" onclick="bbcCloseChip()">✕</button>
+                    <div class="bbc-modal-ref" id="bbcChipRef"></div>
+                    <div class="bbc-modal-title" id="bbcChipTitle"></div>
+                    <div class="bbc-modal-body" id="bbcChipBody"></div>
+                </div>
+            </div>
+
+
+            <div class="card" style="margin-top:2rem">
+                <h2 id="chip-reference">🔧 Chip Quick-Reference & Modern Replacements</h2>
+                <p style="color:var(--text-secondary)">Every main IC on the BBC Micro PCB. Click a row to see failure symptoms and replacement options.</p>
+                <div style="overflow-x:auto;margin-top:1rem">
+                <table style="width:100%;border-collapse:collapse;font-size:0.83rem">
+                    <thead>
+                        <tr style="background:var(--primary-color);color:white">
+                            <th style="padding:0.5rem 0.7rem;text-align:left">Chip</th>
+                            <th style="padding:0.5rem 0.7rem;text-align:left">Function</th>
+                            <th style="padding:0.5rem 0.7rem;text-align:left">Models</th>
+                            <th style="padding:0.5rem 0.7rem;text-align:left">Modern Replacement</th>
+                            <th style="padding:0.5rem 0.7rem;text-align:left">Availability</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bbcChipTableBody">
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic1')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC1 — 6502A</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">CPU · 2 MHz</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">All</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#4caf50">W65C02S + adapter</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">WDC, Mouser</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic2')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC2 — Serial ULA</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">Serial, tape, clock</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">Model A/B/B+</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#4caf50">CPLD replica (KenLowe)</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">StarDot forums</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic6')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC6 — Video ULA</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">Video palette, timing</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">All</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#4caf50">VideoNuLA (CPLD)</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">StarDot / eBay</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic32')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC32 — System VIA 6522</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">Keyboard, sound, I/O</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">All</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#ffb86c">WDC W65C22S (pin-compatible)</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">Mouser / DigiKey</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic68')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC68 — User VIA 6522</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">User Port I/O</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">Model B/B+</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#ffb86c">WDC W65C22S</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">Mouser / DigiKey</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic4')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC4 — SAA5050</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">Teletext character gen</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">All</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#ff5555">NOS only (very scarce)</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">eBay / specialist</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ic76')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC76 — 76489 SN sound</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">3-ch sound + noise</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">All</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#ffb86c">SN76489AN (compatible)</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">Mouser / eBay</td></tr>
+                        <tr style="cursor:pointer" onclick="bbcChipExpand(this,'ram')"><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;font-family:monospace;color:#7dd3fc">IC19–34 — 4816 RAM</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333">16× 16K×1 DRAM</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#888">Model B/B+</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#ff5555">NOS 4816 only</td><td style="padding:0.45rem 0.7rem;border-bottom:1px solid #333;color:#aaa">eBay / retro suppliers</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div id="bbcChipDetail" style="display:none;margin-top:1rem;background:rgba(33,150,243,0.08);border:1px solid rgba(33,150,243,0.3);border-radius:6px;padding:1rem;font-size:0.87rem"></div>
+            </div>
+<script>
+var BBC_CHIP_DETAIL = {
+    ic1:{name:`6502A CPU`,symptoms:`Completely dead machine, or random crashes/hangs. Usually fails from ESD or age.`,fix:`Replace with WDC W65C02S using a DIP-40 adapter (different pinout). Fully compatible at 2 MHz. ~£5 chip + ~£5 adapter.`},
+    ic2:{name:`Serial ULA`,symptoms:`No cassette save/load, corrupted serial output, or complete system failure (ULA generates clocks used by whole system). Responsible for ~1 in 6 faults.`,fix:`KenLowe's CPLD replica is the definitive fix. Available via StarDot forums. Replaces the obsolete Ferranti ULA.`},
+    ic6:{name:`Video ULA`,symptoms:`Wrong colours, missing colours, garbled display or pure green/no sync. Often visible as a "swimming" display.`,fix:`VideoNuLA by RobC is the best replacement — drops in, adds 4096-colour capability as bonus. Also available as plain ULA replica.`},
+    ic32:{name:`System VIA 6522`,symptoms:`Dead keyboard, no sound output, or stuck in a loop. Also handles the speech synthesiser if fitted.`,fix:`WDC W65C22S is a direct drop-in at 2 MHz. Available new from Mouser/DigiKey for ~£5.`},
+    ic68:{name:`User VIA 6522`,symptoms:`User Port I/O failures — robotics, parallel printer, joystick adapters stop working.`,fix:`WDC W65C22S, same as IC32. Also ~£5 new.`},
+    ic4:{name:`SAA5050 Teletext`,symptoms:`Mode 7 (Teletext) shows corrupted or blank display. Modes 0–6 unaffected.`,fix:`No modern equivalent. Source NOS from eBay or retro chip suppliers. Test before buying.`},
+    ic76:{name:`SN76489 Sound`,symptoms:`No sound output at all, or distorted sound.`,fix:`SN76489AN is the exact replacement (Texas Instruments). Still available new ~£3.`},
+    ram:{name:`4816 DRAM (×16)`,symptoms:`Random crashes, memory errors on startup (?), BBC BASIC out of memory errors, corrupted screen.`,fix:`Use the BBC BASIC memory test: FOR A=&3000 TO &7FFF:?A=&55:NEXT:FOR A=&3000 TO &7FFF:IF ?A<>&55 THEN PRINT~A:NEXT. Binary search to narrow faulty chip.`}
+};
+function bbcChipExpand(row, id) {
+    var d = document.getElementById("bbcChipDetail");
+    var info = BBC_CHIP_DETAIL[id];
+    if (!info) return;
+    d.innerHTML = "<strong style='color:#7dd3fc'>" + info.name + "</strong><br><span style='color:#ffb86c'>⚠ Failure symptoms:</span> <span style='color:#ccc'>" + info.symptoms + "</span><br><span style='color:#4caf50'>✓ Fix:</span> <span style='color:#ccc'>" + info.fix + "</span>";
+    d.style.display = "block";
+    d.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+</script>
+
             <div class="card">
                 <h2 id="modern-hardware">Modern Hardware Addons & Upgrades</h2>
                 <p>Modern solutions breathe new life into vintage BBC Micros with SD storage, HDMI output, WiFi, and more.</p>
@@ -9091,12 +9387,16 @@ OLD           - Recover deleted program in memory</pre>
 
                 <h3>🔧 DIY & Maker Platforms</h3>
                 <div class="link-grid">
-                    <div class="link-card">
-                        <h4>Tindie - Independent Hardware Marketplace</h4>
-                        <p><strong>Platform:</strong> Marketplace for independent electronics makers and small-batch hardware</p>
-                        <p style="margin-top: 0.5rem;">Find custom BBC Micro hardware, SD interfaces, adapters, upgrades from makers worldwide. Home to projects like RGB2HDMI, PiTubeDirect PCBs, and custom adapters.</p>
-                        <a href="https://www.tindie.com" target="_blank">Browse Tindie →</a>
-                        <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">💡 Search: "BBC Micro", "Acorn", "6502", "RGB2HDMI"</p>
+                    <div class="link-card" style="border-color:rgba(255,152,0,0.4);box-shadow:0 0 12px rgba(255,152,0,0.1)">
+                        <h4>🛒 Tindie — Indie Hardware Marketplace</h4>
+                        <p>Independent makers sell BBC Micro hardware here — SD interfaces, RGB2HDMI PCBs, PiTubeDirect boards, ULA replacements, and custom adapters. New listings appear regularly.</p>
+                        <div style="margin:0.8rem 0;display:flex;flex-wrap:wrap;gap:6px">
+                            <a href="https://www.tindie.com/search/?q=bbc+micro" target="_blank" style="color:var(--accent-color);font-size:0.83rem;background:rgba(255,152,0,0.1);padding:3px 8px;border-radius:4px;text-decoration:none">"bbc micro" →</a>
+                            <a href="https://www.tindie.com/search/?q=acorn+bbc" target="_blank" style="color:var(--accent-color);font-size:0.83rem;background:rgba(255,152,0,0.1);padding:3px 8px;border-radius:4px;text-decoration:none">"acorn bbc" →</a>
+                            <a href="https://www.tindie.com/search/?q=rgb2hdmi" target="_blank" style="color:var(--accent-color);font-size:0.83rem;background:rgba(255,152,0,0.1);padding:3px 8px;border-radius:4px;text-decoration:none">"rgb2hdmi" →</a>
+                            <a href="https://www.tindie.com/search/?q=6502+acorn" target="_blank" style="color:var(--accent-color);font-size:0.83rem;background:rgba(255,152,0,0.1);padding:3px 8px;border-radius:4px;text-decoration:none">"6502 acorn" →</a>
+                        </div>
+                        <a href="https://www.tindie.com/search/?q=bbc+micro" target="_blank" style="color:var(--accent-color)">Browse all BBC Micro listings →</a>
                     </div>
                     <div class="link-card">
                         <h4>PCBWay Project Sharing Platform</h4>
@@ -14451,5 +14751,259 @@ function copyCode(btn) {
     });
 })();
 </script>
+
+<script>
+function toggleTheme() {
+    var isLight = document.body.classList.toggle('light-mode');
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    
+}
+</script>
+
+<script>
+var BBC_CHIP_DATA = {
+  cpu: {
+    ref:'IC1 — DIP-40',
+    title:'MOS/Rockwell 6502A — Main CPU',
+    body:`<p>The 6502A runs at 2 MHz and is the heart of all BBC Micro models. It uses a Harvard-influenced architecture with a 16-bit address bus (64 KB addressable) and 8-bit data bus. The BBC Micro cleverly stretches it to appear to have more memory using Sideways ROM banking.</p>
+<h3>Key registers</h3><ul>
+<li>A — Accumulator (8-bit, main arithmetic register)</li>
+<li>X, Y — Index registers (8-bit, loop counters, addressing)</li>
+<li>S — Stack Pointer (8-bit, points into $0100–$01FF)</li>
+<li>PC — Program Counter (16-bit)</li>
+<li>P — Processor Status (N V - B D I Z C flags)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead machine. No startup, completely unresponsive. Sometimes causes random resets or lock-ups under load.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C02S (still manufactured). Requires a DIP-40 adapter as the pinout differs slightly — available from 6502.org community. ~£5 chip + ~£8 adapter.</p>`
+  },
+  serial_ula: {
+    ref:'IC2 — Custom Ferranti ULA',
+    title:'Serial ULA — System Clock & Serial Controller',
+    body:`<p>The Serial ULA (Uncommitted Logic Array) is a Ferranti custom chip responsible for generating the system clocks, handling the cassette tape interface, and managing the RS-423 serial port. Because it generates the 2 MHz clock used by the entire system, its failure causes complete machine death.</p>
+<h3>Functions</h3><ul>
+<li>2 MHz CPU clock generation</li>
+<li>Cassette tape encode/decode (300 baud & 1200 baud)</li>
+<li>RS-423 serial port UART (up to 19200 baud)</li>
+<li>RTS/CTS hardware flow control</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Complete system failure (generates system clocks). Or: cassette save/load fails silently. Or: corrupted serial output. The Serial ULA is responsible for approximately 1 in 6 BBC Micro failures.</p>
+<h3>Modern replacement</h3>
+<p class="good">KenLowe's CPLD replica is the definitive fix — a small CPLD board that drops into the ULA socket. Available via StarDot forums. Fully compatible including all clock generation and cassette functions.</p>`
+  },
+  video_ula: {
+    ref:'IC6 — Custom Ferranti ULA',
+    title:'Video ULA — Palette & Video Timing',
+    body:`<p>The Video ULA (IC6) works alongside the CRTC (IC63) to produce video output. The CRTC generates timing signals; the Video ULA converts raw pixel data into actual colours using its 16-entry palette and handles the pixel clock for different screen modes.</p>
+<h3>Functions</h3><ul>
+<li>16-colour palette RAM (4 bits per colour, 3 flash states)</li>
+<li>Pixel clock selection for modes 0–7</li>
+<li>Cursor control signal processing</li>
+<li>Teletext mode switching (MODE 7 via SAA5050)</li></ul>
+<h3>Mapped registers ($FE20–$FE2F)</h3><ul>
+<li>$FE20 — Control register (pixel clock, cursor, flash)</li>
+<li>$FE21 — Palette entry write (bits 7–4 = index, 3–0 = colour)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Wrong colours, missing colours, garbled display, no sync. Often visible as a "swimming" display or pure green screen.</p>
+<h3>Modern replacement</h3>
+<p class="good">VideoNuLA by RobC — CPLD replacement that adds 4096-colour mode as a bonus. Available via StarDot forums. Also available as a plain ULA replica without the extended features.</p>`
+  },
+  crtc: {
+    ref:'IC63 — DIP-40',
+    title:'MC6845 CRTC — Video Timing Generator',
+    body:`<p>The Motorola MC6845 CRT Controller generates all video timing signals — horizontal and vertical sync, display enable, cursor position, and screen address. The Video ULA then uses these signals to output actual pixel data. The BBC firmware programs the 6845 with different register values for each screen mode.</p>
+<h3>Key registers (at $FE00/$FE01)</h3><ul>
+<li>R0 — Horizontal total</li>
+<li>R1 — Horizontal displayed</li>
+<li>R6 — Vertical displayed</li>
+<li>R9 — Max scan line address</li>
+<li>R12/R13 — Screen start address (hi/lo)</li>
+<li>R14/R15 — Cursor position (hi/lo)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No video output, wrong sync (rolling picture), all white or black display. Rarely fails — the 6845 is robust.</p>
+<h3>Replacement</h3>
+<p class="good">MC6845, HD6845, UM6845 are compatible. Still available as NOS from electronics suppliers.</p>`
+  },
+  sys_via: {
+    ref:'IC32 — DIP-40',
+    title:'System VIA — MOS 6522 Versatile Interface Adapter',
+    body:`<p>The System VIA handles the most critical I/O on the BBC Micro — the keyboard, the sound chip, and speech synthesiser communication. It also provides the interrupt timing for the system timer.</p>
+<h3>Port A connections</h3><ul>
+<li>PA0–PA7 — Keyboard column scan / sound data bus</li></ul>
+<h3>Port B connections</h3><ul>
+<li>PB0 — Sound write strobe</li>
+<li>PB1 — RW strobe for speech chip</li>
+<li>PB2 — Speech chip select</li>
+<li>PB3 — Keyboard enable</li>
+<li>PB4 — Caps Lock LED</li>
+<li>PB5 — Shift Lock LED</li>
+<li>PB6 — Keyboard result (row scan)</li>
+<li>PB7 — Joystick fire button 1</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead keyboard, no sound output, lock in startup loop (waiting for keyboard). Also handles the speech synthesiser if fitted.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C22S — pin-compatible CMOS version, still manufactured. ~£5 from Mouser/DigiKey. Runs at 2 MHz reliably.</p>`
+  },
+  usr_via: {
+    ref:'IC68 — DIP-40',
+    title:'User VIA — MOS 6522 Versatile Interface Adapter',
+    body:`<p>The User VIA provides the BBC Micro's User Port — a general-purpose 8-bit I/O port accessible via a 20-way connector on the back panel. It was widely used for robotics, data logging, MIDI interfaces, and parallel printers.</p>
+<h3>User Port connector (20-way)</h3><ul>
+<li>CB1, CB2 — Handshaking lines</li>
+<li>PB0–PB7 — 8-bit bidirectional I/O (direction set by DDRB)</li>
+<li>+5V, 0V — Power rails</li></ul>
+<h3>Mapped at $FE60–$FE7F</h3>
+<h3>Failure symptoms</h3>
+<p class="warn">User Port I/O failures — robotics stop working, parallel printer not detected, joystick adapters fail.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C22S — same as IC32. Pin-compatible, still manufactured, ~£5.</p>`
+  },
+  saa5050: {
+    ref:'IC4 — DIP-28',
+    title:'SAA5050 — Teletext Character Generator (MODE 7)',
+    body:`<p>The Philips SAA5050 generates the character bitmaps for BBC MODE 7, which is the Teletext-style display mode used for the BBC Micro's text modes and Ceefax/Oracle teletext data. It contains the full Teletext character set including graphics characters in ROM.</p>
+<h3>Features</h3><ul>
+<li>64 Teletext characters + 64 graphics characters</li>
+<li>Supports double height, hold graphics, concealed text</li>
+<li>Generates its own 12 MHz pixel clock internally</li>
+<li>Used in Mode 7 only (25 rows × 40 cols, 1 KB screen RAM)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Mode 7 shows corrupted or blank display. Modes 0–6 are completely unaffected (Mode 7 is the only mode that uses this chip).</p>
+<h3>Replacement</h3>
+<p class="warn">No modern equivalent. Source NOS (New Old Stock) from eBay or retro chip specialists. Test before buying — many old stocks are faulty.</p>`
+  },
+  sound: {
+    ref:'IC76 — DIP-16',
+    title:'SN76489AN — 3-Channel Sound + Noise',
+    body:`<p>The Texas Instruments SN76489 provides the BBC Micro's sound output: three square-wave tone channels and one noise channel. It's driven by the System VIA (IC32) and controlled through OS sound calls or direct register writes.</p>
+<h3>Channels</h3><ul>
+<li>Channels 0–2 — Square wave tones, frequency 0–8 KHz</li>
+<li>Channel 3 — Noise (white noise or periodic noise)</li>
+<li>Each channel has 16 attenuation levels (0 = full volume, 15 = silent)</li></ul>
+<h3>BBC BASIC sound</h3>
+<p>SOUND channel, amplitude, pitch, duration — where amplitude is 0 to -15, pitch is 0–255.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">No sound at all, or distorted/stuck sound. Also try replacing the audio amplifier transistor (TR1) first — it fails more often.</p>
+<h3>Modern replacement</h3>
+<p class="good">SN76489AN is still available new from Texas Instruments / Mouser. ~£3. Direct drop-in replacement.</p>`
+  },
+  ram: {
+    ref:'IC19–IC34 — DIP-16 (×16)',
+    title:'4816 DRAM — 32 KB Main RAM',
+    body:`<p>The BBC Model B uses sixteen 4816 (16K×1 bit) dynamic RAM chips to make up the 32 KB of main RAM. Each chip provides 1 bit of the 8-bit data bus across 16 KB of address space. All sixteen must work correctly for the full 32 KB to be available. Model A uses 8 chips for 16 KB.</p>
+<h3>Identifying faulty chips</h3>
+<p>Run this in BBC BASIC to locate the faulty chip(s):</p>
+<pre style="background:#111;padding:0.5rem;border-radius:4px;font-size:0.8rem;margin:0.5rem 0">FOR A=&3000 TO &7FFF
+  ?A=&55:IF ?A<>&55 THEN PRINT~A
+NEXT</pre>
+<p>The failing address tells you which chip: each 4816 chip maps to one bit position across a 16 KB block. Binary search across chips to narrow down.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Random crashes, "?" or memory errors on startup, BASIC shows wrong memory size, corrupted screen in higher modes.</p>
+<h3>Replacement</h3>
+<p class="warn">4816 is no longer manufactured. Source NOS from eBay or retro chip suppliers. Buy extras — they fail with age. Test all 16 chips, not just the one that appears faulty.</p>`
+  }
+};
+function bbcOpenChip(id) {
+  var d = BBC_CHIP_DATA[id];
+  if (!d) return;
+  document.getElementById('bbcChipRef').textContent = d.ref;
+  document.getElementById('bbcChipTitle').textContent = d.title;
+  document.getElementById('bbcChipBody').innerHTML = d.body;
+  document.getElementById('bbcChipModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function bbcCloseChip() {
+  document.getElementById('bbcChipModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') bbcCloseChip();
+});
+</script>
+
+<script>
+var BBC_MMAP = [
+  {id:'zp', addr:'$0000–$00FF', label:'Zero Page', size:'256 B', bg:'rgba(59,130,246,0.25)', color:'#7dd3fc',
+   title:'Zero Page — Fast CPU Access Area',
+   desc:'The 6502 can address this area with 2-byte instructions instead of 3, making it significantly faster. BBC OS and BASIC use it heavily for system variables, BASIC pointers, and frequently-accessed workspace. Keep your hottest variables here in machine code.',
+   regs:[['$00','Zero page indirect pointer base'],['$03','Screen width (40 or 80)'],['$0A','Cursor column'],['$0B','Cursor row'],['$22–$23','Current BASIC line number'],['$2B–$2C','BASIC program start'],['$2D–$2E','BASIC variable area start']]},
+  {id:'stack', addr:'$0100–$01FF', label:'6502 Stack', size:'256 B', bg:'rgba(59,130,246,0.2)', color:'#93c5fd',
+   title:'6502 Hardware Stack',
+   desc:'The 6502 uses page 1 exclusively as its hardware stack. Grows downward from $01FF. Subroutine calls (JSR), interrupts, and PHP all use this area. Stack overflow corrupts your code silently — keep call depth shallow in tight routines.',
+   regs:[['$0100','Stack bottom (SP=$00 = overflow!)'],['$01FF','Stack top (initial SP=$FF)']]},
+  {id:'os_work', addr:'$0200–$07FF', label:'OS Workspace & Buffers', size:'1.5 KB', bg:'rgba(59,130,246,0.18)', color:'#bfdbfe',
+   title:'OS Workspace, I/O Buffers & Page 2/3',
+   desc:'The operating system uses this area for keyboard input buffers, screen editor workspace, RS-423 serial buffers, tape/disc status, and cassette buffers. Page 2 ($0200–$02FF) holds the main keyboard input buffer. Pages 4–7 are available to user programs on a 32 KB machine.',
+   regs:[['$0200–$026F','Keyboard input buffer (INKEY/GET)'],['$0270–$029F','Screen editor workspace'],['$02A0–$02FF','RS-423 serial buffer'],['$0300–$03FF','OS internal variables & disc workspace'],['$0400–$07FF','General OS buffers / user workspace']]},
+  {id:'user_ram', addr:'$0800–$7FFF', label:'User RAM (28 KB)', size:'28 KB', bg:'rgba(59,130,246,0.35)', color:'#60a5fa',
+   title:'User RAM — Main Program Area (28 KB)',
+   desc:'This is where BASIC programs load and machine code is stored. BASIC starts at PAGE (usually $0E00 or $1900 with DFS), variables grow up from end of program, strings grow down from HIMEM ($8000 by default). Machine code programs typically go at the top of RAM ($7000+ or similar) to avoid BASIC overwriting them.',
+   regs:[['$0E00','Typical BASIC program start (with DFS ROM)'],['$1900','BASIC program start (with ADFS ROM)'],['$7FFF','Top of 32 KB user RAM (= default HIMEM)']]},
+  {id:'sideways', addr:'$8000–$BFFF', label:'Sideways ROM / RAM (16 KB)', size:'16 KB', bg:'rgba(34,197,94,0.3)', color:'#86efac',
+   title:'Sideways ROM / RAM — 16 Banks of 16 KB',
+   desc:'This 16 KB window can hold any of 16 different ROMs (or RAM). The currently selected bank is set by writing to $FE30. Acorn used banks 12–15 for OS ROMs; expansion ROMs (DFS, ADFS, VIEW, BASIC) go in banks 0–11. Sideways RAM allows programs to switch in their own RAM — used for RAM filing systems and ramdisks.',
+   regs:[['$8000','Sideways ROM/RAM start (bank 0–15)'],['$BFFF','Sideways ROM/RAM end'],['$FE30','ROM select latch (write bank number 0–15)'],['Bank 15','Usually BBC BASIC II'],['Bank 14','Usually ADFS or DFS'],['Bank 12','Usually View or other ROM']]},
+  {id:'os_rom', addr:'$C000–$FBFF', label:'OS ROM', size:'15 KB', bg:'rgba(234,179,8,0.3)', color:'#fde047',
+   title:'BBC OS ROM (MOS — Machine Operating System)',
+   desc:'The operating system lives here, providing the high-level API that both BASIC and user programs call via JSR or CALL. OS 1.20 is the final and most compatible version for Model B. The OS provides VDU output, keyboard input, filing system abstraction, speech chip driver, sound driver, and interrupt management.',
+   regs:[['$C000','OS ROM start'],['$D94B','OSBYTE entry — miscellaneous I/O calls'],['$D94E','OSWORD entry — extended I/O operations'],['$E0E0','OSFILE entry — file operations'],['$FFB3','OSBYTE (indirection vector)'],['$FFD1','OSASCI — output char with CR handling'],['$FFE0','OSRDCH — read character from input'],['$FFE3','OSASCI — write char'],['$FFE7','OSNEWL — output CR+LF'],['$FFEE','OSWRCH — write character to VDU'],['$FFF4','OSFIND — open/close files']]},
+  {id:'fred', addr:'$FC00–$FCFF', label:'FRED (1 MHz Bus)', size:'256 B', bg:'rgba(239,68,68,0.2)', color:'#fca5a5',
+   title:'FRED — 1 MHz Bus Expansion (Slow I/O)',
+   desc: `FRED ($FC) provides access to slow peripherals on the 1 MHz bus. The BBC Micro\'s main bus runs at 2 MHz; FRED automatically inserts wait states to slow to 1 MHz for peripherals. Used by Teletext adaptors, music synthesisers, and other expansion hardware.`,
+   regs:[['$FC00–$FCFF','FRED expansion area (1 MHz bus)']]},
+  {id:'jim', addr:'$FD00–$FDFF', label:'JIM (1 MHz Bus, Paged)', size:'256 B', bg:'rgba(239,68,68,0.2)', color:'#fca5a5',
+   title:'JIM — Paged 1 MHz Bus Expansion',
+   desc:'JIM ($FD) is a paged window for larger peripherals on the 1 MHz bus. Writing to $FCFF selects a page; then $FD00–$FDFF accesses 256 bytes of that page. Used by memory expansions, ROM/RAM boards, and some disc interfaces.',
+   regs:[['$FCFF','Page select for JIM window'],['$FD00–$FDFF','256-byte window into selected page']]},
+  {id:'sheila', addr:'$FE00–$FEFF', label:'SHEILA (I/O)', size:'256 B', bg:'rgba(239,68,68,0.5)', color:'#f87171',
+   title:'SHEILA — I/O Register Area',
+   desc: `SHEILA ($FE) contains all the hardware registers for the BBC Micro\'s on-board chips. Reads and writes here go directly to chip registers, not RAM. This is where you program the video chip, VIAs, CRTC, serial ULA, and interrupt controller.`,
+   regs:[['$FE00–$FE07','CRTC 6845 (register select / data)'],['$FE08–$FE0F','Video ULA control & palette (writes only)'],['$FE10–$FE17','Serial ULA (baud rate, motor, control)'],['$FE20','Video ULA control register'],['$FE21','Video ULA palette write'],['$FE30','ROM/RAM select latch (0–15)'],['$FE40–$FE5F','System VIA 6522 (keyboard, sound, I/O)'],['$FE60–$FE7F','User VIA 6522 (user port, printer)'],['$FE80–$FE9F','8271 / 1770 FDC (disc controller)'],['$FEA0–$FEBF','ADLC (Econet chip 68B54)'],['$FEC0–$FECF','ADC (analogue joystick input)']]},
+  {id:'vectors', addr:'$FF00–$FFFF', label:'OS Vectors & Kernal Top', size:'256 B', bg:'rgba(234,179,8,0.4)', color:'#fbbf24',
+   title:'OS Vectors, NMI, and Reset Vectors',
+   desc:'The top 256 bytes contain the 6502 hardware vectors plus the BBC OS jump table. The OS vectors point to the standard entry points. User code can redirect these via the OS indirection vectors in zero page.',
+   regs:[['$FF00–$FFFC','OS ROM code (top of OS)'],['$FFFA/$FFFB','NMI vector (lo/hi) — Not used on BBC'],['$FFFC/$FFFD','Reset vector — OS start address'],['$FFFE/$FFFF','IRQ/BRK vector — OS interrupt handler']]}
+];
+function bbcMmapRender() {
+  var c = document.getElementById('bbcMmap');
+  if (!c) return;
+  BBC_MMAP.forEach(function(r) {
+    var row = document.createElement('div');
+    row.className = 'memmap-row';
+    row.style.background = r.bg;
+    row.onclick = function() { bbcMmapOpen(r.id); };
+    row.innerHTML = '<span class="memmap-addr" style="color:' + r.color + '">' + r.addr + '</span>' +
+      '<span class="memmap-label" style="color:' + r.color + '">' + r.label + '</span>' +
+      '<span class="memmap-size">' + r.size + '</span>';
+    c.appendChild(row);
+  });
+}
+function bbcMmapOpen(id) {
+  var r = BBC_MMAP.find(function(x){return x.id===id;});
+  if (!r) return;
+  document.getElementById('bbcMmapBadge').textContent = r.addr;
+  document.getElementById('bbcMmapBadge').style.background = r.bg;
+  document.getElementById('bbcMmapBadge').style.color = r.color;
+  document.getElementById('bbcMmapTitle').textContent = r.title;
+  document.getElementById('bbcMmapDesc').textContent = r.desc;
+  var regsHtml = '';
+  if (r.regs && r.regs.length) {
+    regsHtml = '<table><tr><th>Address</th><th>Description</th></tr>';
+    r.regs.forEach(function(reg) { regsHtml += '<tr><td>' + reg[0] + '</td><td>' + reg[1] + '</td></tr>'; });
+    regsHtml += '</table>';
+  }
+  document.getElementById('bbcMmapRegs').innerHTML = regsHtml;
+  document.getElementById('bbcMmapModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function bbcMmapClose() {
+  document.getElementById('bbcMmapModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('DOMContentLoaded', bbcMmapRender);
+document.addEventListener('keydown', function(e) { if(e.key==='Escape') bbcMmapClose(); });
+</script>
+
 </body>
 </html>
