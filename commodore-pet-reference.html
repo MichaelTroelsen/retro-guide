@@ -1138,6 +1138,30 @@
         .dtree .dt-y  { color: #7fff7f; }
         .dtree .dt-n  { color: #ffaaaa; }
         .dtree .dt-r  { color: var(--amber); font-weight: 700; }
+
+        /* ── PET CHIP MODAL CARDS ── */
+        .pet-chip-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:0.6rem; margin:1rem 0 1.5rem; }
+        .pet-chip-card { background:var(--card-bg); border:1px solid var(--border); border-radius:8px; padding:1rem; cursor:pointer; transition:all 0.2s; position:relative; }
+        .pet-chip-card:hover { border-color:var(--primary-lt); transform:translateY(-2px); box-shadow:0 4px 16px rgba(26,122,26,0.25); }
+        .pet-chip-ref { font-family:monospace; font-size:0.78rem; color:var(--accent); margin-bottom:0.2rem; }
+        .pet-chip-name { font-size:0.88rem; font-weight:600; color:var(--text); margin-bottom:0.25rem; }
+        .pet-chip-role { font-size:0.77rem; color:var(--text-dim); line-height:1.35; }
+        .pet-chip-dot { position:absolute; top:0.65rem; right:0.65rem; width:8px; height:8px; border-radius:50%; }
+        /* ── PET CHIP MODAL ── */
+        .pet-chip-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:500; align-items:center; justify-content:center; padding:1rem; }
+        .pet-chip-overlay.open { display:flex; }
+        .pet-chip-modal { background:var(--card-bg); border:1px solid var(--primary); border-radius:12px; max-width:580px; width:100%; max-height:85vh; overflow-y:auto; padding:1.5rem; position:relative; }
+        .pet-chip-modal-close { position:absolute; top:1rem; right:1rem; background:transparent; border:none; color:var(--text-dim); font-size:1.4rem; cursor:pointer; line-height:1; }
+        .pet-chip-modal-close:hover { color:var(--accent); }
+        .pet-chip-modal-ref { font-family:monospace; font-size:0.8rem; color:var(--accent); margin-bottom:0.3rem; }
+        .pet-chip-modal-title { font-size:1.05rem; font-weight:600; color:var(--text); margin-bottom:1rem; }
+        .pet-chip-modal-body { font-size:0.87rem; color:var(--text-dim); line-height:1.7; }
+        .pet-chip-modal-body h3 { color:var(--accent); font-size:0.88rem; margin:1rem 0 0.4rem; text-transform:uppercase; letter-spacing:0.05em; }
+        .pet-chip-modal-body ul { padding-left:1.2rem; }
+        .pet-chip-modal-body li { margin-bottom:0.2rem; }
+        .pet-chip-modal-body .warn { color:var(--amber); }
+        .pet-chip-modal-body .good { color:#7fff7f; }
+        .pet-chip-modal-body code { background:var(--primary-dk); padding:1px 5px; border-radius:3px; font-family:monospace; font-size:0.85em; color:var(--accent); }
     </style>
 </head>
 <body>
@@ -1688,6 +1712,79 @@ CBM label only — no "PET" name.</div>
     <h2 class="section-title">Hardware Architecture — Full Chip Reference</h2>
 
     <p style="color:var(--text-dim);margin-bottom:1.2rem">The PET's motherboard is a small but complete 8-bit computer system built almost entirely from MOS Technology chips. Every chip is documented below — click any chip card for its full register map and repair notes. Board revision affects which variants are present.</p>
+
+
+    <!-- ── PET CHIP MODAL GRID ── -->
+    <div class="full-card" style="margin-bottom:1.5rem" id="pet-chips">
+        <h3>🔌 PET Main Chips — Click for Details</h3>
+        <p style="color:var(--text-dim);font-size:0.87rem;margin-bottom:1rem">Every important IC on the PET mainboard. Click any chip card for register maps, failure symptoms, and modern replacements.</p>
+        <div class="pet-chip-grid">
+            <div class="pet-chip-card" onclick="petOpenChip('cpu')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">DIP-40</div>
+                <div class="pet-chip-name">MOS 6502 CPU</div>
+                <div class="pet-chip-role">1 MHz · 16-bit address bus · 8-bit data</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('pia1')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">$E800 · DIP-40</div>
+                <div class="pet-chip-name">MOS 6520 PIA #1</div>
+                <div class="pet-chip-role">Keyboard matrix · IEEE-488 control</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('pia2')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">$E820 · DIP-40</div>
+                <div class="pet-chip-name">MOS 6520 PIA #2</div>
+                <div class="pet-chip-role">User Port · IEEE-488 data bus DIO1–8</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('via')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">$E840 · DIP-40</div>
+                <div class="pet-chip-name">MOS 6522 VIA</div>
+                <div class="pet-chip-role">Tape motor/data · CB2 audio · timers</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('crtc')">
+                <div class="pet-chip-dot" style="background:#e8a030"></div>
+                <div class="pet-chip-ref">$E880 · DIP-40</div>
+                <div class="pet-chip-name">MOS 6545 CRTC</div>
+                <div class="pet-chip-role">Video timing · H/V sync · cursor ⚠ scarce</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('rom_basic')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">$B000–$DFFF · DIP-24</div>
+                <div class="pet-chip-name">MOS 6540 BASIC ROM</div>
+                <div class="pet-chip-role">12 KB Microsoft BASIC · 3 chips</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('rom_kernal')">
+                <div class="pet-chip-dot" style="background:#7fff7f"></div>
+                <div class="pet-chip-ref">$F000–$FFFF · DIP-24</div>
+                <div class="pet-chip-name">MOS 6540 Kernal ROM</div>
+                <div class="pet-chip-role">OS · IEEE-488 · cassette · I/O drivers</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('ram_dram')">
+                <div class="pet-chip-dot" style="background:#e8a030"></div>
+                <div class="pet-chip-ref">DIP-16 · ×8 or ×16</div>
+                <div class="pet-chip-name">4116 DRAM</div>
+                <div class="pet-chip-role">16 Kbit · needs −5V · most common fault</div>
+            </div>
+            <div class="pet-chip-card" onclick="petOpenChip('psu')">
+                <div class="pet-chip-dot" style="background:#ff6666"></div>
+                <div class="pet-chip-ref">PSU board</div>
+                <div class="pet-chip-name">Power Supply</div>
+                <div class="pet-chip-role">+5V +12V −5V · check before chips!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PET Chip Modal -->
+    <div class="pet-chip-overlay" id="petChipModal" onclick="if(event.target===this)petCloseChip()">
+        <div class="pet-chip-modal">
+            <button class="pet-chip-modal-close" onclick="petCloseChip()">✕</button>
+            <div class="pet-chip-modal-ref" id="petChipRef"></div>
+            <div class="pet-chip-modal-title" id="petChipTitle"></div>
+            <div class="pet-chip-modal-body" id="petChipBody"></div>
+        </div>
+    </div>
 
     <!-- ── CHIP QUICK REFERENCE GRID ── -->
     <div class="full-card" style="margin-bottom:1.5rem">
@@ -5347,5 +5444,195 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { hint.style.opacity='1'; setTimeout(() => { hint.style.opacity='0'; setTimeout(()=>hint.remove(),500); }, 5000); }, 1200);
 });
 </script>
+
+<script>
+var PET_CHIP_DATA = {
+  cpu: {
+    ref: 'DIP-40 — 1 MHz',
+    title: 'MOS Technology 6502 — Main CPU',
+    body: `<p>The 6502 was designed by Chuck Peddle and Bill Mensch at MOS Technology in 1975. It uses an 8-bit data bus, a 16-bit address bus (64 KB), and 13 addressing modes. The PET runs it at exactly 1.0 MHz (the NTSC crystal divided down). All ROMs, I/O chips, and RAM share this single bus.</p>
+<h3>Registers</h3><ul>
+<li>A — Accumulator (8-bit) — arithmetic and logic target</li>
+<li>X, Y — Index registers (8-bit) — loop counters, address offsets</li>
+<li>SP — Stack Pointer (8-bit, points into $0100–$01FF)</li>
+<li>PC — Program Counter (16-bit)</li>
+<li>P — Processor Status: N V — B D I Z C flags</li></ul>
+<h3>PET memory banking</h3>
+<p>The PET has no banking hardware — everything is in a flat 64 KB space. ROMs overlay the top of the map; there is no "hidden" RAM underneath them (unlike C64). What you see in the map is what you get.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Completely dead machine, no startup at all. Or random crashes, instruction decode errors visible as garbage on screen.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C02S — still manufactured, CMOS, pin-compatible. The W65C02S runs at up to 14 MHz so 1 MHz is trivial. ~£5 from Mouser/DigiKey. Note: requires a small adapter or resistor on the /VP pin on some boards.</p>`
+  },
+  pia1: {
+    ref: '$E800–$E80F — DIP-40',
+    title: 'MOS 6520 PIA #1 — Keyboard & IEEE-488 Control',
+    body: `<p>PIA 1 is the keyboard interface for the PET. It scans the keyboard matrix by driving rows (Port A) and reading columns (Port B). It also handles several IEEE-488 bus control lines — the PET uses the IEEE-488 (GPIB) bus for all peripheral communication (drives, printers).</p>
+<h3>Port assignments</h3><ul>
+<li>Port A (PA0–PA7) — Keyboard row select (drives one row low at a time)</li>
+<li>Port B (PB0–PB7) — Keyboard column read (reads which key in the row is pressed)</li>
+<li>CA1 — IEEE-488 NDAC (Not Data Accepted)</li>
+<li>CA2 — IEEE-488 EOI (End Or Identify)</li>
+<li>CB1 — Blank signal from video circuitry (vertical blanking interrupt)</li>
+<li>CB2 — IEEE-488 DAV (Data Valid)</li></ul>
+<h3>Register map ($E800–$E80F)</h3><ul>
+<li>$E800 — Port B output register (ORB/IRB)</li>
+<li>$E801 — Port A output register (ORA/IRA)</li>
+<li>$E802 — Port B data direction (DDRB)</li>
+<li>$E803 — Port A data direction (DDRA)</li>
+<li>$E80C — Control register B (CRB)</li>
+<li>$E80D — Control register A (CRA)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Dead keyboard (no keys register at all). If only some keys fail, suspect the keyboard membrane. If NO keys work and membrane is OK, PIA 1 is the prime suspect.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C21S (the 65xx-family equivalent, pin-compatible) or the 6821 (Motorola, identical function). Still manufactured. ~£5.</p>`
+  },
+  pia2: {
+    ref: '$E820–$E82F — DIP-40',
+    title: 'MOS 6520 PIA #2 — User Port & IEEE-488 Data',
+    body: `<p>PIA 2 drives the IEEE-488 data bus (DIO1–DIO8) and provides the User Port on models that have one. The IEEE-488 interface is what lets the PET talk to disk drives (4040, 8050, 8250) and printers — it is the PET's primary peripheral bus, unlike the C64 which uses the slower IEC serial bus.</p>
+<h3>Port assignments</h3><ul>
+<li>Port A (PA0–PA7) — IEEE-488 data bus (DIO1–DIO8, bidirectional)</li>
+<li>Port B (PB0–PB7) — User Port (8-bit bidirectional I/O)</li>
+<li>CA1 — IEEE-488 ATN (Attention)</li>
+<li>CA2 — IEEE-488 NRFD (Not Ready For Data)</li>
+<li>CB1 — IEEE-488 SRQ (Service Request)</li>
+<li>CB2 — IEEE-488 NDAC out</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No disk drive communication (DEVICE NOT PRESENT errors), IEEE-488 devices not responding. User Port I/O failures.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C21S or 6821 — same as PIA 1. Same part, interchangeable.</p>`
+  },
+  via: {
+    ref: '$E840–$E84F — DIP-40',
+    title: 'MOS 6522 VIA — Tape & Audio Interface',
+    body: `<p>The 6522 VIA (Versatile Interface Adapter) on the PET handles cassette tape operations and provides a simple audio output via the CB2 pin. On later PET boards (2001-N onwards) it also manages the diagnostics port. It is more capable than the 6520 PIAs — it adds hardware timers and shift registers.</p>
+<h3>Key connections</h3><ul>
+<li>CA1 — Cassette #2 read (data from tape head)</li>
+<li>CA2 — Cassette #1 motor control</li>
+<li>CB1 — Cassette #1 read</li>
+<li>CB2 — Audio output (simple 1-bit sound via speaker)</li>
+<li>PB — Cassette #2 motor + various control lines</li></ul>
+<h3>Timers</h3>
+<p>Timer 1 and Timer 2 are used by the kernal for tape timing. Incorrect VIA timing causes cassette save/load to fail at the wrong baud rate.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Cassette operations fail (both save and load), no audio beep on startup, or timing-related issues with tape data. Only present on 2001-N and later boards.</p>
+<h3>Modern replacement</h3>
+<p class="good">WDC W65C22S — still manufactured, CMOS, pin-compatible. ~£5 from Mouser.</p>`
+  },
+  crtc: {
+    ref: '$E880–$E883 — DIP-40 — Boards 3–5 only',
+    title: 'MOS 6545 / MC6845 CRTC — Video Controller',
+    body: `<p>The CRTC generates all video timing signals — horizontal and vertical sync, display enable, and the character address sent to the character ROM. On early PET boards (Board 1–2) video was handled by discrete TTL logic; the 6545 CRTC was introduced on Board 3 (the 80-column 8032 and later 40-column 2001-N boards).</p>
+<h3>Registers ($E880 = select, $E882 = data)</h3><ul>
+<li>R0 — Horizontal total (chars per line)</li>
+<li>R1 — Horizontal displayed (40 or 80)</li>
+<li>R4 — Vertical total (character rows)</li>
+<li>R6 — Vertical displayed (25 rows)</li>
+<li>R9 — Max raster address (8 scan lines per char)</li>
+<li>R12/R13 — Screen start address (hi/lo)</li>
+<li>R14/R15 — Cursor position (hi/lo)</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">No video output, wrong sync (rolling or shrunken picture), all-white display, or cursor not appearing. The 6545/6845 is one of the hardest PET chips to source — treat it carefully.</p>
+<h3>Replacement</h3>
+<p class="warn">Motorola MC6845 or Hitachi HD6845S are compatible. All are now NOS only. This is one reason the ROM/RAM Board (from Tynemouth/TFW8b) is popular — it replaces many chips at once and can work around a faulty CRTC on some boards.</p>`
+  },
+  rom_basic: {
+    ref: '$B000–$DFFF — DIP-24 (×3 chips)',
+    title: 'MOS 6540 BASIC ROM — 12 KB Microsoft BASIC',
+    body: `<p>The PET's BASIC is Microsoft BASIC, licensed and adapted by Commodore. It is stored in three 4 KB MOS 6540 ROM chips at $B000, $C000, and $D000. The 6540 is a mask-programmed ROM unique to MOS Technology — it cannot be read directly by a modern EPROM programmer without an adapter.</p>
+<h3>BASIC versions on PET</h3><ul>
+<li>BASIC 1.0 — Original 2001 (1977). Limited floating point, bugs. No WAIT 6502.</li>
+<li>BASIC 2.0 — 2001 series (1978 update). Bug fixes, improved string handling.</li>
+<li>BASIC 4.0 — All 4000/8000 series. Adds disk commands (DOPEN, DCLOSE, RECORD, HEADER). Full IEEE-488 DOS support.</li></ul>
+<h3>Key BASIC entry points</h3><ul>
+<li>$B000 — BASIC cold start</li>
+<li>$B38E — BASIC warm start (RUN/LIST continue)</li>
+<li>$C000 — Floating point routines</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">BASIC keywords not working, out of memory errors immediately, garbled BASIC output, or machine won't reach BASIC prompt. Bit rot in a 6540 causes specific keywords to fail.</p>
+<h3>Replacement</h3>
+<p class="good">The ROM/RAM board from Tynemouth/TFW8b replaces all ROMs with a single modern board. Individual 6540s can be replaced with 27C16 EPROMs + adapter (the 6540 uses a slightly different pinout). Free ROM images at PET FAQs / zimmers.net.</p>`
+  },
+  rom_kernal: {
+    ref: '$E000–$FFFF — DIP-24',
+    title: 'MOS 6540 Kernal ROM — OS & IEEE-488 Driver',
+    body: `<p>The Kernal ROM provides the PET operating system: keyboard scanning, IEEE-488 communication (TALK/LISTEN/UNTALK/UNLISTEN), cassette I/O, screen output, and the jump table used by BASIC to call OS routines. The top of the kernal at $FFF8–$FFFF contains the 6502 hardware vectors.</p>
+<h3>Key kernal entry points</h3><ul>
+<li>$F000 — Kernal start</li>
+<li>$F025 — TALK (IEEE-488 talk command)</li>
+<li>$F04D — LISTEN (IEEE-488 listen)</li>
+<li>$F0A2 — CHRIN (input character from current device)</li>
+<li>$F1B6 — CHROUT (output character to current device)</li>
+<li>$FFF8/$FFF9 — NMI vector</li>
+<li>$FFFA/$FFFB — RESET vector</li>
+<li>$FFFE/$FFFF — IRQ/BRK vector</li></ul>
+<h3>Screen Editor ROM ($E000–$E7FF)</h3>
+<p>Separate 2 KB ROM handles the full-screen editor (cursor movement, insert/delete lines). Two variants: 40-column and 80-column. Swapping this ROM changes the screen width the editor uses.</p>
+<h3>Failure symptoms</h3>
+<p class="warn">Machine POSTs but then freezes, READY prompt appears but commands crash, IEEE-488 always returns errors, or keyboard scanning stops mid-session.</p>
+<h3>Replacement</h3>
+<p class="good">27C32 EPROM (kernal) or 27C16 (editor) with adapter. ROM images freely available. The ROM/RAM board is the cleanest solution replacing all ROMs at once.</p>`
+  },
+  ram_dram: {
+    ref: 'DIP-16 — ×8 (16 KB) or ×16 (32 KB)',
+    title: '4116 DRAM — 16 Kbit Dynamic RAM',
+    body: `<p>The 4116 is the most commonly failing chip on the PET. Unlike the 4164 used in the C64, the 4116 requires THREE supply voltages: +12V, +5V, AND −5V. The −5V rail is generated by the PET power supply and often collapses with age, causing all 4116s to fail simultaneously. Always check the power supply voltages BEFORE replacing RAM chips.</p>
+<h3>Power requirements</h3><ul>
+<li>Vcc = +12V (pin 1)</li>
+<li>Vbb = −5V (pin 8) — most critical, often first to fail</li>
+<li>Vdd = +5V (pin 9)</li>
+<li>Vss = Ground (pin 16)</li></ul>
+<h3>Configuration</h3><ul>
+<li>8 chips → 16 KB RAM (Board 2 early, some 2001 models)</li>
+<li>16 chips → 32 KB RAM (most 4016/4032 models)</li>
+<li>Each chip provides 1 bit of the 8-bit data bus</li></ul>
+<h3>Failure symptoms</h3>
+<p class="warn">Random garbage characters at startup (checkerboard pattern), BASIC reports wrong memory, or machine freezes immediately. If ALL RAM appears bad at once, check the −5V supply first — it is almost certainly the PSU, not all 8/16 chips failing simultaneously.</p>
+<h3>Finding the faulty chip</h3>
+<p>The character of the garbage pattern tells you which bit is faulty: each 4116 handles one bit position. Use a PET diagnostic ROM (available at petsd.org) to identify which chip fails.</p>
+<h3>Replacement</h3>
+<p class="warn">4116 is no longer manufactured. Source NOS from eBay. Alternatively, the 4164 (single-supply) can replace the 4116 using a small adapter board that generates the −5V locally — this is a cleaner long-term solution. The ROM/RAM board from Tynemouth is the comprehensive modern fix.</p>`
+  },
+  psu: {
+    ref: 'Internal — check before anything else',
+    title: 'PET Power Supply — Check First!',
+    body: `<p>The PET power supply is a linear supply generating +5V, +12V, and −5V. The −5V rail powers the 4116 DRAM chips and is the most common cause of total machine failure — it fails silently while the machine appears to power on (fan runs, screen lights up) but all RAM is dead.</p>
+<h3>Rail voltages (measure at the motherboard connector)</h3><ul>
+<li>+5V — CPU, ROMs, I/O chips, TTL glue logic</li>
+<li>+12V — 4116 DRAM Vcc, video circuitry</li>
+<li>−5V — 4116 DRAM Vbb (CRITICAL — check this first!)</li></ul>
+<h3>Diagnosis procedure</h3>
+<ol style="padding-left:1.2rem">
+<li>Power on with a multimeter on the motherboard PSU connector</li>
+<li>Measure −5V rail: acceptable range is −4.75V to −5.25V</li>
+<li>If −5V is missing or wrong: PSU caps failed. Recap or replace the PSU board</li>
+<li>If all rails are correct and machine still fails: now check the chips</li></ol>
+<h3>Common PSU failures</h3><ul>
+<li>Electrolytic capacitors dry out — very common after 40+ years</li>
+<li>Voltage regulator IC for −5V rail (7905 or equivalent) fails</li>
+<li>Rectifier diodes — less common but possible</li></ul>
+<h3>Repair options</h3>
+<p class="good">Recap the PSU (replace all electrolytics), replace the −5V regulator. Many PET owners replace the entire PSU board with a modern switching supply — kits are available on Tindie and from Tynemouth Software. A modern replacement eliminates the −5V dependency problem entirely.</p>`
+  }
+};
+function petOpenChip(id) {
+  var d = PET_CHIP_DATA[id];
+  if (!d) return;
+  document.getElementById('petChipRef').textContent = d.ref;
+  document.getElementById('petChipTitle').textContent = d.title;
+  document.getElementById('petChipBody').innerHTML = d.body;
+  document.getElementById('petChipModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function petCloseChip() {
+  document.getElementById('petChipModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') petCloseChip();
+});
+</script>
+
 </body>
 </html>
