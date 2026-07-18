@@ -26,9 +26,10 @@ Each guide includes:
 `retro_guide_sync.py` watches the repo folder and automatically commits and pushes any guide changes to GitHub within 3 seconds of saving.
 
 ```bash
-pip install watchdog
 python retro_guide_sync.py
 ```
+
+`watchdog` is installed automatically on first run if it is missing.
 
 Or on Windows, double-click `start_sync.bat`.
 

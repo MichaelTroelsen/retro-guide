@@ -32,7 +32,7 @@ except ImportError:
 
 # ── CONFIGURE THESE ─────────────────────────────────────────────────────────
 
-WATCH_DIR = r"C:\Users\mit\claude\retro-guide"   # folder with your 5 guide files
+WATCH_DIR = str(Path(__file__).resolve().parent)   # folder with the 5 guide files
 
 TRACKED_FILES = [
     "commodore-pet-reference.html",
@@ -145,10 +145,26 @@ def raw_url(filename):
         # HTTPS: https://github.com/user/repo.git
         if remote.startswith("git@github.com:"):
             remote = remote.replace("git@github.com:", "https://github.com/")
-        remote = remote.rstrip(".git")
-        return f"{remote}/raw/main/{filename}"
+        remote = remote.removesuffix(".git")   # NOT rstrip: that strips chars, not a suffix
+        return f"{remote}/raw/{current_branch()}/{filename}"
     except Exception:
         return filename
+
+
+def current_branch():
+    """Return the checked-out branch name, falling back to 'master'.
+
+    Hardcoding this is what broke every raw URL: the script emitted /raw/main/
+    while this repository is on master, so all five links 404'd.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=WATCH_DIR, capture_output=True, text=True
+        )
+        return result.stdout.strip() or "master"
+    except Exception:
+        return "master"
 
 
 def print_urls():

@@ -41,12 +41,20 @@ Every guide must have:
 ## Current implementation gaps
 
 | Guide | Needs |
-|-------|-------|
-| PET | PCBWay/Tindie section |
-| BBC Micro | Search, copy buttons, chip modals |
-| Amstrad CPC | Search, copy buttons, chip modals |
-| C64 | Chip modals |
-| Mac SE/30 | Copy buttons |
+|-------|-------------|
+| Mac SE/30 | Copy buttons on code blocks |
+
+That is the only outstanding gap. Verified 2026-07-18: `mac-se30-reference.html` contains no
+`navigator.clipboard` call and no copy-button class; the four `copy` matches in it are prose and
+68000 comments. Note its own changelog entry claims "Copy buttons on all 68030 assembly code
+blocks" — that claim is false.
+
+**Before adding to this table, grep for the feature.** The previous version of this table listed
+eight further gaps (PET PCBWay/Tindie; BBC Micro and Amstrad CPC search, copy buttons and chip
+modals; C64 chip modals) — **all eight were already implemented.** Chip modals are prefixed per
+machine (`c64-chip-modal`, `cpc-chip-modal`, `pet-chip-modal`), so a generic `modal-overlay`
+search returns zero and reads as absence. A zero result from one pattern is not evidence; check
+the loose word first, then the underlying API, then inspect the matches. See issue #1.
 
 ## Guide architecture (all guides follow this pattern)
 
